@@ -1,0 +1,33 @@
+{
+  "required": true,
+  "package": "net.bottomtextdanny.braincell.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "refmap": "braincell.refmap.json",
+  "client": [
+    "client.GameRendererMixin",
+    "client.ItemClientMixin",
+    "client.ItemEntityRendererMixin",
+    "client.ItemStackClientMixin",
+    "client.LevelRendererMixin",
+    "client.MinecraftMixin",
+    "client.MouseHelperMixin",
+    "client.PlayerModelMixin",
+    "client.WindowMixin",
+    "client.WorldRendererMixin"
+  ],
+  "mixins": [
+    "EntityMixin",
+    "ItemEntityMixin",
+    "LivingEntityMixin",
+    "MobMixin",
+    "PlayerEntityMixin",
+    "ProjectileMixin",
+    "RecipeManagerMixin",
+    "ServerGamePacketListenerImplMixin",
+    "StructureFeatureMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
