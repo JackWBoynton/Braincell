@@ -16,12 +16,6 @@ import net.minecraft.world.entity.player.Player;
 import java.util.Random;
 import java.util.Set;
 
-/**
- * this class contains methods for performing basic
- * numeric operations such as the elementary exponential, logarithm,
- * square root, and trigonometric functions.
- *
- */
 public final class CombatHelper {
     private static final Random RANDOM = new Random();
 
