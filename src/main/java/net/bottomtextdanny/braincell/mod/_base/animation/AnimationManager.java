@@ -3,6 +3,7 @@ package net.bottomtextdanny.braincell.mod._base.animation;
 import com.google.common.collect.Maps;
 import com.google.gson.*;
 import net.bottomtextdanny.braincell.base.BCStringUtil;
+import net.bottomtextdanny.braincell.base.function.Lazy;
 import net.bottomtextdanny.braincell.mod._base.animation.interpreter.AnimationInstruction;
 import net.bottomtextdanny.braincell.mod._base.animation.interpreter.AnimationInstructionActor;
 import net.bottomtextdanny.braincell.mod._base.animation.interpreter.AnimationInterpreter;
@@ -40,23 +41,26 @@ public class AnimationManager {
     }
 
     public AnimationInterpreter makeInterpreter(ResourceLocation location, BCEntityModel<?> model) {
-        if (cache.containsKey(location))
-            return new AnimationInterpreter(model, cache.get(location));
+        return new AnimationInterpreter(model, Lazy.of(() -> {
 
-        AnimationInterpreterData newBuiltData = parseData(location);
+            if (cache.containsKey(location))
+                return cache.get(location);
 
-        if (newBuiltData == null) {
-            return new AnimationInterpreter(model, AnimationInterpreterData.DUMMY);
-        }
+            AnimationInterpreterData newBuiltData = parseData(location);
 
-        this.cache.put(location, newBuiltData);
+            if (newBuiltData == null) {
+                return AnimationInterpreterData.DUMMY;
+            }
 
-        return new AnimationInterpreter(model, newBuiltData);
+            this.cache.put(location, newBuiltData);
+
+            return newBuiltData;
+        }));
     }
 
     @Nullable
     private AnimationInterpreterData parseData(ResourceLocation location) {
-        String extracted = resourceInput(new ResourceLocation(location.getNamespace(), "animations/" + location.getPath() + ".json"));
+        String extracted = resourceInput(new ResourceLocation(location.getNamespace(), "bc_animations/" + location.getPath() + ".json"));
 
         if (extracted == null) return null;
         JsonObject jsonEquivalent;

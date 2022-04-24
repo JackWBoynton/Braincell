@@ -1,6 +1,7 @@
 package net.bottomtextdanny.braincell.mod._base.animation.interpreter;
 
 import com.google.common.collect.Maps;
+import net.bottomtextdanny.braincell.base.function.Lazy;
 import net.bottomtextdanny.braincell.mod._base.animation.EntityModelAnimator;
 import net.bottomtextdanny.braincell.mod.rendering.modeling.BCEntityModel;
 import net.bottomtextdanny.braincell.mod._base.rendering.core_modeling.BCJoint;
@@ -11,16 +12,14 @@ import java.util.Map;
 
 public class AnimationInterpreter {
     private final BCEntityModel<?> model;
-    private final List<Map<Float, List<AnimationInstruction>>> runners;
-    private final List<String> jointIdentifiers;
+    private final Lazy<AnimationInterpreterData> data;
     private Map<Integer, BCJoint> indexedJoints;
 
     public AnimationInterpreter(BCEntityModel<?> model,
-                                AnimationInterpreterData data) {
+                                Lazy<AnimationInterpreterData> data) {
         super();
         this.model = model;
-        this.runners = data.runners();
-        this.jointIdentifiers = data.jointIdentifiers();
+        this.data = data;
     }
 
     public void run(EntityModelAnimator animator) {
@@ -29,7 +28,7 @@ public class AnimationInterpreter {
             indexJoints();
         }
 
-        this.runners.forEach(timedInstructions -> {
+        data.get().runners().forEach(timedInstructions -> {
             runRunner(timedInstructions, animator);
         });
     }
@@ -63,6 +62,7 @@ public class AnimationInterpreter {
     }
 
     private void indexJoints() {
+        List<String> jointIdentifiers = this.data.get().jointIdentifiers();
         Map<Integer, BCJoint> joints = Maps.newHashMap();
 
         model.getJoints().forEach(joint -> {
