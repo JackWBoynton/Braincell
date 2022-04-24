@@ -7,6 +7,7 @@ import net.bottomtextdanny.braincell.mod._base.registry.managing.BCRegistry;
 import net.bottomtextdanny.braincell.mod._mod.client_sided.EntityRendererDeferring;
 import net.bottomtextdanny.braincell.mod._mod.client_sided.EntityRendererMaker;
 import net.bottomtextdanny.braincell.mod._mod.common_sided.EntityAttributeDeferror;
+import net.bottomtextdanny.braincell.mod._mod.common_sided.EntityCoreDataDeferror;
 import net.bottomtextdanny.braincell.mod._mod.common_sided.RawEntitySpawnDeferring;
 import net.bottomtextdanny.braincell.mod.world.builtin_items.BCSpawnEggItem;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -32,7 +33,7 @@ public class BCMobBuilder<T extends Mob> implements EntityBuilder<T> {
     protected MobCategory classification;
     protected Supplier<AttributeSupplier.Builder> attributeMap;
     protected float width, height;
-    protected BCSpawnEggItem.Builder eggBuilder;
+    protected EggBuildData eggBuilder;
     @OnlyIn(Dist.CLIENT)
     protected Supplier<?> renderFactory;
 
@@ -83,33 +84,36 @@ public class BCMobBuilder<T extends Mob> implements EntityBuilder<T> {
     @Override
     public BCMobBuilder<T> spawn(SpawnPlacements.Type placement, Heightmap.Types heightMap, SpawnPlacements.SpawnPredicate<T> pred) {
         this.spawn = new RawEntitySpawnDeferring<>(placement, heightMap, pred);
+        return this;
+    }
 
+    public BCMobBuilder<T> egg(String name, BCSpawnEggItem.Builder egg) {
+        this.eggBuilder = new EggBuildData(name, egg);
         return this;
     }
 
     @Override
     public BCMobBuilder<T> egg(BCSpawnEggItem.Builder egg) {
-        this.eggBuilder = egg;
-        return this;
+        return egg(this.entityId, egg);
     }
 	
 	@Override
 	public EntityWrap<EntityType<T>> build() {
+        EntityCoreDataDeferror deferrorCore = Braincell.common().getEntityCoreDataDeferror();
 		EntityWrap<EntityType<T>> type = new EntityWrap<>(new ResourceLocation(this.solving.getModID(), this.entityId), () -> EntityType.Builder.of(this.factory, this.classification).sized(this.width, this.height).build(this.solving.getModID() + ":" + this.entityId));
 		type.setupForDeferring(this.solving);
 		this.registry.addDeferredSolving(type);
 
 		if (this.eggBuilder != null) {
-            Braincell.common().getEntityCoreDataDeferror().saveEggBuilder(type.getKey(), this.eggBuilder);
+            deferrorCore.saveEggBuilder(type.getKey(), this.eggBuilder);
 		}
 
 		if (this.attributeMap != null) {
-            Braincell.common().getEntityCoreDataDeferror()
-                    .deferAttributeAttachment(new EntityAttributeDeferror(type, this.attributeMap));
+            deferrorCore.deferAttributeAttachment(new EntityAttributeDeferror(type, this.attributeMap));
         }
 
 		if (this.spawn != null) {
-            Braincell.common().getEntityCoreDataDeferror().deferSpawnPlacement(this.spawn.makeDeferring(type));
+            deferrorCore.deferSpawnPlacement(this.spawn.makeDeferring(type));
 		}
 
         Connection.doClientSide(() -> {

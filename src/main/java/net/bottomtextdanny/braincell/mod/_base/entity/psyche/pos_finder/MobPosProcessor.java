@@ -7,16 +7,20 @@ import javax.annotation.Nullable;
 import java.util.random.RandomGenerator;
 
 @FunctionalInterface
-public interface MobPosProcessor {
-    MobPosProcessor IDENTITY = (root, mob, random) -> root;
+public interface MobPosProcessor<T> {
+    MobPosProcessor<?> IDENTITY = (root, mob, random, extra) -> root;
 
     @Nullable
-    BlockPos compute(BlockPos root, Mob mob, RandomGenerator random);
+    BlockPos compute(BlockPos root, Mob mob, RandomGenerator random, T extra);
 
-    default MobPosProcessor then(MobPosProcessor other) {
-        return (bp, mob, random) -> {
-            BlockPos newPos = this.compute(bp, mob, random);
-            return newPos == null ? bp : other.compute(newPos, mob, random);
+    default MobPosProcessor<T> then(MobPosProcessor<? super T> other) {
+        return (bp, mob, random, extra) -> {
+            BlockPos newPos = this.compute(bp, mob, random, extra);
+            return newPos == null ? bp : other.compute(newPos, mob, random, extra);
         };
+    }
+
+    default <U extends T> MobPosProcessor<U> generic(Class<U> clazz) {
+        return (MobPosProcessor<U>)this;
     }
 }

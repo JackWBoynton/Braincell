@@ -6,18 +6,18 @@ import net.minecraft.world.entity.Mob;
 import java.util.Stack;
 import java.util.random.RandomGenerator;
 
-public final class MobPosStackProcessor implements MobPosProcessor {
-    private final Stack<MobPosProcessor> processor;
+public final class MobPosStackProcessor<T> implements MobPosProcessor<T> {
+    private final Stack<MobPosProcessor<? super T>> processor;
 
     public MobPosStackProcessor() {
         this.processor = new Stack<>();
     }
 
     @Override
-    public BlockPos compute(BlockPos root, Mob mob, RandomGenerator random) {
+    public BlockPos compute(BlockPos root, Mob mob, RandomGenerator random, T extra) {
         BlockPos pos = root;
-        for (MobPosProcessor t : this.processor) {
-            BlockPos iter = t.compute(pos, mob, random);
+        for (MobPosProcessor<? super T> t : this.processor) {
+            BlockPos iter = t.compute(pos, mob, random, extra);
 
             if (iter != null) pos = iter;
             else break;
@@ -25,8 +25,13 @@ public final class MobPosStackProcessor implements MobPosProcessor {
         return pos;
     }
 
-    public MobPosStackProcessor push(MobPosProcessor appendable) {
+    public MobPosStackProcessor<T> push(MobPosProcessor<? super T> appendable) {
         this.processor.push(appendable);
         return this;
+    }
+
+    @Override
+    public <U extends T> MobPosStackProcessor<U> generic(Class<U> clazz) {
+        return (MobPosStackProcessor<U>) this;
     }
 }

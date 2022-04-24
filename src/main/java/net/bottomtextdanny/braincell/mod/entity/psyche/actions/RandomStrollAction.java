@@ -12,14 +12,14 @@ import javax.annotation.Nullable;
 public class RandomStrollAction extends Action<PathfinderMob> {
     public static final RandomIntegerMapper DEFAULT_STROLL_TIME = RandomIntegerMapper.of(120, 150);
     protected RandomIntegerMapper strollTime;
-    private final MobPosProcessor posProcessor;
+    private final MobPosProcessor<?> posProcessor;
     protected int timeTillStroll;
     protected float speedModifier = 1.0F;
     protected double wantedX;
     protected double wantedY;
     protected double wantedZ;
 
-    public RandomStrollAction(PathfinderMob mob, MobPosProcessor posProcessor, RandomIntegerMapper strollTime) {
+    public RandomStrollAction(PathfinderMob mob, MobPosProcessor<?> posProcessor, RandomIntegerMapper strollTime) {
         super(mob);
         this.strollTime = strollTime;
         this.posProcessor = posProcessor;
@@ -77,7 +77,7 @@ public class RandomStrollAction extends Action<PathfinderMob> {
 
     @Nullable
     protected Vec3 getRandomPosition() {
-        BlockPos pos = this.posProcessor.compute(this.mob.blockPosition(), this.mob, UNSAFE_RANDOM);
+        BlockPos pos = this.posProcessor.compute(this.mob.blockPosition(), this.mob, UNSAFE_RANDOM, null);
         if (pos != null) {
             return Vec3.atCenterOf(pos);
         }

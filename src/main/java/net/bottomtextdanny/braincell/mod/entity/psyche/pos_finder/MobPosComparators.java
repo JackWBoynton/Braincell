@@ -9,8 +9,8 @@ import java.util.function.Function;
 
 public final class MobPosComparators {
 
-    public static Comparator<BlockPos> compareWalkValue(Mob mob) {
-        return mob instanceof PathfinderMob pf ? Comparator.comparingDouble(pf::getWalkTargetValue) :
+    public static Function<Object, Comparator<BlockPos>> compareWalkValue(Mob mob) {
+        return (extra) -> mob instanceof PathfinderMob pf ? Comparator.comparingDouble(pos -> pf.getWalkTargetValue(pos)) :
         Comparator.comparingDouble(pos -> mob.getPathfindingMalus(mob.getFeetBlockState().getBlockPathType(mob.level, pos)));
     }
 

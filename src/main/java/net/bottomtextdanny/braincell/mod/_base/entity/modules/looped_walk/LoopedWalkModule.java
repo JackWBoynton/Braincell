@@ -22,7 +22,12 @@ public class LoopedWalkModule extends EntityModule<LivingEntity, LoopedWalkProvi
             float limbSwingDistance = (float) BraincellHelper.RENDER_DIST2D_UTIL.start(this.entity.getX(), this.entity.getZ()).get(this.entity.xo, this.entity.zo);
 
             this.prevRenderLimbSwingAmount = this.renderLimbSwingAmount;
-            this.renderLimbSwingAmount += limbSwingDistance - this.renderLimbSwingAmount > 0 ? (limbSwingDistance - this.renderLimbSwingAmount) / 1.5 : (limbSwingDistance - this.renderLimbSwingAmount) / 4;
+            this.renderLimbSwingAmount += limbSwingDistance - this.renderLimbSwingAmount > 0 ?
+                    (limbSwingDistance - this.renderLimbSwingAmount) / 1.5
+                    : (limbSwingDistance - this.renderLimbSwingAmount) / 4;
+
+            if (this.entity.isInWater() && !this.entity.isPassenger())
+                this.renderLimbSwingAmount *= 2.5F;
 
             this.prevLimbSwingLoop = this.limbSwingLoop;
 

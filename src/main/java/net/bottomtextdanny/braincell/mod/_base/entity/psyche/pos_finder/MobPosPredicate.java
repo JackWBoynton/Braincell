@@ -8,21 +8,21 @@ import java.util.Objects;
 import java.util.function.BiPredicate;
 
 @FunctionalInterface
-public interface MobPosPredicate extends BiPredicate<Mob, BlockPos> {
+public interface MobPosPredicate<T> {
 
-    @NotNull
-    @Override
-    default MobPosPredicate and(@NotNull BiPredicate<? super Mob, ? super BlockPos> other) {
+    boolean test(Mob mob, BlockPos blockPos, T extra);
+
+    default MobPosPredicate<T> and(MobPosPredicate<? super T> other) {
         Objects.requireNonNull(other);
-        return (Mob t, BlockPos u) -> test(t, u) && other.test(t, u);
+        return (Mob mob, BlockPos blockPos, T extra) -> test(mob, blockPos, extra) && other.test(mob, blockPos, extra);
     }
 
-    default MobPosPredicate negate() {
-        return (Mob t, BlockPos u) -> !test(t, u);
+    default MobPosPredicate<T> negate() {
+        return (Mob mob, BlockPos blockPos, T extra) -> !test(mob, blockPos, extra);
     }
 
-    default MobPosPredicate or(BiPredicate<? super Mob, ? super BlockPos> other) {
+    default MobPosPredicate<T> or(MobPosPredicate<? super T> other) {
         Objects.requireNonNull(other);
-        return (Mob t, BlockPos u) -> test(t, u) || other.test(t, u);
+        return (Mob mob, BlockPos blockPos, T extra) -> test(mob, blockPos, extra) || other.test(mob, blockPos, extra);
     }
 }

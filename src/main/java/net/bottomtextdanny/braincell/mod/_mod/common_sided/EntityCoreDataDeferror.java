@@ -2,6 +2,7 @@ package net.bottomtextdanny.braincell.mod._mod.common_sided;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import net.bottomtextdanny.braincell.mod._base.registry.EggBuildData;
 import net.bottomtextdanny.braincell.mod.world.builtin_items.BCSpawnEggItem;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
@@ -20,15 +21,16 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public final class EntityCoreDataDeferror implements AutoCloseable {
+public final class EntityCoreDataDeferror {
     private final List<BCSpawnEggItem> eggs = Lists.newLinkedList();
     private final List<EntitySpawnDeferring<?>> deferredSpawnPlacements = Lists.newLinkedList();
     private final List<EntityAttributeDeferror> deferredAttributeAttachments = Lists.newLinkedList();
-    private final Map<ResourceLocation, BCSpawnEggItem.Builder> eggBuilders = Maps.newIdentityHashMap();
+    private final Map<ResourceLocation, EggBuildData> eggBuilders = Maps.newIdentityHashMap();
 
     public EntityCoreDataDeferror() {
         super();
@@ -61,16 +63,18 @@ public final class EntityCoreDataDeferror implements AutoCloseable {
         });
     }
 
-    public void saveEggBuilder(ResourceLocation key, BCSpawnEggItem.Builder builder) {
-        this.eggBuilders.put(key, builder);
+    public void saveEggBuilder(ResourceLocation key, EggBuildData builder) {
+        if (builder == null) return;
+
+        this.eggBuilders.putIfAbsent(key, builder);
     }
 
     public void putEgg(BCSpawnEggItem egg) {
         this.eggs.add(egg);
     }
 
-    public Optional<BCSpawnEggItem.Builder> getEggBuilder(ResourceLocation key) {
-        return Optional.ofNullable(this.eggBuilders.getOrDefault(key, null));
+    public EggBuildData getEggBuilder(ResourceLocation key) {
+        return this.eggBuilders.getOrDefault(key, null);
     }
 
     public void deferSpawnPlacement(EntitySpawnDeferring<?> spawnDeferring) {
@@ -81,7 +85,6 @@ public final class EntityCoreDataDeferror implements AutoCloseable {
         this.deferredAttributeAttachments.add(attributeDeferror);
     }
 
-    @Override
     public void close() {
         this.eggs.clear();
         this.deferredAttributeAttachments.clear();
