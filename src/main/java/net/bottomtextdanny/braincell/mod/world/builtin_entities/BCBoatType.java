@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 
 public class BCBoatType {
     public static final BCBoatType INVALID = new BCBoatType(
-            new ResourceLocation(Braincell.ID, "invalid"),
+            new ResourceLocation("minecraft", "textures/entity/boat/oak.png"),
             () -> Items.AIR,
             () -> Items.AIR,
             false

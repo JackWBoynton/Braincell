@@ -58,11 +58,6 @@ public class BCBoat extends Boat implements BCDataManagerProvider, EntityClientM
 		}
 	}
 
-	@Override
-	public void afterClientDataUpdate() {
-		BCDataManagerProvider.super.afterClientDataUpdate();
-	}
-
 	protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
 		this.lastYd = this.getDeltaMovement().y;
 		if (!this.isPassenger()) {

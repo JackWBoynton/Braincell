@@ -26,9 +26,6 @@ public class LoopedWalkModule extends EntityModule<LivingEntity, LoopedWalkProvi
                     (limbSwingDistance - this.renderLimbSwingAmount) / 1.5
                     : (limbSwingDistance - this.renderLimbSwingAmount) / 4;
 
-            if (this.entity.isInWater() && !this.entity.isPassenger())
-                this.renderLimbSwingAmount *= 2.5F;
-
             this.prevLimbSwingLoop = this.limbSwingLoop;
 
             this.limbSwingLoop = BCMath.loop(this.limbSwingLoop, 1.0F, this.renderLimbSwingAmount * this.provider.getLoopWalkMultiplier());

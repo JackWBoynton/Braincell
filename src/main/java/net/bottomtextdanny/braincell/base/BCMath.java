@@ -52,9 +52,7 @@ public final class BCMath {
     }
 
     public static float loop(float holder, float end, float offset) {
-        float result = holder + offset;
-        while (result > end) result -= Mth.abs(end);
-        return result;
+        return (holder + offset) % end;
     }
 
     public static float zp2Np(float un) {
