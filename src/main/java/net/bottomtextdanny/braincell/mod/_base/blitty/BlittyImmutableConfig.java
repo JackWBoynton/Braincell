@@ -1,11 +1,11 @@
 package net.bottomtextdanny.braincell.mod._base.blitty;
 
+import net.bottomtextdanny.braincell.mod._base.blitty.color_data.BlittyColor;
 import net.bottomtextdanny.braincell.mod._base.blitty.color_data.BlittyColorTransformer;
 import net.bottomtextdanny.braincell.mod._base.blitty.pos_data.BlittyPos;
 import net.bottomtextdanny.braincell.mod._base.blitty.pos_data.BlittyPosTransformer;
 import net.bottomtextdanny.braincell.mod._base.blitty.uv_data.BlittyUV;
 import net.bottomtextdanny.braincell.mod._base.blitty.uv_data.BlittyUVPosTransformer;
-import net.bottomtextdanny.braincell.mod._base.blitty.color_data.BlittyColor;
 
 import javax.annotation.Nullable;
 

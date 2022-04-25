@@ -7,6 +7,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
+import javax.annotation.Nullable;
+
 public final class DirectionSerializer implements SimpleSerializer<Direction> {
     public static final ResourceLocation REF =
             new ResourceLocation(Braincell.ID, "direction");
@@ -16,8 +18,10 @@ public final class DirectionSerializer implements SimpleSerializer<Direction> {
         nbt.putByte(storage, (byte)obj.ordinal());
     }
 
+    @Nullable
     @Override
     public Direction readNBT(CompoundTag nbt, String storage) {
+        if (!nbt.contains(storage)) return null;
         return Direction.values()[(int) nbt.getByte(storage)];
     }
 

@@ -1,12 +1,12 @@
 package net.bottomtextdanny.braincell.mod._mod.object_tables;
 
 import net.bottomtextdanny.braincell.Braincell;
-import net.bottomtextdanny.braincell.mod.rendering.BCBoatRenderer;
 import net.bottomtextdanny.braincell.mod._base.registry.BCEntityBuilder;
 import net.bottomtextdanny.braincell.mod._base.registry.BCLivingEntityBuilder;
 import net.bottomtextdanny.braincell.mod._base.registry.BCMobBuilder;
 import net.bottomtextdanny.braincell.mod._base.registry.EntityWrap;
 import net.bottomtextdanny.braincell.mod._base.registry.managing.BCRegistry;
+import net.bottomtextdanny.braincell.mod.rendering.BCBoatRenderer;
 import net.bottomtextdanny.braincell.mod.world.builtin_entities.BCBoat;
 import net.minecraft.world.entity.*;
 

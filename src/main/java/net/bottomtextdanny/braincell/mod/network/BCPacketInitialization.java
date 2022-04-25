@@ -1,9 +1,9 @@
 package net.bottomtextdanny.braincell.mod.network;
 
 import net.bottomtextdanny.braincell.Braincell;
+import net.bottomtextdanny.braincell.mod._base.network.BCPacket;
 import net.bottomtextdanny.braincell.mod.network.cts.MSGHandAccessoryServerMessenger;
 import net.bottomtextdanny.braincell.mod.network.stc.*;
-import net.bottomtextdanny.braincell.mod._base.network.BCPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.resources.ResourceLocation;

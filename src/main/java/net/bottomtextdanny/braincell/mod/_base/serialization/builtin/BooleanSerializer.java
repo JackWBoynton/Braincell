@@ -6,6 +6,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
+import javax.annotation.Nullable;
+
 public final class BooleanSerializer implements SimpleSerializer<Boolean> {
     public static final ResourceLocation REF =
             new ResourceLocation(Braincell.ID, "boolean");
@@ -15,8 +17,10 @@ public final class BooleanSerializer implements SimpleSerializer<Boolean> {
         nbt.putBoolean(storage, obj);
     }
 
+    @Nullable
     @Override
     public Boolean readNBT(CompoundTag nbt, String storage) {
+        if (!nbt.contains(storage)) return null;
         return nbt.getBoolean(storage);
     }
 

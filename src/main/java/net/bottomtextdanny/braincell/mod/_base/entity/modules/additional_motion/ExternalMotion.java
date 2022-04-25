@@ -1,6 +1,5 @@
 package net.bottomtextdanny.braincell.mod._base.entity.modules.additional_motion;
 
-import net.bottomtextdanny.braincell.base.scheduler.IntScheduler;
 import net.minecraft.world.phys.Vec3;
 
 public class ExternalMotion {

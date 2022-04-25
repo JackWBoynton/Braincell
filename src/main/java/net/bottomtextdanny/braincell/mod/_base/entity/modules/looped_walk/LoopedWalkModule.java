@@ -1,8 +1,8 @@
 package net.bottomtextdanny.braincell.mod._base.entity.modules.looped_walk;
 
 import net.bottomtextdanny.braincell.BraincellHelper;
-import net.bottomtextdanny.braincell.mod.entity.modules.EntityModule;
 import net.bottomtextdanny.braincell.base.BCMath;
+import net.bottomtextdanny.braincell.mod.entity.modules.EntityModule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;

@@ -1,6 +1,5 @@
 package net.bottomtextdanny.braincell.mod.world.builtin_entities;
 
-import net.bottomtextdanny.braincell.Braincell;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;

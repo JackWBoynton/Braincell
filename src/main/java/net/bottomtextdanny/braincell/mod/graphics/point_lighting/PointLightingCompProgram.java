@@ -2,10 +2,10 @@ package net.bottomtextdanny.braincell.mod.graphics.point_lighting;
 
 import com.mojang.math.Matrix4f;
 import net.bottomtextdanny.braincell.Braincell;
+import net.bottomtextdanny.braincell.base.pair.Pair;
 import net.bottomtextdanny.braincell.mod._base.opengl.ComputationProgram;
 import net.bottomtextdanny.braincell.mod._base.opengl.UniformManager;
 import net.bottomtextdanny.braincell.mod._base.opengl.enums.ShaderType;
-import net.bottomtextdanny.braincell.base.pair.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

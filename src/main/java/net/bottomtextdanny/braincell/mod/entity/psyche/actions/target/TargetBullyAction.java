@@ -1,7 +1,7 @@
 package net.bottomtextdanny.braincell.mod.entity.psyche.actions.target;
 
-import net.bottomtextdanny.braincell.mod.entity.psyche.actions.ConstantThoughtAction;
 import net.bottomtextdanny.braincell.mod._base.entity.psyche.input.ActionInputKey;
+import net.bottomtextdanny.braincell.mod.entity.psyche.actions.ConstantThoughtAction;
 import net.bottomtextdanny.braincell.mod.entity.targeting.TargetPredicate;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;

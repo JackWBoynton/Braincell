@@ -1,8 +1,8 @@
 package net.bottomtextdanny.braincell.mod._base.registry.block_extensions;
 
+import net.bottomtextdanny.braincell.mod._base.registry.managing.BCRegistry;
 import net.bottomtextdanny.braincell.mod._base.registry.managing.DeferrorType;
 import net.bottomtextdanny.braincell.mod._base.registry.managing.ModDeferringManager;
-import net.bottomtextdanny.braincell.mod._base.registry.managing.BCRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FlowerPotBlock;

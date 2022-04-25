@@ -6,6 +6,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
+import javax.annotation.Nullable;
+
 public final class DoubleSerializer implements SimpleSerializer<Double> {
     public static final ResourceLocation REF =
             new ResourceLocation(Braincell.ID, "double");
@@ -15,8 +17,10 @@ public final class DoubleSerializer implements SimpleSerializer<Double> {
         nbt.putDouble(storage, obj);
     }
 
+    @Nullable
     @Override
     public Double readNBT(CompoundTag nbt, String storage) {
+        if (!nbt.contains(storage)) return null;
         return nbt.getDouble(storage);
     }
 

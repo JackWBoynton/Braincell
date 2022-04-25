@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class BCDataManager {
     public static final UnsupportedOperationException CANNOT_EXECUTE_NBT_OPERATIONS_ON_CLIENT_EX =
             new UnsupportedOperationException(
-                    "World image does not support the execution of nbt operations on client."
+                    "World data does not support the execution of nbt operations on client."
             );
     public static final int REFERENCE_SPLIT = 8;
     public static final Map<Class<? extends Entity>, List<EntityDataReference<?>>> REFERENCES =
@@ -34,9 +34,8 @@ public class BCDataManager {
         this.nonSyncedDataList = Lists.newArrayList();
     }
 
-    public static <T> EntityDataReference<T> attribute(
-            Class<? extends Entity> accessor,
-            RawEntityDataReference<T> rawRef) {
+    public static <T> EntityDataReference<T> attribute(Class<? extends Entity> accessor,
+                                                       RawEntityDataReference<T> rawRef) {
         List<EntityDataReference<?>> list;
         if (REFERENCES.containsKey(accessor)) {
             list = REFERENCES.get(accessor);

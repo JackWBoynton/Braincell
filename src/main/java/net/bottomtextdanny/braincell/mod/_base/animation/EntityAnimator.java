@@ -1,9 +1,9 @@
 package net.bottomtextdanny.braincell.mod._base.animation;
 
 import com.google.common.collect.Maps;
-import net.bottomtextdanny.braincell.mod.rendering.modeling.BCEntityModel;
-import net.bottomtextdanny.braincell.mod._base.rendering.core_modeling.BCJoint;
 import net.bottomtextdanny.braincell.base.Easing;
+import net.bottomtextdanny.braincell.mod._base.rendering.core_modeling.BCJoint;
+import net.bottomtextdanny.braincell.mod.rendering.modeling.BCEntityModel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

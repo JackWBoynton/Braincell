@@ -6,6 +6,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
+import javax.annotation.Nullable;
+
 public final class ShortSerializer implements SimpleSerializer<Short> {
     public static final ResourceLocation REF =
             new ResourceLocation(Braincell.ID, "short");
@@ -15,8 +17,10 @@ public final class ShortSerializer implements SimpleSerializer<Short> {
         nbt.putShort(storage, obj);
     }
 
+    @Nullable
     @Override
     public Short readNBT(CompoundTag nbt, String storage) {
+        if (!nbt.contains(storage)) return null;
         return nbt.getShort(storage);
     }
 

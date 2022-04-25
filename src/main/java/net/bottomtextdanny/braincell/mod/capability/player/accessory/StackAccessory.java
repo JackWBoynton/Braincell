@@ -1,10 +1,10 @@
 package net.bottomtextdanny.braincell.mod.capability.player.accessory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.bottomtextdanny.braincell.base.ObjectFetcher;
+import net.bottomtextdanny.braincell.mod._base.serialization.WorldPacketData;
 import net.bottomtextdanny.braincell.mod.network.cts.MSGHandAccessoryServerMessenger;
 import net.bottomtextdanny.braincell.mod.network.stc.MSGHandAccessoryClientMessenger;
-import net.bottomtextdanny.braincell.mod._base.serialization.WorldPacketData;
-import net.bottomtextdanny.braincell.base.ObjectFetcher;
 import net.minecraft.client.Options;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;

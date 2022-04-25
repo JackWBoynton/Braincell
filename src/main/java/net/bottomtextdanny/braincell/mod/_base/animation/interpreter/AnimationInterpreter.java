@@ -3,8 +3,8 @@ package net.bottomtextdanny.braincell.mod._base.animation.interpreter;
 import com.google.common.collect.Maps;
 import net.bottomtextdanny.braincell.base.function.Lazy;
 import net.bottomtextdanny.braincell.mod._base.animation.EntityModelAnimator;
-import net.bottomtextdanny.braincell.mod.rendering.modeling.BCEntityModel;
 import net.bottomtextdanny.braincell.mod._base.rendering.core_modeling.BCJoint;
+import net.bottomtextdanny.braincell.mod.rendering.modeling.BCEntityModel;
 
 import java.util.Collections;
 import java.util.List;

@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 public final class UUIDSerializer implements SimpleSerializer<UUID> {
@@ -17,8 +18,10 @@ public final class UUIDSerializer implements SimpleSerializer<UUID> {
         nbt.putUUID(storage, obj);
     }
 
+    @Nullable
     @Override
     public UUID readNBT(CompoundTag nbt, String storage) {
+        if (!nbt.contains(storage)) return null;
         return nbt.getUUID(storage);
     }
 

@@ -52,7 +52,7 @@ public class EntityMixin {
         }
     }
 
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;readAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V", shift = At.Shift.BEFORE), method = "load", remap = true)
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;setYBodyRot(F)V", shift = At.Shift.BEFORE), method = "load", remap = true)
     public void preLoadExtraHook(CompoundTag tag, CallbackInfo ci) {
         if (this instanceof BCDataManagerProvider provider) {
             provider.bcDataManager().readTag(tag);

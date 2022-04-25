@@ -3,8 +3,8 @@ package net.bottomtextdanny.braincell.mod.graphics.screen_tonemapping;
 import com.google.common.collect.Lists;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
-import net.bottomtextdanny.braincell.mod._base.opengl.ShaderWorkflow;
 import net.bottomtextdanny.braincell.mod._base.BCStaticData;
+import net.bottomtextdanny.braincell.mod._base.opengl.ShaderWorkflow;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

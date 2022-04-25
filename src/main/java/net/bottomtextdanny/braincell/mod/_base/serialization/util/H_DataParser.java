@@ -1,13 +1,15 @@
 package net.bottomtextdanny.braincell.mod._base.serialization.util;
 
-import net.bottomtextdanny.braincell.mod.entity.serialization.EntityDataReference;
 import net.bottomtextdanny.braincell.mod._base.serialization.SerializerMark;
 import net.bottomtextdanny.braincell.mod._base.serialization.SimpleSerializer;
+import net.bottomtextdanny.braincell.mod.entity.serialization.EntityDataReference;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+
+import javax.annotation.Nullable;
 
 public final class H_DataParser {
 
@@ -35,6 +37,7 @@ public final class H_DataParser {
         }
     }
 
+    @Nullable
     public static <T> T readDataFromNBT(NBTReadData<T> data) {
         if (data.reference.serializer() instanceof SimpleSerializer<T> simple) {
             return simple.readNBT(data.nbt, data.reference.storageKey());

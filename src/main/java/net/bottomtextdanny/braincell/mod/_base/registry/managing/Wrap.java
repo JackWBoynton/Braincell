@@ -57,7 +57,7 @@ public class Wrap<T> implements Supplier<T> {
 	}
 	
 	public T get() {
-		return Objects.requireNonNull(this.obj, String.join(this.key.getNamespace(), " object called before being solved! key: ", this.key.toString()));
+		return Objects.requireNonNull(this.obj, this.key.getNamespace() + " object called before being solved! key: " + this.key);
 	}
 
 	@Nullable

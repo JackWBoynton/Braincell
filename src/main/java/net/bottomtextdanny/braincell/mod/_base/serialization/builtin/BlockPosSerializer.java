@@ -7,6 +7,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
+import javax.annotation.Nullable;
+
 public final class BlockPosSerializer implements SimpleSerializer<BlockPos> {
     public static final ResourceLocation REF =
             new ResourceLocation(Braincell.ID, "block_pos");
@@ -16,8 +18,10 @@ public final class BlockPosSerializer implements SimpleSerializer<BlockPos> {
         nbt.putLong(storage, obj.asLong());
     }
 
+    @Nullable
     @Override
     public BlockPos readNBT(CompoundTag nbt, String storage) {
+        if (!nbt.contains(storage)) return null;
         return BlockPos.of(nbt.getLong(storage));
     }
 

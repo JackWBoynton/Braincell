@@ -9,6 +9,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;
 
+import javax.annotation.Nullable;
+
 public final class Vec2Serializer implements SimpleSerializer<Vec2> {
     public static final ResourceLocation REF =
             new ResourceLocation(Braincell.ID, "vec2");
@@ -21,8 +23,10 @@ public final class Vec2Serializer implements SimpleSerializer<Vec2> {
         nbt.put(storage, list);
     }
 
+    @Nullable
     @Override
     public Vec2 readNBT(CompoundTag nbt, String storage) {
+        if (!nbt.contains(storage)) return null;
         ListTag list = nbt.getList(storage, 5);
         return new Vec2(list.getFloat(0), list.getFloat(1));
     }

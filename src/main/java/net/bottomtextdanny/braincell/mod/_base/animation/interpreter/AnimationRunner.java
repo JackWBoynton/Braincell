@@ -4,7 +4,9 @@ import it.unimi.dsi.fastutil.floats.Float2ObjectOpenHashMap;
 import net.bottomtextdanny.braincell.mod._base.animation.EntityModelAnimator;
 import net.bottomtextdanny.braincell.mod._base.rendering.core_modeling.BCJoint;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public sealed abstract class AnimationRunner {
 

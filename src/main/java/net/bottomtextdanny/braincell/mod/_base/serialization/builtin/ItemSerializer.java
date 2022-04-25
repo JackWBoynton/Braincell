@@ -8,6 +8,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
+import javax.annotation.Nullable;
+
 public final class ItemSerializer implements SimpleSerializer<Item> {
     public static final ResourceLocation REF =
             new ResourceLocation(Braincell.ID, "item");
@@ -17,8 +19,10 @@ public final class ItemSerializer implements SimpleSerializer<Item> {
         nbt.putString(storage, obj.getRegistryName().toString());
     }
 
+    @Nullable
     @Override
     public Item readNBT(CompoundTag nbt, String storage) {
+        if (!nbt.contains(storage)) return null;
         return Registry.ITEM.get(new ResourceLocation(nbt.getString(storage)));
     }
 

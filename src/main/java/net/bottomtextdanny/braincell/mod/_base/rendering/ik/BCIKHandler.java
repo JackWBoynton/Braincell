@@ -1,17 +1,18 @@
 package net.bottomtextdanny.braincell.mod._base.rendering.ik;
 
 import com.mojang.math.Vector3f;
+import net.bottomtextdanny.braincell.base.matrix.RotationMatrix;
 import net.bottomtextdanny.braincell.mod._base.animation.AnimatableModelComponent;
 import net.bottomtextdanny.braincell.mod._base.animation.PosMutator;
 import net.bottomtextdanny.braincell.mod._base.rendering.core_modeling.BCJoint;
 import net.bottomtextdanny.braincell.mod._base.rendering.core_modeling.BCModel;
 import net.bottomtextdanny.braincell.mod._base.rendering.core_modeling.ModelSectionReseter;
-import net.bottomtextdanny.braincell.base.matrix.RotationMatrix;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 
 import static net.bottomtextdanny.braincell.base.BCMath.*;
-import static net.minecraft.util.Mth.*;
+import static net.minecraft.util.Mth.RAD_TO_DEG;
+import static net.minecraft.util.Mth.atan2;
 
 //this doesn't take account of rotations on the z axis, please avoid these in ik systems.
 public class BCIKHandler<T> implements ModelSectionReseter, AnimatableModelComponent<PosMutator> {

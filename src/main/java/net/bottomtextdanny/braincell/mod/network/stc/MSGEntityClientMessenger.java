@@ -1,16 +1,16 @@
 package net.bottomtextdanny.braincell.mod.network.stc;
 
 import net.bottomtextdanny.braincell.Braincell;
+import net.bottomtextdanny.braincell.base.ObjectFetcher;
+import net.bottomtextdanny.braincell.mod._base.network.BCEntityPacket;
+import net.bottomtextdanny.braincell.mod._base.network.Connection;
 import net.bottomtextdanny.braincell.mod._base.network.OnlyHandledOnClient;
 import net.bottomtextdanny.braincell.mod._base.network.OnlyHandledOnServer;
-import net.bottomtextdanny.braincell.mod._base.network.Connection;
-import net.bottomtextdanny.braincell.mod.network.BCPacketInitialization;
-import net.bottomtextdanny.braincell.mod._base.network.BCEntityPacket;
-import net.bottomtextdanny.braincell.mod._base.serialization.WorldPacketData;
 import net.bottomtextdanny.braincell.mod._base.serialization.SerializerMark;
+import net.bottomtextdanny.braincell.mod._base.serialization.WorldPacketData;
 import net.bottomtextdanny.braincell.mod._base.serialization.util.H_WorldDataParser;
+import net.bottomtextdanny.braincell.mod.network.BCPacketInitialization;
 import net.bottomtextdanny.braincell.mod.world.entity_utilities.EntityClientMessenger;
-import net.bottomtextdanny.braincell.base.ObjectFetcher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;

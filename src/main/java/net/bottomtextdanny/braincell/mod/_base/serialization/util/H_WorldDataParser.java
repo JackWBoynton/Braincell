@@ -9,6 +9,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nullable;
+
 public final class H_WorldDataParser {
 
     public static <T> void writeDataToPacket(
@@ -53,6 +55,7 @@ public final class H_WorldDataParser {
         }
     }
 
+    @Nullable
     public static <T> T readDataFromNBT(
             CompoundTag nbt,
             SerializerMark<T> serializer,

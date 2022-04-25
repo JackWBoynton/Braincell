@@ -2,10 +2,8 @@ package net.bottomtextdanny.braincell.mod._base.entity.psyche.pos_finder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Mob;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
-import java.util.function.BiPredicate;
 
 @FunctionalInterface
 public interface MobPosPredicate<T> {

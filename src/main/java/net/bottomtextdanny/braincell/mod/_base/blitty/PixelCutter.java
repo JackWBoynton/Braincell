@@ -1,7 +1,7 @@
 package net.bottomtextdanny.braincell.mod._base.blitty;
 
-import net.bottomtextdanny.braincell.mod._base.blitty.pos_data.BlittyPos;
 import net.bottomtextdanny.braincell.mod._base.blitty.color_data.BlittyColor;
+import net.bottomtextdanny.braincell.mod._base.blitty.pos_data.BlittyPos;
 import net.bottomtextdanny.braincell.mod._base.blitty.uv_data.BlittyUV;
 import org.jetbrains.annotations.Nullable;
 

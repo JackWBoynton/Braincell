@@ -1,17 +1,17 @@
 package net.bottomtextdanny.braincell;
 
+import net.bottomtextdanny.braincell.mod._base.BCEvaluations;
 import net.bottomtextdanny.braincell.mod._base.hooks.*;
-import net.bottomtextdanny.braincell.mod._base.network.OnlyHandledOnClient;
 import net.bottomtextdanny.braincell.mod._base.network.Connection;
-import net.bottomtextdanny.braincell.mod.capability.player.accessory.BCAccessoryKeys;
-import net.bottomtextdanny.braincell.mod.capability.player.accessory.MiniAttribute;
+import net.bottomtextdanny.braincell.mod._base.network.OnlyHandledOnClient;
 import net.bottomtextdanny.braincell.mod._base.registry.managing.DeferrorType;
 import net.bottomtextdanny.braincell.mod._base.registry.managing.ModDeferringManager;
-import net.bottomtextdanny.braincell.mod._base.BCEvaluations;
 import net.bottomtextdanny.braincell.mod._mod.client_sided.BCClientSide;
 import net.bottomtextdanny.braincell.mod._mod.common_sided.BCCommonSide;
 import net.bottomtextdanny.braincell.mod._mod.object_tables.BraincellEntities;
 import net.bottomtextdanny.braincell.mod._mod.object_tables.BraincellRecipes;
+import net.bottomtextdanny.braincell.mod.capability.player.accessory.BCAccessoryKeys;
+import net.bottomtextdanny.braincell.mod.capability.player.accessory.MiniAttribute;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;

@@ -4,15 +4,14 @@ import net.bottomtextdanny.braincell.mod._base.serialization.EntityDataSerialize
 import net.bottomtextdanny.braincell.mod._base.serialization.SerializerMark;
 import net.bottomtextdanny.braincell.mod._base.serialization.SimpleSerializer;
 import net.bottomtextdanny.braincell.mod._base.serialization.WorldDataSerializer;
-import net.bottomtextdanny.braincell.mod._base.serialization.util.H_EntityDataParser;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 
-public class EntityData<T> { // 8
-    private final EntityDataReference<T> reference; // 4
-    private T objInstance; // 4
+public class EntityData<T> {
+    private final EntityDataReference<T> reference;
+    private T objInstance;
 
     public EntityData(EntityDataReference<T> reference) {
         this.reference = reference;
@@ -42,24 +41,21 @@ public class EntityData<T> { // 8
             worldData.writePacketStream(stream, level, this.objInstance);
         } else if (getSerializer() instanceof EntityDataSerializer<T> entityData) {
             entityData.writePacketStream(stream, level, this.objInstance);
-        } else {
-            throw H_EntityDataParser.writeUnsupportedSerializerException(getSerializer().getClass(), getSerializer().key());
         }
     }
 
     public T readFromPacketStream(FriendlyByteBuf stream, Level level) {
         if (getSerializer() instanceof SimpleSerializer<T> simple) {
             set(simple.readPacketStream(stream));
-            return this.objInstance;
         } else if (getSerializer() instanceof WorldDataSerializer<T> worldData) {
             set(worldData.readPacketStream(stream, level));
-            return this.objInstance;
         } else if (getSerializer() instanceof EntityDataSerializer<T> entityData) {
             set(entityData.readPacketStream(stream, this.objInstance, level));
-            return this.objInstance;
-        }  else {
-            throw H_EntityDataParser.writeUnsupportedSerializerException(getSerializer().getClass(), getSerializer().key());
         }
+
+        checkInvalidReadObject();
+
+        return this.objInstance;
     }
 
     public void writeToNBT(CompoundTag nbt, ServerLevel level) {
@@ -69,24 +65,26 @@ public class EntityData<T> { // 8
             worldData.writeNBT(nbt, this.objInstance, level, this.reference.storageKey());
         } else if (getSerializer() instanceof EntityDataSerializer<T> entityData) {
             entityData.writeNBT(nbt, this.objInstance, level, this.reference.storageKey());
-
-        } else {
-            throw H_EntityDataParser.writeUnsupportedSerializerException(getSerializer().getClass(), getSerializer().key());
         }
     }
 
     public T readFromNBT(CompoundTag nbt, ServerLevel level) {
         if (getSerializer() instanceof SimpleSerializer<T> simple) {
             set(simple.readNBT(nbt, this.reference.storageKey()));
-            return this.objInstance;
         } else if (getSerializer() instanceof WorldDataSerializer<T> worldData) {
             set(worldData.readNBT(nbt, level, this.reference.storageKey()));
-            return this.objInstance;
         } else if (getSerializer() instanceof EntityDataSerializer<T> entityData) {
             set(entityData.readNBT(nbt, this.objInstance, level, this.reference.storageKey()));
-            return this.objInstance;
-        } else {
-            throw H_EntityDataParser.writeUnsupportedSerializerException(getSerializer().getClass(), getSerializer().key());
+        }
+
+        checkInvalidReadObject();
+
+        return this.objInstance;
+    }
+
+    private void checkInvalidReadObject() {
+        if (this.objInstance == null) {
+            this.objInstance = reference.defaultProvider().get();
         }
     }
 }

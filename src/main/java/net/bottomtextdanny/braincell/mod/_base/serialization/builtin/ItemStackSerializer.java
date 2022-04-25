@@ -7,6 +7,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
+import javax.annotation.Nullable;
+
 public final class ItemStackSerializer implements SimpleSerializer<ItemStack> {
     public static final ResourceLocation REF =
             new ResourceLocation(Braincell.ID, "item_stack");
@@ -16,8 +18,10 @@ public final class ItemStackSerializer implements SimpleSerializer<ItemStack> {
         nbt.put(storage, obj.serializeNBT());
     }
 
+    @Nullable
     @Override
     public ItemStack readNBT(CompoundTag nbt, String storage) {
+        if (!nbt.contains(storage)) return null;
         return ItemStack.of(nbt.getCompound(storage));
     }
 

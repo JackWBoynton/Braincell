@@ -6,6 +6,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
+import javax.annotation.Nullable;
+
 public final class ResourceLocationSerializer implements SimpleSerializer<ResourceLocation> {
     public static final ResourceLocation REF =
             new ResourceLocation(Braincell.ID, "resource_location");
@@ -15,8 +17,10 @@ public final class ResourceLocationSerializer implements SimpleSerializer<Resour
         nbt.putString(storage, obj.toString());
     }
 
+    @Nullable
     @Override
     public ResourceLocation readNBT(CompoundTag nbt, String storage) {
+        if (!nbt.contains(storage)) return null;
         return new ResourceLocation(nbt.getString(storage));
     }
 

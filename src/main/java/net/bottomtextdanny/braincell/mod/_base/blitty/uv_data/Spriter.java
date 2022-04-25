@@ -1,8 +1,8 @@
 package net.bottomtextdanny.braincell.mod._base.blitty.uv_data;
 
+import net.bottomtextdanny.braincell.mod._base.BCStaticData;
 import net.bottomtextdanny.braincell.mod._base.blitty.Blitty;
 import net.bottomtextdanny.braincell.mod._base.blitty.BlittyStartCallout;
-import net.bottomtextdanny.braincell.mod._base.BCStaticData;
 
 public class Spriter implements BlittyUVPosTransformer, BlittyStartCallout {
     public int advanceX;

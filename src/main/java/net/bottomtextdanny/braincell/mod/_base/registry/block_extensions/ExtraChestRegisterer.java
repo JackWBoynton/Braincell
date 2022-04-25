@@ -1,8 +1,8 @@
 package net.bottomtextdanny.braincell.mod._base.registry.block_extensions;
 
+import net.bottomtextdanny.braincell.mod._base.registry.managing.BCRegistry;
 import net.bottomtextdanny.braincell.mod._base.registry.managing.DeferrorType;
 import net.bottomtextdanny.braincell.mod._base.registry.managing.ModDeferringManager;
-import net.bottomtextdanny.braincell.mod._base.registry.managing.BCRegistry;
 import net.bottomtextdanny.braincell.mod.world.builtin_blocks.BCChestBlock;
 import net.minecraft.world.level.block.Block;
 

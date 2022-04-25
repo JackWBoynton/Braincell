@@ -2,10 +2,10 @@ package net.bottomtextdanny.braincell.mod._base.entity.modules.variable;
 
 import net.bottomtextdanny.braincell.mod._base.entity.modules.data_manager.BCDataManager;
 import net.bottomtextdanny.braincell.mod._base.entity.modules.data_manager.BCDataManagerProvider;
+import net.bottomtextdanny.braincell.mod._base.serialization.builtin.BuiltinSerializers;
 import net.bottomtextdanny.braincell.mod.entity.serialization.EntityData;
 import net.bottomtextdanny.braincell.mod.entity.serialization.EntityDataReference;
 import net.bottomtextdanny.braincell.mod.entity.serialization.RawEntityDataReference;
-import net.bottomtextdanny.braincell.mod._base.serialization.builtin.BuiltinSerializers;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 

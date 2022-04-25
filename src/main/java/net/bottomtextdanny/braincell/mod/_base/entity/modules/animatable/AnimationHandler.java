@@ -1,7 +1,7 @@
 package net.bottomtextdanny.braincell.mod._base.entity.modules.animatable;
 
-import net.bottomtextdanny.braincell.mod.network.stc.MSGEntityAnimation;
 import net.bottomtextdanny.braincell.mod._base.BCStaticData;
+import net.bottomtextdanny.braincell.mod.network.stc.MSGEntityAnimation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;

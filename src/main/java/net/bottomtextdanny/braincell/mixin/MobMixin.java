@@ -20,33 +20,41 @@ public abstract class MobMixin extends LivingEntity {
         super(p_20966_, p_20967_);
     }
 
-    @Inject(at = @At(value = "HEAD"), method = "finalizeSpawn", remap = true, cancellable = true)
-    public void finalizeSpawnHook(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, SpawnGroupData p_21437_, CompoundTag p_21438_, CallbackInfoReturnable<SpawnGroupData> cir) {
-        if (!this.level.isClientSide()) {
-            if (p_21436_ != MobSpawnType.COMMAND) {
-                if (this instanceof VariantProvider provider && provider.operatingVariableModule()) {
-                    VariableModule module = provider.variableModule();
+    @Inject(at = @At(value = "HEAD"),
+            method = "finalizeSpawn",
+            remap = true
+    )
+    public void finalizeSpawnHook(ServerLevelAccessor level,
+                                  DifficultyInstance difficulty,
+                                  MobSpawnType spawnType,
+                                  SpawnGroupData spawnGroup,
+                                  CompoundTag tag,
+                                  CallbackInfoReturnable<SpawnGroupData> cir) {
+        tryChooseVariant();
+    }
 
-                    if (!module.isUpdated()) {
-                        module.setForm(provider.chooseVariant());
-                        module.getForm().applyAttributeBonusesRaw((Mob) (Object) this);
-                        this.reapplyPosition();
-                        this.refreshDimensions();
-                    }
-                }
-            }
+    @Inject(at = @At(value = "TAIL"),
+            method = "readAdditionalSaveData",
+            remap = true
+    )
+    public void readAdditionalSaveDataHook(CompoundTag tag, CallbackInfo ci) {
+        if (!this.level.isClientSide()) {
+            tryChooseVariant();
         }
     }
 
-    @Inject(at = @At(value = "TAIL"), method = "readAdditionalSaveData", remap = true, cancellable = true)
-    public void readAdditionalSaveDataHook(CompoundTag listtag, CallbackInfo ci) {
-        if (!this.level.isClientSide()) {
-            if (this instanceof VariantProvider provider && provider.operatingVariableModule()) {
-                VariableModule module = provider.variableModule();
+    public void tryChooseVariant() {
+        if (this instanceof VariantProvider provider && provider.operatingVariableModule()) {
+            VariableModule module = provider.variableModule();
+            Mob entity = ((Mob) (Object) this);
 
-                if (!module.isUpdated()) {
-                    module.setForm(provider.chooseVariant());
-                    module.getForm().applyAttributeBonusesRaw((Mob) (Object) this);
+            if (!module.isUpdated()) {
+                module.setForm(provider.chooseVariant());
+                if (module.getForm() == null) {
+                    VariantProvider.LOGGER
+                            .error("invalid variant choosen for " + entity.getType().getRegistryName() + " at position " + entity.position());
+                } else {
+                    module.getForm().applyAttributeBonusesRaw(entity);
                     this.reapplyPosition();
                     this.refreshDimensions();
                 }

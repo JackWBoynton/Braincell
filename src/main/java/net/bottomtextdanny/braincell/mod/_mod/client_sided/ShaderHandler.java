@@ -1,9 +1,9 @@
 package net.bottomtextdanny.braincell.mod._mod.client_sided;
 
-import net.bottomtextdanny.braincell.mod.graphics.point_lighting.PointLightingWorkflow;
-import net.bottomtextdanny.braincell.mod.graphics.screen_tonemapping.TonemapWorkflow;
 import net.bottomtextdanny.braincell.mod._base.opengl.GLProgram;
 import net.bottomtextdanny.braincell.mod._mod.client_sided.events.PostProcessingInitEvent;
+import net.bottomtextdanny.braincell.mod.graphics.point_lighting.PointLightingWorkflow;
+import net.bottomtextdanny.braincell.mod.graphics.screen_tonemapping.TonemapWorkflow;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;

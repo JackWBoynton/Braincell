@@ -3,10 +3,10 @@ package net.bottomtextdanny.braincell.mod._base.blitty.renderer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
-import net.bottomtextdanny.braincell.mod._base.blitty.pos_data.BlittyPos;
 import net.bottomtextdanny.braincell.mod._base.blitty.Blitty;
 import net.bottomtextdanny.braincell.mod._base.blitty.BlittyConfig;
 import net.bottomtextdanny.braincell.mod._base.blitty.color_data.BlittyColor;
+import net.bottomtextdanny.braincell.mod._base.blitty.pos_data.BlittyPos;
 import net.bottomtextdanny.braincell.mod._base.blitty.uv_data.BlittyUV;
 import net.minecraft.client.renderer.GameRenderer;
 

@@ -2,8 +2,8 @@ package net.bottomtextdanny.braincell.mod.network.stc;
 
 import net.bottomtextdanny.braincell.mod._base.entity.modules.data_manager.BCDataManager;
 import net.bottomtextdanny.braincell.mod._base.entity.modules.data_manager.BCDataManagerProvider;
-import net.bottomtextdanny.braincell.mod.network.BCPacketInitialization;
 import net.bottomtextdanny.braincell.mod._base.network.BCEntityPacket;
+import net.bottomtextdanny.braincell.mod.network.BCPacketInitialization;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;

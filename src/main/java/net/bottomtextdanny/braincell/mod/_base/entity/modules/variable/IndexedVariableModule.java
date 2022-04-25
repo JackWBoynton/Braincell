@@ -2,15 +2,17 @@ package net.bottomtextdanny.braincell.mod._base.entity.modules.variable;
 
 import net.bottomtextdanny.braincell.mod._base.entity.modules.data_manager.BCDataManager;
 import net.bottomtextdanny.braincell.mod._base.entity.modules.data_manager.BCDataManagerProvider;
+import net.bottomtextdanny.braincell.mod._base.serialization.builtin.BuiltinSerializers;
 import net.bottomtextdanny.braincell.mod.entity.serialization.EntityData;
 import net.bottomtextdanny.braincell.mod.entity.serialization.EntityDataReference;
 import net.bottomtextdanny.braincell.mod.entity.serialization.RawEntityDataReference;
-import net.bottomtextdanny.braincell.mod._base.serialization.builtin.BuiltinSerializers;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
+import javax.annotation.Nullable;
+
 public class IndexedVariableModule extends VariableModule {
-    public static int NOT_UPDATED = -1;
+    public static int NOT_UPDATED = -2;
     public static final EntityDataReference<Integer> VARIANT_REF =
             BCDataManager.attribute(Entity.class,
                     RawEntityDataReference.of(
@@ -31,6 +33,7 @@ public class IndexedVariableModule extends VariableModule {
         }
     }
 
+    @Nullable
     public Form<?> getForm() {
         return this.formManager.getForm(this.formKey.get());
     }

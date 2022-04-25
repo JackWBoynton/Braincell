@@ -1,7 +1,7 @@
 package net.bottomtextdanny.braincell.mod._base.entity.modules.data_manager;
 
-import net.bottomtextdanny.braincell.mod.entity.modules.ModuleProvider;
 import net.bottomtextdanny.braincell.mod._base.entity.modules.variable.VariantProvider;
+import net.bottomtextdanny.braincell.mod.entity.modules.ModuleProvider;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

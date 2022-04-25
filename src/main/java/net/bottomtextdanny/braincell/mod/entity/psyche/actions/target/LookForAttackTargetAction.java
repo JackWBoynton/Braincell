@@ -1,14 +1,14 @@
 package net.bottomtextdanny.braincell.mod.entity.psyche.actions.target;
 
 import net.bottomtextdanny.braincell.base.scheduler.IntScheduler;
+import net.bottomtextdanny.braincell.base.vector.DistanceCalc;
+import net.bottomtextdanny.braincell.mod._base.entity.psyche.input.ActionInputKey;
 import net.bottomtextdanny.braincell.mod.entity.psyche.MarkedTimer;
 import net.bottomtextdanny.braincell.mod.entity.psyche.actions.OccasionalThoughtAction;
-import net.bottomtextdanny.braincell.mod._base.entity.psyche.input.ActionInputKey;
 import net.bottomtextdanny.braincell.mod.entity.targeting.RangeTest;
 import net.bottomtextdanny.braincell.mod.entity.targeting.SearchNearestPredicate;
 import net.bottomtextdanny.braincell.mod.entity.targeting.TargetPredicate;
 import net.bottomtextdanny.braincell.mod.entity.targeting.TargetPredicates;
-import net.bottomtextdanny.braincell.base.vector.DistanceCalc;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;

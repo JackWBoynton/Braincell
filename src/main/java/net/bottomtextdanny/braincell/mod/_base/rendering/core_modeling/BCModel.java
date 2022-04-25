@@ -2,8 +2,8 @@ package net.bottomtextdanny.braincell.mod._base.rendering.core_modeling;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.bottomtextdanny.braincell.mod._base.BCStaticData;
 import net.bottomtextdanny.braincell.base.BCMath;
+import net.bottomtextdanny.braincell.mod._base.BCStaticData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

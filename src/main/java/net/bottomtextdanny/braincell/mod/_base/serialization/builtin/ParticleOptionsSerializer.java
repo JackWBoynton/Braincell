@@ -12,6 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 public final class ParticleOptionsSerializer implements SimpleSerializer<ParticleOptions> {
@@ -22,8 +23,11 @@ public final class ParticleOptionsSerializer implements SimpleSerializer<Particl
     public void writeNBT(CompoundTag nbt, ParticleOptions obj, String storage) {
         nbt.putString(storage, obj.writeToString());
     }
+
+    @Nullable
     @Override
     public ParticleOptions readNBT(CompoundTag nbt, String storage) {
+        if (!nbt.contains(storage)) return null;
         String particleConfig = nbt.getString(storage);
         try {
             return ParticleArgument.readParticle(new StringReader(nbt.getString(storage)));

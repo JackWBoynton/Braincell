@@ -2,8 +2,8 @@ package net.bottomtextdanny.braincell.mod._base.registry;
 
 import net.bottomtextdanny.braincell.Braincell;
 import net.bottomtextdanny.braincell.mod._base.network.Connection;
-import net.bottomtextdanny.braincell.mod._base.registry.managing.ModDeferringManager;
 import net.bottomtextdanny.braincell.mod._base.registry.managing.BCRegistry;
+import net.bottomtextdanny.braincell.mod._base.registry.managing.ModDeferringManager;
 import net.bottomtextdanny.braincell.mod._mod.client_sided.EntityRendererDeferring;
 import net.bottomtextdanny.braincell.mod._mod.client_sided.EntityRendererMaker;
 import net.bottomtextdanny.braincell.mod._mod.common_sided.EntityAttributeDeferror;

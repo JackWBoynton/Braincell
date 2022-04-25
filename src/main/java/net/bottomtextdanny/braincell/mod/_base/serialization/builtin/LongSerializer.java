@@ -6,6 +6,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
+import javax.annotation.Nullable;
+
 public final class LongSerializer implements SimpleSerializer<Long> {
     public static final ResourceLocation REF =
             new ResourceLocation(Braincell.ID, "long");
@@ -15,8 +17,10 @@ public final class LongSerializer implements SimpleSerializer<Long> {
         nbt.putLong(storage, obj);
     }
 
+    @Nullable
     @Override
     public Long readNBT(CompoundTag nbt, String storage) {
+        if (!nbt.contains(storage)) return null;
         return nbt.getLong(storage);
     }
 

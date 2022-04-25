@@ -1,12 +1,12 @@
 package net.bottomtextdanny.braincell.mod.rendering.modeling;
 
 import com.google.common.collect.Lists;
+import net.bottomtextdanny.braincell.base.BCMath;
+import net.bottomtextdanny.braincell.mod._base.BCStaticData;
 import net.bottomtextdanny.braincell.mod._base.entity.modules.looped_walk.LoopedWalkProvider;
 import net.bottomtextdanny.braincell.mod._base.rendering.core_modeling.BCJoint;
 import net.bottomtextdanny.braincell.mod._base.rendering.core_modeling.BCModel;
 import net.bottomtextdanny.braincell.mod._base.rendering.core_modeling.ModelSectionReseter;
-import net.bottomtextdanny.braincell.mod._base.BCStaticData;
-import net.bottomtextdanny.braincell.base.BCMath;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
