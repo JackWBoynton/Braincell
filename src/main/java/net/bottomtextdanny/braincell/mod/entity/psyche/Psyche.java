@@ -111,7 +111,7 @@ public abstract class Psyche<E extends PathfinderMob> {
 
     private void postProcessing() {
         TargetPredicate validator = this.inputs.getOfDefault(ActionInputKey.TARGET_VALIDATOR);
-        if (validator != null && this.mob.getTarget() != null && validator.test(this.mob, this.mob.getTarget())) {
+        if (validator != null && this.mob.getTarget() != null && !validator.test(this.mob, this.mob.getTarget())) {
             this.mob.setTarget(null);
         }
     }
