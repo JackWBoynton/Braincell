@@ -1,6 +1,5 @@
 package net.bottomtextdanny.braincell.mod.entity.psyche.pos_finder;
 
-import net.bottomtextdanny.braincell.mod._base.entity.psyche.pos_finder.MobPosPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.PathfinderMob;

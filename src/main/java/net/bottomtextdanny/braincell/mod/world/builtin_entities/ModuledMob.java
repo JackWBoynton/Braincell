@@ -1,13 +1,13 @@
 package net.bottomtextdanny.braincell.mod.world.builtin_entities;
 
 import net.bottomtextdanny.braincell.base.scheduler.IntScheduler;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.animatable.*;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.data_manager.BCDataManager;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.data_manager.BCDataManagerProvider;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.looped_walk.LoopedWalkModule;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.looped_walk.LoopedWalkProvider;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.variable.IndexedVariableModule;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.variable.VariantProvider;
+import net.bottomtextdanny.braincell.mod.entity.modules.animatable.*;
+import net.bottomtextdanny.braincell.mod.entity.modules.data_manager.BCDataManager;
+import net.bottomtextdanny.braincell.mod.entity.modules.data_manager.BCDataManagerProvider;
+import net.bottomtextdanny.braincell.mod.entity.modules.looped_walk.LoopedWalkModule;
+import net.bottomtextdanny.braincell.mod.entity.modules.looped_walk.LoopedWalkProvider;
+import net.bottomtextdanny.braincell.mod.entity.modules.variable.IndexedVariableModule;
+import net.bottomtextdanny.braincell.mod.entity.modules.variable.VariantProvider;
 import net.bottomtextdanny.braincell.mod.world.entity_utilities.EntityClientMessenger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

@@ -1,9 +1,9 @@
 package net.bottomtextdanny.braincell.mod.network.stc;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.looped_walk.LoopedWalkProvider;
-import net.bottomtextdanny.braincell.mod._base.network.BCEntityPacket;
-import net.bottomtextdanny.braincell.mod._base.network.Connection;
+import net.bottomtextdanny.braincell.mod.entity.modules.looped_walk.LoopedWalkProvider;
+import net.bottomtextdanny.braincell.mod.network.BCEntityPacket;
+import net.bottomtextdanny.braincell.mod.network.Connection;
 import net.bottomtextdanny.braincell.mod.network.BCPacketInitialization;
 import net.minecraft.Util;
 import net.minecraft.network.FriendlyByteBuf;

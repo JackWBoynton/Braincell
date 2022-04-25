@@ -1,7 +1,7 @@
 package net.bottomtextdanny.braincell.mod._base.registry.block_extensions;
 
 import net.bottomtextdanny.braincell.Braincell;
-import net.bottomtextdanny.braincell.mod._base.network.Connection;
+import net.bottomtextdanny.braincell.mod.network.Connection;
 import net.bottomtextdanny.braincell.mod._base.registry.managing.ModDeferringManager;
 import net.bottomtextdanny.braincell.mod._mod.common_sided.SolvingHook;
 import net.bottomtextdanny.braincell.mod.world.block_utilities.ChestMaterialProvider;

@@ -1,6 +1,6 @@
 package net.bottomtextdanny.braincell.mod.world.entity_utilities;
 
-import net.bottomtextdanny.braincell.mod._base.entity.modules.animatable.LivingAnimatableProvider;
+import net.bottomtextdanny.braincell.mod.entity.modules.animatable.LivingAnimatableProvider;
 import net.minecraft.world.damagesource.DamageSource;
 
 public interface EntityHurtAnimation extends EntityHurtCallout, LivingAnimatableProvider {

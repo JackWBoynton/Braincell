@@ -1,8 +1,8 @@
 package net.bottomtextdanny.braincell.mixin;
 
-import net.bottomtextdanny.braincell.mod._base.entity.modules.animatable.BaseAnimatableProvider;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.data_manager.BCDataManagerProvider;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.looped_walk.LoopedWalkProvider;
+import net.bottomtextdanny.braincell.mod.entity.modules.animatable.BaseAnimatableProvider;
+import net.bottomtextdanny.braincell.mod.entity.modules.data_manager.BCDataManagerProvider;
+import net.bottomtextdanny.braincell.mod.entity.modules.looped_walk.LoopedWalkProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;

@@ -5,7 +5,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.bottomtextdanny.braincell.Braincell;
 import net.bottomtextdanny.braincell.mod._base.AbstractModSide;
 import net.bottomtextdanny.braincell.mod._base.animation.AnimationManager;
-import net.bottomtextdanny.braincell.mod._base.capability.CapabilityHelper;
+import net.bottomtextdanny.braincell.mod.capability.CapabilityHelper;
 import net.bottomtextdanny.braincell.mod.capability.level.BCLevelCapability;
 import net.bottomtextdanny.braincell.mod.capability.level.SpeckManagerModule;
 import net.minecraft.client.Minecraft;

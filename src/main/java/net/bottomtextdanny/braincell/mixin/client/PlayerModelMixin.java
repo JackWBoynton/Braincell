@@ -1,6 +1,6 @@
 package net.bottomtextdanny.braincell.mixin.client;
 
-import net.bottomtextdanny.braincell.mod._base.BraincellModules;
+import net.bottomtextdanny.braincell.mod.BraincellModules;
 import net.bottomtextdanny.braincell.mod._mod.client_sided.events.PlayerPoseEvent;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;

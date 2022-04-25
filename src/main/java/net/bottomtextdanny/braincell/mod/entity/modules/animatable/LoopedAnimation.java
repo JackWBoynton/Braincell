@@ -1,7 +1,5 @@
 package net.bottomtextdanny.braincell.mod.entity.modules.animatable;
 
-import net.bottomtextdanny.braincell.mod._base.entity.modules.animatable.AnimationHandler;
-
 import java.util.function.Supplier;
 
 public class LoopedAnimation extends AbstractAnimation<LoopedAnimationData> {

@@ -1,7 +1,7 @@
 package net.bottomtextdanny.braincell.mod.entity.psyche.actions;
 
 import net.bottomtextdanny.braincell.base.scheduler.IntScheduler;
-import net.bottomtextdanny.braincell.mod._base.entity.psyche.Action;
+import net.bottomtextdanny.braincell.mod.entity.psyche.Action;
 import net.minecraft.world.entity.PathfinderMob;
 
 public abstract class OccasionalThoughtAction<E extends PathfinderMob> extends Action<E> {

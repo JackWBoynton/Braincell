@@ -1,8 +1,8 @@
 package net.bottomtextdanny.braincell.mod.capability.player;
 
 import com.google.common.collect.ImmutableList;
-import net.bottomtextdanny.braincell.mod._base.capability.CapabilityModule;
-import net.bottomtextdanny.braincell.mod._base.capability.CapabilityWrap;
+import net.bottomtextdanny.braincell.mod.capability.CapabilityModule;
+import net.bottomtextdanny.braincell.mod.capability.CapabilityWrap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;

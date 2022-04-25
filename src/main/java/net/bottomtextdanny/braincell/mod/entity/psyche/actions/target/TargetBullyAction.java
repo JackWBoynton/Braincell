@@ -1,16 +1,20 @@
 package net.bottomtextdanny.braincell.mod.entity.psyche.actions.target;
 
-import net.bottomtextdanny.braincell.mod._base.entity.psyche.input.ActionInputKey;
+import net.bottomtextdanny.braincell.mod.entity.psyche.input.ActionInputKey;
 import net.bottomtextdanny.braincell.mod.entity.psyche.actions.ConstantThoughtAction;
-import net.bottomtextdanny.braincell.mod.entity.targeting.TargetPredicate;
+import net.bottomtextdanny.braincell.mod.entity.psyche.targeting.TargetPredicate;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 
 import javax.annotation.Nullable;
+import java.util.function.BiConsumer;
 
 public class TargetBullyAction extends ConstantThoughtAction<PathfinderMob> {
     private final TargetPredicate targetParameters;
+    @Nullable
+    private BiConsumer<Mob, LivingEntity> findTargetCallOut;
     @Nullable
     private LivingEntity localTarget;
     private int timestamp;
@@ -18,6 +22,11 @@ public class TargetBullyAction extends ConstantThoughtAction<PathfinderMob> {
     public TargetBullyAction(PathfinderMob mob, TargetPredicate targetParameters) {
         super(mob, null);
         this.targetParameters = targetParameters;
+    }
+
+    public TargetBullyAction findTargetCallOut(BiConsumer<Mob, LivingEntity> callOut) {
+        this.findTargetCallOut = callOut;
+        return this;
     }
 
     @Override
@@ -40,9 +49,9 @@ public class TargetBullyAction extends ConstantThoughtAction<PathfinderMob> {
 
         if (this.localTarget != null && this.localTarget.isAlive() && previousState == null) {
             Runnable newTargetInput = getPsyche().getInputs().get(ActionInputKey.SET_TARGET_CALL);
-            if (newTargetInput != null) {
-                newTargetInput.run();
-            }
+            if (newTargetInput != null) newTargetInput.run();
+            if (this.findTargetCallOut != null)
+                this.findTargetCallOut.accept(this.mob, this.localTarget);
         }
     }
 

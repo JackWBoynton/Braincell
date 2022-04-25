@@ -1,12 +1,12 @@
 package net.bottomtextdanny.braincell.mixin;
 
-import net.bottomtextdanny.braincell.mod._base.entity.modules.additional_motion.ExtraMotionProvider;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.animatable.LivingAnimatableModule;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.animatable.LivingAnimatableProvider;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.looped_walk.LoopedWalkProvider;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.motion_util.MotionUtilProvider;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.variable.Form;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.variable.VariantProvider;
+import net.bottomtextdanny.braincell.mod.entity.modules.additional_motion.ExtraMotionProvider;
+import net.bottomtextdanny.braincell.mod.entity.modules.animatable.LivingAnimatableModule;
+import net.bottomtextdanny.braincell.mod.entity.modules.animatable.LivingAnimatableProvider;
+import net.bottomtextdanny.braincell.mod.entity.modules.looped_walk.LoopedWalkProvider;
+import net.bottomtextdanny.braincell.mod.entity.modules.motion_util.MotionUtilProvider;
+import net.bottomtextdanny.braincell.mod.entity.modules.variable.Form;
+import net.bottomtextdanny.braincell.mod.entity.modules.variable.VariantProvider;
 import net.bottomtextdanny.braincell.mod.network.stc.MSGTrivialEntityActions;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;

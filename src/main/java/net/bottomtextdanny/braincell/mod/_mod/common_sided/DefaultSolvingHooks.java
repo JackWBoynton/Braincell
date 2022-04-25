@@ -2,7 +2,7 @@ package net.bottomtextdanny.braincell.mod._mod.common_sided;
 
 import com.google.common.collect.Maps;
 import net.bottomtextdanny.braincell.Braincell;
-import net.bottomtextdanny.braincell.mod._base.network.Connection;
+import net.bottomtextdanny.braincell.mod.network.Connection;
 import net.bottomtextdanny.braincell.mod._base.registry.block_extensions.BCBlockSolvingHook;
 import net.bottomtextdanny.braincell.mod._base.registry.item_extensions.ExtraItemModelLoader;
 import net.bottomtextdanny.braincell.mod._base.registry.managing.DeferrorType;

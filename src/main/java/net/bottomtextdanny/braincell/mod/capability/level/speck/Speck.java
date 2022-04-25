@@ -1,6 +1,6 @@
 package net.bottomtextdanny.braincell.mod.capability.level.speck;
 
-import net.bottomtextdanny.braincell.mod._base.capability.CapabilityHelper;
+import net.bottomtextdanny.braincell.mod.capability.CapabilityHelper;
 import net.bottomtextdanny.braincell.mod.capability.level.BCLevelCapability;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;

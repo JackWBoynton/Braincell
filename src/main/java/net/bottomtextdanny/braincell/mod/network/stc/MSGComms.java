@@ -2,8 +2,8 @@ package net.bottomtextdanny.braincell.mod.network.stc;
 
 import io.netty.buffer.Unpooled;
 import net.bottomtextdanny.braincell.Braincell;
-import net.bottomtextdanny.braincell.mod._base.network.BCPacket;
-import net.bottomtextdanny.braincell.mod._base.network.Connection;
+import net.bottomtextdanny.braincell.mod.network.BCPacket;
+import net.bottomtextdanny.braincell.mod.network.Connection;
 import net.bottomtextdanny.braincell.mod.network.BCPacketInitialization;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;

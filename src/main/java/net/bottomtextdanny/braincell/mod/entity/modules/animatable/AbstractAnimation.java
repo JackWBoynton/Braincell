@@ -1,10 +1,5 @@
 package net.bottomtextdanny.braincell.mod.entity.modules.animatable;
 
-import net.bottomtextdanny.braincell.mod._base.entity.modules.animatable.Animation;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.animatable.AnimationData;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.animatable.AnimationHandler;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.animatable.BCAnimationToken;
-
 public abstract class AbstractAnimation<T extends AnimationData> implements Animation<T> {
     public static final int NO_IDENTIFIER = -1;
     private int auxId = NO_IDENTIFIER;

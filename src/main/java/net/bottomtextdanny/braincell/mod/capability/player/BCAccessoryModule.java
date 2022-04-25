@@ -7,7 +7,7 @@ import net.bottomtextdanny.braincell.base.ObjectFetcher;
 import net.bottomtextdanny.braincell.base.SparedHashCollection;
 import net.bottomtextdanny.braincell.base.function.Clearable;
 import net.bottomtextdanny.braincell.mod._base.BCEvaluations;
-import net.bottomtextdanny.braincell.mod._base.capability.CapabilityModule;
+import net.bottomtextdanny.braincell.mod.capability.CapabilityModule;
 import net.bottomtextdanny.braincell.mod.capability.player.accessory.*;
 import net.minecraft.Util;
 import net.minecraft.client.Options;

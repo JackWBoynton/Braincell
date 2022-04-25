@@ -1,6 +1,5 @@
 package net.bottomtextdanny.braincell.mod.entity.modules.animatable;
 
-import net.bottomtextdanny.braincell.mod._base.entity.modules.animatable.AnimationHandler;
 import net.minecraft.world.entity.Entity;
 
 import java.util.function.Consumer;

@@ -3,6 +3,7 @@ package net.bottomtextdanny.braincell.mod.world.helpers;
 import com.google.common.collect.Sets;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -35,16 +36,20 @@ public final class CombatHelper {
         mayDisableShield(target, ticks, 1.0F);
     }
 
-    public static boolean hasValidAttackTarget(Mob mob) {
-        return mob.getTarget() != null && mob.getTarget().isAlive() && !mob.isRemoved();
-    }
-
     public static void attackWithMultiplier(Mob attacker, LivingEntity livingEntity, float mult) {
         livingEntity.hurt(DamageSource.mobAttack(attacker), (float)attacker.getAttributeValue(Attributes.ATTACK_DAMAGE) * mult);
     }
 
     public static float getHealthNormalized(Mob attacker) {
         return attacker.getHealth() / attacker.getMaxHealth();
+    }
+
+    public static boolean hasLivingAttackTarget(Mob mob) {
+        return mob.getTarget() != null && mob.getTarget().isAlive() && !mob.isRemoved();
+    }
+
+    public static boolean isValidAttackTarget(LivingEntity mob) {
+        return mob != null && mob.isAlive() && !mob.isRemoved() && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(mob);
     }
 
     public static class EntityCheckHelper {

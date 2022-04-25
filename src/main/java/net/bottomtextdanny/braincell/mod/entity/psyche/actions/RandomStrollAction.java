@@ -1,8 +1,8 @@
 package net.bottomtextdanny.braincell.mod.entity.psyche.actions;
 
 import net.bottomtextdanny.braincell.base.value_mapper.RandomIntegerMapper;
-import net.bottomtextdanny.braincell.mod._base.entity.psyche.Action;
-import net.bottomtextdanny.braincell.mod._base.entity.psyche.pos_finder.MobPosProcessor;
+import net.bottomtextdanny.braincell.mod.entity.psyche.Action;
+import net.bottomtextdanny.braincell.mod.entity.psyche.pos_finder.MobPosProcessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.phys.Vec3;

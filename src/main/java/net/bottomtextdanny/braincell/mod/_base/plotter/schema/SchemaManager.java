@@ -10,7 +10,7 @@ import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import net.bottomtextdanny.braincell.Braincell;
 import net.bottomtextdanny.braincell.base.BCStringUtil;
-import net.bottomtextdanny.braincell.mod._base.PropertyMap;
+import net.bottomtextdanny.braincell.mod.PropertyMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;

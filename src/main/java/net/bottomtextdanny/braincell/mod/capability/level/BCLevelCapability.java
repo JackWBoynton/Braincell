@@ -1,9 +1,9 @@
 package net.bottomtextdanny.braincell.mod.capability.level;
 
 import com.google.common.collect.ImmutableList;
-import net.bottomtextdanny.braincell.mod._base.capability.CapabilityModule;
-import net.bottomtextdanny.braincell.mod._base.capability.CapabilityWrap;
-import net.bottomtextdanny.braincell.mod._base.network.Connection;
+import net.bottomtextdanny.braincell.mod.capability.CapabilityModule;
+import net.bottomtextdanny.braincell.mod.capability.CapabilityWrap;
+import net.bottomtextdanny.braincell.mod.network.Connection;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

@@ -1,8 +1,8 @@
 package net.bottomtextdanny.braincell.mod.world.builtin_entities;
 
 import net.bottomtextdanny.braincell.base.ObjectFetcher;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.data_manager.BCDataManager;
-import net.bottomtextdanny.braincell.mod._base.entity.modules.data_manager.BCDataManagerProvider;
+import net.bottomtextdanny.braincell.mod.entity.modules.data_manager.BCDataManager;
+import net.bottomtextdanny.braincell.mod.entity.modules.data_manager.BCDataManagerProvider;
 import net.bottomtextdanny.braincell.mod._base.serialization.WorldPacketData;
 import net.bottomtextdanny.braincell.mod._base.serialization.builtin.BuiltinSerializers;
 import net.bottomtextdanny.braincell.mod.entity.serialization.EntityData;

@@ -4,7 +4,7 @@ import net.bottomtextdanny.braincell.base.BCMath;
 import net.bottomtextdanny.braincell.base.value_mapper.FloatMapper;
 import net.bottomtextdanny.braincell.base.value_mapper.FloatMappers;
 import net.bottomtextdanny.braincell.base.value_mapper.RandomIntegerMapper;
-import net.bottomtextdanny.braincell.mod._base.entity.psyche.Action;
+import net.bottomtextdanny.braincell.mod.entity.psyche.Action;
 import net.minecraft.world.entity.PathfinderMob;
 
 public class LookRandomlyAction extends Action<PathfinderMob> {

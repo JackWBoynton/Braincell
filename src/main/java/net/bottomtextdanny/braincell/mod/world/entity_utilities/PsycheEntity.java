@@ -1,6 +1,6 @@
 package net.bottomtextdanny.braincell.mod.world.entity_utilities;
 
-import net.bottomtextdanny.braincell.mod._base.entity.psyche.Psyche;
+import net.bottomtextdanny.braincell.mod.entity.psyche.Psyche;
 
 public interface PsycheEntity {
 

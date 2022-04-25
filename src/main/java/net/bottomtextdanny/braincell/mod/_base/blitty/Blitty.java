@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import net.bottomtextdanny.braincell.mod._base.blitty.renderer.BlittyRenderer;
-import net.bottomtextdanny.braincell.mod._base.screen.ImageBounds;
+import net.bottomtextdanny.braincell.base.screen.ImageBounds;
 import net.minecraft.client.renderer.GameRenderer;
 
 public record Blitty(ImageBounds image, int x, int y, int width, int height) {

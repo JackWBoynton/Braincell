@@ -2,8 +2,8 @@ package net.bottomtextdanny.braincell.mod._mod.common_sided;
 
 import com.google.common.collect.ImmutableSet;
 import net.bottomtextdanny.braincell.mod._base.AbstractModSide;
-import net.bottomtextdanny.braincell.mod._base.BraincellModules;
-import net.bottomtextdanny.braincell.mod._base.PropertyMap;
+import net.bottomtextdanny.braincell.mod.BraincellModules;
+import net.bottomtextdanny.braincell.mod.PropertyMap;
 import net.bottomtextdanny.braincell.mod._base.plotter.schema.SchemaManager;
 import net.bottomtextdanny.braincell.mod.capability.player.accessory.AccessoryKey;
 import net.bottomtextdanny.braincell.mod.network.BCPacketInitialization;

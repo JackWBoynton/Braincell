@@ -2,7 +2,7 @@ package net.bottomtextdanny.braincell.mod._base;
 
 import net.bottomtextdanny.braincell.base.evaluation.Evaluation;
 import net.bottomtextdanny.braincell.base.evaluation.EvaluationTuple;
-import net.bottomtextdanny.braincell.mod._base.capability.CapabilityHelper;
+import net.bottomtextdanny.braincell.mod.capability.CapabilityHelper;
 import net.bottomtextdanny.braincell.mod.capability.player.BCAccessoryModule;
 import net.bottomtextdanny.braincell.mod.capability.player.BCPlayerCapability;
 import net.bottomtextdanny.braincell.mod.capability.player.accessory.MiniAttribute;

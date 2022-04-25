@@ -1,7 +1,7 @@
 package net.bottomtextdanny.braincell.mixin.client;
 
 import com.mojang.blaze3d.Blaze3D;
-import net.bottomtextdanny.braincell.mod._base.BraincellModules;
+import net.bottomtextdanny.braincell.mod.BraincellModules;
 import net.bottomtextdanny.braincell.mod._mod.client_sided.events.MouseMovementEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;

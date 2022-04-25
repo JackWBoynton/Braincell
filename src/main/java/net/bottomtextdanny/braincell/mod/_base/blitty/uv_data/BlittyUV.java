@@ -1,6 +1,6 @@
 package net.bottomtextdanny.braincell.mod._base.blitty.uv_data;
 
-import net.bottomtextdanny.braincell.mod._base.screen.ImageBounds;
+import net.bottomtextdanny.braincell.base.screen.ImageBounds;
 
 public class BlittyUV {
     public final ImageBounds image;

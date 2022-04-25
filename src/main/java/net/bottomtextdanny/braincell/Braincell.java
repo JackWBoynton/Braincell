@@ -1,9 +1,9 @@
 package net.bottomtextdanny.braincell;
 
 import net.bottomtextdanny.braincell.mod._base.BCEvaluations;
-import net.bottomtextdanny.braincell.mod._base.hooks.*;
-import net.bottomtextdanny.braincell.mod._base.network.Connection;
-import net.bottomtextdanny.braincell.mod._base.network.OnlyHandledOnClient;
+import net.bottomtextdanny.braincell.mod.hooks.*;
+import net.bottomtextdanny.braincell.mod.network.Connection;
+import net.bottomtextdanny.braincell.mod.network.OnlyHandledOnClient;
 import net.bottomtextdanny.braincell.mod._base.registry.managing.DeferrorType;
 import net.bottomtextdanny.braincell.mod._base.registry.managing.ModDeferringManager;
 import net.bottomtextdanny.braincell.mod._mod.client_sided.BCClientSide;

@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.bottomtextdanny.braincell.base.BCLerp;
 import net.bottomtextdanny.braincell.mod._base.BCStaticData;
-import net.bottomtextdanny.braincell.mod._base.capability.CapabilityModule;
+import net.bottomtextdanny.braincell.mod.capability.CapabilityModule;
 import net.bottomtextdanny.braincell.mod.capability.level.speck.RenderableSpeck;
 import net.bottomtextdanny.braincell.mod.capability.level.speck.Speck;
 import net.minecraft.client.Camera;

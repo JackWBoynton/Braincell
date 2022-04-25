@@ -1,7 +1,7 @@
 package net.bottomtextdanny.braincell.mod._base.registry.item_extensions;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
-import net.bottomtextdanny.braincell.mod._base.network.Connection;
+import net.bottomtextdanny.braincell.mod.network.Connection;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;

@@ -1,7 +1,7 @@
 package net.bottomtextdanny.braincell.mod.entity.psyche.actions;
 
 import net.bottomtextdanny.braincell.base.BCMath;
-import net.bottomtextdanny.braincell.mod._base.entity.psyche.Action;
+import net.bottomtextdanny.braincell.mod.entity.psyche.Action;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.util.AirRandomPos;
