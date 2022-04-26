@@ -6,13 +6,22 @@ import net.bottomtextdanny.braincell.mod.entity.modules.animatable.BaseAnimatabl
 import net.bottomtextdanny.braincell.mod.entity.psyche.Action;
 import net.minecraft.world.entity.PathfinderMob;
 
-public class AnimationAction<E extends PathfinderMob & BaseAnimatableProvider, A extends Animation> extends Action<E> {
-    protected final A animation;
+import java.util.function.Supplier;
+
+public class AnimationAction<E extends PathfinderMob & BaseAnimatableProvider<?>, A extends Animation<?>> extends Action<E> {
+    protected final Supplier<A> animationProvider;
+    protected A animation;
     protected final AnimationHandler<?> animationHandler;
 
     public AnimationAction(E mob, A animation, AnimationHandler<?> animationModule) {
         super(mob);
-        this.animation = animation;
+        this.animationProvider = () -> animation;
+        this.animationHandler = animationModule;
+    }
+
+    public AnimationAction(E mob, Supplier<A> animation, AnimationHandler<?> animationModule) {
+        super(mob);
+        this.animationProvider = animation;
         this.animationHandler = animationModule;
     }
 
@@ -24,7 +33,7 @@ public class AnimationAction<E extends PathfinderMob & BaseAnimatableProvider, A
     @Override
     protected void start() {
         super.start();
-        this.animationHandler.play(this.animation);
+        this.animationHandler.play(this.animation = this.animationProvider.get());
     }
 
     @Override

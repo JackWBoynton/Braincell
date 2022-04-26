@@ -1,5 +1,6 @@
 package net.bottomtextdanny.braincell.mod.world.helpers;
 
+import net.bottomtextdanny.braincell.base.vector.DistanceCalc;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -28,5 +29,9 @@ public final class ReachHelper {
 
     public static float reachSqr(PathfinderMob opinionated, Entity target) {
         return (float) Math.max(opinionated.distanceTo(target) - target.getBbWidth() / 2.0, 0.0);
+    }
+
+    public static float reach(Entity entity1, Entity entity2, DistanceCalc calculator) {
+        return (float) Math.max(calculator.distance(entity1.position(), entity2.position()) - entity2.getBbWidth() / 2.0, 0.0);
     }
 }

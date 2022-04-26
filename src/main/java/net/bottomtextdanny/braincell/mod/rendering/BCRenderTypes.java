@@ -13,6 +13,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public final class BCRenderTypes extends RenderType {
+    private static Vector3f restoreShaderLightDirections0;
+    private static Vector3f restoreShaderLightDirections1;
     private static final OutputStateShard FLAT_LIGHTING_TARGET = new OutputStateShard("outline_target", () -> {
         flatShadingInit();
     }, () -> {
@@ -24,12 +26,16 @@ public final class BCRenderTypes extends RenderType {
     }
 
     private static void flatShadingInit() {
+        restoreShaderLightDirections0 = RenderSystem.shaderLightDirections[0];
+        restoreShaderLightDirections1 = RenderSystem.shaderLightDirections[1];
         RenderSystem.setShaderColor(RenderSystem.getShaderColor()[0] + 1, RenderSystem.getShaderColor()[1] + 1, RenderSystem.getShaderColor()[2] + 1, RenderSystem.getShaderColor()[3]);
         RenderSystem._setShaderLights(new Vector3f(0.0F, 0.0F, 0.0F), new Vector3f(0.0F, 0.0F, 0.0F));
     }
 
     private static void flatShadingClear() {
-        Lighting.setupLevel(RenderSystem.getModelViewMatrix());
+        if (restoreShaderLightDirections0 == null || restoreShaderLightDirections1 == null)
+            Lighting.setupLevel(RenderSystem.getModelViewMatrix());
+        else RenderSystem.setShaderLights(restoreShaderLightDirections0, restoreShaderLightDirections1);
     }
 
     public static RenderType getFlatShading(ResourceLocation locationIn) {

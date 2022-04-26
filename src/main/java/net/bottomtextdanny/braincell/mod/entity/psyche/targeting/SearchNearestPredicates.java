@@ -1,7 +1,9 @@
 package net.bottomtextdanny.braincell.mod.entity.psyche.targeting;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.entity.EntityTypeTest;
 
 public final class SearchNearestPredicates {
 
@@ -27,14 +29,31 @@ public final class SearchNearestPredicates {
             double[] d0 = {-1.0D};
             LivingEntity[] t = {null};
 
-            level.getEntities().get(searchArea.get(), e -> {
-                if (e instanceof LivingEntity le) {
-                    double d1 = radius.test(le.getX(), le.getY(), le.getZ());
-                    if (d1 > 0 && (d0[0] == -1.0D || d1 < d0[0])) {
-                        if (post.test(mob, le)) {
-                            d0[0] = d1;
-                            t[0] = le;
-                        }
+            level.getEntities().get(EntityTypeTest.forClass(LivingEntity.class), searchArea.get(), le -> {
+                double d1 = radius.test(le.getX(), le.getY(), le.getZ());
+                if (d1 > 0 && (d0[0] == -1.0D || d1 < d0[0])) {
+                    if (post.test(mob, le)) {
+                        d0[0] = d1;
+                        t[0] = le;
+                    }
+                }
+            });
+
+            return t[0];
+        };
+    }
+
+    public static SearchNearestPredicate nearestOfType(Class<? extends LivingEntity> clazz) {
+        return (mob, level, radius, searchArea, post) -> {
+            double[] d0 = {-1.0D};
+            LivingEntity[] t = {null};
+
+            level.getEntities().get(EntityTypeTest.forClass(clazz), searchArea.get(), le -> {
+                double d1 = radius.test(le.getX(), le.getY(), le.getZ());
+                if (d1 > 0 && (d0[0] == -1.0D || d1 < d0[0])) {
+                    if (post.test(mob, le)) {
+                        d0[0] = d1;
+                        t[0] = le;
                     }
                 }
             });
