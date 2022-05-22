@@ -19,8 +19,8 @@ void main() {
         vec4(
         lerp(desaturator, dif.r, gray),
         lerp(desaturator, dif.g, gray),
-        lerp(desaturator, dif.b, gray)
-        , dif.a);
+        lerp(desaturator, dif.b, gray),
+        dif.a);
     }
 
     gl_FragColor = vec4(dif.x + exponent.x * dif.x, dif.y + exponent.y * dif.y, dif.z + exponent.z * dif.z, 1);

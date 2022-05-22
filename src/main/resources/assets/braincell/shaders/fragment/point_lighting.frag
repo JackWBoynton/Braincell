@@ -1,7 +1,5 @@
 #version 430 compatibility
-#extension GL_ARB_compute_shader: enable
 #extension GL_ARB_shader_storage_buffer_object: enable
-#extension GL_ARB_compute_variable_group_size: enable
 
 struct Light {
     vec3 color;
@@ -14,9 +12,9 @@ layout (std430, binding = 0) readonly buffer outputInfo {
     int lightDirectories[&g_square][&region_lights];
 };
 
-layout(rgba32f, binding = 1) readonly uniform sampler2D diffuse;
-layout(rgba32f, binding = 2) readonly uniform sampler2D depth;
-layout(rgba32f, binding = 3) readonly uniform sampler2D debug;
+layout(binding = 1) uniform sampler2D diffuse;
+layout(binding = 2) uniform sampler2D depth;
+layout(binding = 3) uniform sampler2D debug;
 uniform float fog_start;
 uniform float fog_end;
 uniform vec4 fog_color;
@@ -60,9 +58,7 @@ void main() {
     for (int i = 0; i < regionLightCount; i++) {
         int lightInx = lightDirectories[flat_id][i];
 
-
         Light light = lights[lightInx];
-
 
         float dist = distance(fragPos, light.position_rad.xyz);
         if (dist < light.position_rad.w) {
@@ -75,7 +71,6 @@ void main() {
         }
 
     }
-
 
     fragColor = dif + linear_fog(color, distance(vec3(0.0), fragPos), fog_start, fog_end, fog_color);
 }

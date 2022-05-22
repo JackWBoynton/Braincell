@@ -36,7 +36,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '1.03'
+version = '1.07'
 group = 'com.bottomtextdanny'
 archivesBaseName = 'braincell'
 
@@ -110,7 +110,7 @@ jar {
         attributes([
                 "Specification-Title": "braincell",
                 "Specification-Vendor": "bottomtextdanny",
-                "Specification-Version": "1.01", // We are version 1 of ourselves
+                "Specification-Version": "1.07", // We are version 1 of ourselves
                 "Implementation-Title": project.name,
                 "Implementation-Version": "${version}",
                 "Implementation-Vendor" :"bottomtextdanny",

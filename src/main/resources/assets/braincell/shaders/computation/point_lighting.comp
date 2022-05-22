@@ -10,7 +10,7 @@ layout (std430, binding = 0) writeonly buffer outputInfo {
     int regionalLightCount[&g_square];
     int lightDirectories[&g_square][&region_lights];
 };
-layout(rgba32f, binding = 1) uniform sampler2D depth;
+layout(binding = 1) uniform sampler2D depth;
 layout(rgba32f, binding = 2) uniform image2D debug;
 uniform Light lights[&max_lights];
 uniform int light_count;
@@ -26,9 +26,11 @@ void main() {
     int linearID = int (((gl_GlobalInvocationID.x) * &ygrid) + gl_GlobalInvocationID.y);
     float depthMinFloat = 100000;
     float depthMaxFloat = 0;
+    float idx = float(gl_LocalInvocationID.x);
+    float idy = float(gl_LocalInvocationID.y);
     vec2 texCoord = vec2(
-    (gl_LocalInvocationID.x) * &x1ingrid,
-    (gl_LocalInvocationID.y) * &y1ingrid);
+    idx * &x1ingrid,
+    idy * &y1ingrid);
     float depthFloat = texture(depth, texCoord).r;
     float viewPosZ = ConvertProjDepthToView( depthFloat );
     uint depthuInt = floatBitsToUint(viewPosZ);
@@ -36,6 +38,9 @@ void main() {
     uint maxDepthInt = 0;
     minDepthInt = min(minDepthInt, depthuInt);
     maxDepthInt = max(maxDepthInt, depthuInt);
+
+    barrier();
+
     depthMinFloat = uintBitsToFloat(minDepthInt); // near to the camera
     depthMaxFloat = uintBitsToFloat(maxDepthInt); // fat to the camera
     vec2 center = vec2(&xhalf, &yhalf);
@@ -51,6 +56,8 @@ void main() {
     for (int i = 0; i < 4; ++i) {
         frustumPlanes[i] *= 1 / length(frustumPlanes[i].xyz);
     }
+
+    barrier();
     bool found = false;
     int lightOffset = 0;
     for(int i = 0; i < light_count; i++) {
@@ -60,7 +67,7 @@ void main() {
             float rad = light.position_rad.w;
             vec4 posViewSpace = view * lightPos;
             bool inFrustum = true;
-           if(posViewSpace.z - rad < depthMinFloat) {
+            if(posViewSpace.z - rad < depthMinFloat) {
                 for (int j = 0; j < 4; ++j) {
                     float distance = dot(frustumPlanes[j], posViewSpace);
                     if (-rad > distance) {

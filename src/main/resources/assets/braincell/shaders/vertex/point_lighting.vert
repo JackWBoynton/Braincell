@@ -1,6 +1,6 @@
-#version 110
+#version 430
 
-attribute vec4 Position;
+in vec4 Position;
 
 uniform vec2 screen;
 uniform mat4 proj_mat;
