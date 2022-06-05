@@ -14,7 +14,7 @@ public final class SchemaMemo {
     }
 
     public void setBuilt(Schema schema, SchemaManager.Key key) {
-        if (!this.built && key != null) {
+        if (key != null) {
             this.schema = schema;
             this.built = true;
         }

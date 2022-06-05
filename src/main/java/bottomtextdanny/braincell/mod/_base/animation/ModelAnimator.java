@@ -8,13 +8,16 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public final class ModelAnimator {
     public final BCModel model;
-    private final Map<AnimatableModelComponent<?>, Object> modMapPing = Maps.newHashMap();
-    private final Map<AnimatableModelComponent<?>, Object> modMapPong = Maps.newHashMap();
+    private final Map<AnimatableModelComponent<?>, Object> modMapPing = Maps.newIdentityHashMap();
+    private final Map<AnimatableModelComponent<?>, Object> modMapPong = Maps.newIdentityHashMap();
+    private final Map<Easing, Float> progressionMap = Maps.newIdentityHashMap();
     private boolean useFirst;
     private float keyframe;
     private float prevKeyframe;
@@ -58,31 +61,55 @@ public final class ModelAnimator {
     }
 
     public void rotate(BCJoint box, float x, float y, float z) {
+        rotate(box, x, y, z, null);
+    }
+
+    public void rotate(BCJoint box, float x, float y, float z, @Nullable Easing progression) {
+        JointMutator transform;
+
         if (mirroring) {
             if (box.getMirrorJoint() != null)
                 box = box.getMirrorJoint();
 
+            transform = getTransform(box);
+
             if (box.getMirrorType() != null) {
-                box.getMirrorType().addByRot(getTransform(box), x, y, z);
+                box.getMirrorType().addByRot(transform, x, y, z);
+                transform.setRotationEasing(progression);
                 return;
             }
         }
 
-        this.getTransform(box).addRotation(x, y, z);
+        transform = getTransform(box);
+
+        transform.addRotation(x, y, z);
+        transform.setRotationEasing(progression);
     }
 
     public void move(BCJoint box, float x, float y, float z) {
+        move(box, x, y, z, null);
+    }
+
+    public void move(BCJoint box, float x, float y, float z, @Nullable Easing progression) {
+        JointMutator transform;
+
         if (mirroring) {
             if (box.getMirrorJoint() != null)
                 box = box.getMirrorJoint();
 
+            transform = getTransform(box);
+
             if (box.getMirrorType() != null) {
-                box.getMirrorType().addByOff(getTransform(box), x, -y, z);
+                box.getMirrorType().addByOff(transform, x, -y, z);
+                transform.setOffsetEasing(progression);
                 return;
             }
         }
 
-        this.getTransform(box).addOffset(x, -y, z);
+        transform = getTransform(box);
+
+        getTransform(box).addOffset(x, -y, z);
+        transform.setOffsetEasing(progression);
     }
 
     public void move(AnimatableModelComponent<PosMutator> vertex, float x, float y, float z) {
@@ -90,11 +117,18 @@ public final class ModelAnimator {
     }
 
     public void scale(BCJoint box, float x, float y, float z) {
+        scale(box, x, y, z, null);
+    }
+
+    public void scale(BCJoint box, float x, float y, float z, @Nullable Easing progression) {
         if (mirroring && box.getMirrorJoint() != null) {
             box = box.getMirrorJoint();
         }
 
-        this.getTransform(box).addScale(x, y, z);
+        JointMutator transform = this.getTransform(box);
+
+        transform.addScale(x, y, z);
+        transform.setScaleEasing(progression);
     }
 
     public boolean setupKeyframe(float duration) {
@@ -121,15 +155,17 @@ public final class ModelAnimator {
     public void apply(Easing easing) {
         if (this.timer >= this.prevKeyframe && this.timer < this.keyframe) {
             float uneasedProg = (this.timer - this.prevKeyframe) / (this.keyframe - this.prevKeyframe);
-            float rawProg = easing.progression(uneasedProg);
-            float prog = rawProg * this.mult;
-            float invProg = (1.0F - rawProg) * this.mult;
-            getPrevious().forEach((box, t) -> {
-                box._animationTransitionerPrevious(t, this.mult, prog, invProg);
+            float prog = easing.progression(uneasedProg);
+            Map<AnimatableModelComponent<?>, Object> actual = getActual();
+            Map<AnimatableModelComponent<?>, Object> previous = getPrevious();
+            progressionMap.clear();
+
+            previous.forEach((box, t) -> {
+                box._animationTransitionerPrevious(t, getTransform(box), this.mult, prog, progressionMap);
             });
 
-            getActual().forEach((box, t) -> {
-                box._animationTransitionerCurrent(t, this.mult, prog, invProg);
+            actual.forEach((box, t) -> {
+                box._animationTransitionerCurrent(t, this.mult, prog, progressionMap);
             });
         }
 
@@ -144,24 +180,30 @@ public final class ModelAnimator {
     public void overlap(Easing easing) {
         float animationTick = this.timer;
 
+        progressionMap.clear();
+
         if (animationTick >= this.prevKeyframe && animationTick < this.keyframe) {
             float uneasedProg = (animationTick - this.prevKeyframe) / (this.keyframe - this.prevKeyframe);
             float prog = easing.progression(uneasedProg);
+            Map<AnimatableModelComponent<?>, Object> actual = getActual();
+            Map<AnimatableModelComponent<?>, Object> previous = getPrevious();
 
-            getPrevious().forEach((box, t) -> {
-                box._animationTransitionerPrevious(t, this.mult, prog, 1.0F);
+            previous.forEach((box, t) -> {
+                box._animationTransitionerPrevious(t, getTransform(box), this.mult, 0.0F, progressionMap);
             });
 
-            getActual().forEach((box, t) -> {
-                box._animationTransitionerCurrent(t, this.mult, prog, 1.0F);
+            actual.forEach((box, t) -> {
+                box._animationTransitionerCurrent(t, this.mult, prog, progressionMap);
             });
+
+
         }
     }
 
     public void reset() {
         this.prevKeyframe = 0.0F;
         this.keyframe = 0.0F;
-        this.mirroring = false;
+        progressionMap.clear();
         getActual().clear();
 	    getPrevious().clear();
     }

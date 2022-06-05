@@ -1,5 +1,6 @@
 package bottomtextdanny.braincell.mod._base.animation.interpreter;
 
+import bottomtextdanny.braincell.base.Easing;
 import bottomtextdanny.braincell.mod._base.animation.ModelAnimator;
 import bottomtextdanny.braincell.mod._base.rendering.core_modeling.BCJoint;
 
@@ -9,5 +10,5 @@ public interface AnimationInstructionActor {
     AnimationInstructionActor POSITION = ModelAnimator::move;
     AnimationInstructionActor SCALE = ModelAnimator::scale;
 
-    void act(ModelAnimator animator, BCJoint joint, float x, float y, float z);
+    void act(ModelAnimator animator, BCJoint joint, float x, float y, float z, Easing easing);
 }

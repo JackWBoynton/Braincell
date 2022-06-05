@@ -11,10 +11,14 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,6 +36,9 @@ public final class BCClientSide extends AbstractModSide {
     private final EntityRendererDeferror entityRendererDeferror;
     private final AnimationManager animationManager;
     private final MaterialManager materialManager;
+    private BraincellClientConfig config;
+    @Nullable
+    public ItemEntity hackyItemEntityTracker;
 
     private BCClientSide(String modId) {
         super(modId);
@@ -49,23 +56,30 @@ public final class BCClientSide extends AbstractModSide {
         return new BCClientSide(modId);
     }
 
-    private void tick(TickEvent.ClientTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            if (Minecraft.getInstance().level != null) {
-                BCLevelCapability capability = CapabilityHelper.get(Minecraft.getInstance().level, BCLevelCapability.TOKEN);
-                SpeckManagerModule speckManager = capability.getSpeckManager();
-                speckManager.tick();
-            }
-            getShaderHandler().postProcessingTick();
-        }
-    }
-
     @Override
     public void modLoadingCallOut() {
         this.extraModelLoaders.sendListeners();
         this.particleFactoryDeferror.sendListeners();
         this.entityRendererDeferror.sendListeners();
         this.materialManager.sendListeners();
+
+        ForgeConfigSpec.Builder configBuilder = new ForgeConfigSpec.Builder();
+
+        config = new BraincellClientConfig(configBuilder);
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, configBuilder.build());
+    }
+
+    private void tick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            Minecraft minecraft = Minecraft.getInstance();
+            if (minecraft.level != null) {
+                BCLevelCapability capability = CapabilityHelper.get(minecraft.level, BCLevelCapability.TOKEN);
+                SpeckManagerModule speckManager = capability.getSpeckManager();
+                speckManager.tick();
+            }
+            getShaderHandler().postProcessingTick();
+        }
     }
 
     public void setComms(int key, FriendlyByteBuf dataStream) {
@@ -88,6 +102,10 @@ public final class BCClientSide extends AbstractModSide {
 
     @Override
     public void postModLoadingPhaseCallOut() {
+    }
+
+    public BraincellClientConfig config() {
+        return config;
     }
 
     public ModelLoaderHandler getExtraModelLoaders() {

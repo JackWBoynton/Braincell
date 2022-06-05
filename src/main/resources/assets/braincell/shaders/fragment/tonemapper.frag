@@ -11,7 +11,7 @@ float lerp(float pct, float start, float end) {
 }
 
 void main() {
-    vec4 dif = texture2D(diffuse, vec2(texCoord.x, 1.0 - texCoord.y));
+    vec4 dif = texture2D(diffuse, vec2(texCoord.x, texCoord.y));
 
     if (desaturator != 0.0) {
         float gray = (dif.r + dif.g + dif.b) / 3.0;

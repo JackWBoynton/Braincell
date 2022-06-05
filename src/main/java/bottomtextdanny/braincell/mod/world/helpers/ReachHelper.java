@@ -62,10 +62,10 @@ public final class ReachHelper {
     public static DistanceCalc3 euclideanEntityReach3(Entity entity1, Entity entity2) {
         return (x1, y1, z1, x2, y2, z2) -> {
             float w = entity1.getBbWidth() / 2.0F + entity2.getBbWidth() / 2.0F;
-            float h = entity1.getBbHeight() / 2.0F + entity2.getBbHeight() / 2.0F;
+            float h = entity1.getBbHeight() / 4.0F + entity2.getBbHeight() / 4.0F;
 
             x1 = Math.max(Math.abs(x1 - x2) - w, 0.0);
-            y1 = Math.max(Math.abs(y1 - y2 + h) - h, 0.0);
+            y1 = Math.max(Math.abs(y1 - y2) - h, 0.0);
             z1 = Math.max(Math.abs(z1 - z2) - w, 0.0);
             return Math.sqrt(x1 * x1 + y1 * y1 + z1 * z1);
         };
@@ -101,10 +101,10 @@ public final class ReachHelper {
     public static DistanceCalc3 manhattanEntityReach3(Entity entity1, Entity entity2) {
         return (x1, y1, z1, x2, y2, z2) -> {
             float w = entity1.getBbWidth() / 2.0F + entity2.getBbWidth() / 2.0F;
-            float h = entity1.getBbHeight() / 2.0F + entity2.getBbHeight() / 2.0F;
+            float h = entity1.getBbHeight() / 4.0F + entity2.getBbHeight() / 4.0F;
 
             x1 = Math.max(Math.abs(x1 - x2) - w, 0.0);
-            y1 = Math.max(Math.abs(y1 - y2 + h) - h, 0.0);
+            y1 = Math.max(Math.abs(y1 - y2) - h, 0.0);
             z1 = Math.max(Math.abs(z1 - z2) - w, 0.0);
             return x1 + y1 + z1;
         };

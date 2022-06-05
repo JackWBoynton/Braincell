@@ -1,10 +1,12 @@
 package bottomtextdanny.braincell.mod.graphics.point_lighting;
 
 import bottomtextdanny.braincell.Braincell;
+import bottomtextdanny.braincell.base.BCMath;
 import bottomtextdanny.braincell.base.pair.Pair;
 import bottomtextdanny.braincell.mod._base.opengl.ComputationProgram;
 import bottomtextdanny.braincell.mod._base.opengl.UniformManager;
 import bottomtextdanny.braincell.mod._base.opengl.enums.ShaderType;
+import bottomtextdanny.braincell.mod._mod.client_sided.BraincellClientConfig;
 import com.mojang.math.Matrix4f;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -35,16 +37,19 @@ public class PointLightingCompProgram extends ComputationProgram<PointLightingWo
     @Override
     protected String[] getSourceTransformers(ShaderType type) {
         if (type == ShaderType.COMPUTATION) {
+            BraincellClientConfig config = Braincell.client().config();
+            int xTileDiv = BCMath.roundUp(config.xTileDivisions(), 4);
+            int yTileDiv = BCMath.roundUp(config.yTileDivisions(), 4);
             return new String[]{
-                    "&xgrid", String.valueOf(PointLightingWorkflow.GRID_SCALE_Y),
-                    "&ygrid", String.valueOf(PointLightingWorkflow.GRID_SCALE_Y),
-                    "&x1ingrid", String.valueOf(1.0F / PointLightingWorkflow.GRID_SCALE_X),
-                    "&y1ingrid", String.valueOf(1.0F / PointLightingWorkflow.GRID_SCALE_Y),
-                    "&xhalf", String.valueOf((PointLightingWorkflow.GRID_SCALE_X - 1.0F) / 2.0F),
-                    "&yhalf", String.valueOf((PointLightingWorkflow.GRID_SCALE_Y - 1.0F) / 2.0F),
-                    "&g_square", String.valueOf(PointLightingWorkflow.GRID_SCALE_X * PointLightingWorkflow.GRID_SCALE_Y),
-                    "&max_lights", String.valueOf(PointLightingWorkflow.MAX_LIGHTS),
-                    "&region_lights", String.valueOf(PointLightingWorkflow.MAX_LIGHTS_PER_TILE),
+                    "&xgrid", String.valueOf(xTileDiv),
+                    "&ygrid", String.valueOf(yTileDiv),
+                    "&x1ingrid", String.valueOf(1.0F / xTileDiv),
+                    "&y1ingrid", String.valueOf(1.0F / yTileDiv),
+                    "&xhalf", String.valueOf((xTileDiv) / 2.0F),
+                    "&yhalf", String.valueOf((yTileDiv) / 2.0F),
+                    "&g_square", String.valueOf(xTileDiv * yTileDiv),
+                    "&max_lights", String.valueOf(BCMath.roundUp(config.maxLights(), 4)),
+                    "&region_lights", String.valueOf(BCMath.roundUp(config.maxLightsPerTile(), 4)),
                     "&debugt", PointLightingWorkflow.DEBUG_ENABLED ? "imageStore(debug, pixel_coords, vec4(lightOffset *  0.2, 0.0, 0.0, 1));" : "",
                     "&debugf", PointLightingWorkflow.DEBUG_ENABLED ? "imageStore(debug, pixel_coords, vec4(0.0, 0.0, 0.0, 1));" : ""
             };

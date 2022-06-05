@@ -99,12 +99,6 @@ public abstract class BCEntityModel<E extends Entity> extends EntityModel<E> imp
         return invert ? (BCMath.cos(limbSwing * speed + desync * (float)Math.PI) * (-amount * 2) * limbSwingAmount + weight * limbSwingAmount) : (BCMath.cos(limbSwing * speed + desync * (float)Math.PI) * (amount * 2) * limbSwingAmount + weight * limbSwingAmount);
     }
 
-    /**
-     * @param degrees will be transformed to radians
-     * @param desync is how much the rotation will desynchronize, 1.0F will invert it completely
-     * @param invert quick way to invert the rotation
-     */
-
     @Deprecated
     public void walkRotateX(BCJoint part, float speed, float degrees, float desync, float weight, float limbSwing, float limbSwingAmount, boolean invert) {
         part.xRot += walkRotationHelper(speed, degrees, desync, weight, limbSwing, limbSwingAmount, invert);

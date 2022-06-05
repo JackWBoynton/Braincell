@@ -1,5 +1,6 @@
 package bottomtextdanny.braincell.mixin.client;
 
+import bottomtextdanny.braincell.Braincell;
 import com.mojang.blaze3d.vertex.PoseStack;
 import bottomtextdanny.braincell.mixin_support.ItemEntityExtensor;
 import bottomtextdanny.braincell.mod._base.registry.item_extensions.ExtraModelProvider;
@@ -18,30 +19,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemEntityRenderer.class)
 public class ItemEntityRendererMixin {
-    ItemEntity bcCurrentEntity;
-
-    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;render(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemTransforms$TransformType;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/client/resources/model/BakedModel;)V"),
-            method = "render(Lnet/minecraft/world/entity/item/ItemEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
-            remap = true)
-    private void renderItem(ItemRenderer instance, ItemStack stack, ItemTransforms.TransformType transform, boolean left, PoseStack pose, MultiBufferSource vertexconsumer, int light, int overlay, BakedModel model) {
-        label: {
-            if (this.bcCurrentEntity instanceof ItemEntityExtensor extensor) {
-                int customModelKey = extensor.getShowingModel();
-                if (customModelKey != -1 && stack.getItem() instanceof ExtraModelProvider provider) {
-                    BakedModel customModel = provider.fetchModel(instance, customModelKey);
-
-                    if (customModel != null) {
-                        instance.render(stack, transform, left, pose, vertexconsumer, light, overlay, customModel);
-                        break label;
-                    }
-                }
-            }
-            instance.render(stack, transform, left, pose, vertexconsumer, light, overlay, model);
-        }
-    }
 
     @Inject(at = @At(value = "HEAD"), method = "render(Lnet/minecraft/world/entity/item/ItemEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", remap = true)
     private void renderHead(ItemEntity f8, float f9, float f11, PoseStack f13, MultiBufferSource f10, int f12, CallbackInfo ci) {
-        this.bcCurrentEntity = f8;
+        Braincell.client().hackyItemEntityTracker = f8;
+    }
+
+    @Inject(at = @At(value = "TAIL"), method = "render(Lnet/minecraft/world/entity/item/ItemEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", remap = true)
+    private void renderTail(ItemEntity f8, float f9, float f11, PoseStack f13, MultiBufferSource f10, int f12, CallbackInfo ci) {
+        Braincell.client().hackyItemEntityTracker = null;
     }
 }

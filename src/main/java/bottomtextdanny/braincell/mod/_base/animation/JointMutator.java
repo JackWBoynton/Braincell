@@ -1,13 +1,19 @@
 package bottomtextdanny.braincell.mod._base.animation;
 
+import bottomtextdanny.braincell.base.Easing;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
+
 @OnlyIn(Dist.CLIENT)
 public final class JointMutator {
-    float offsetX, offsetY, offsetZ;
-    float rotationX, rotationY, rotationZ;
-    float scaleX, scaleY, scaleZ;
+    private float offsetX, offsetY, offsetZ;
+    private float rotationX, rotationY, rotationZ;
+    private float scaleX, scaleY, scaleZ;
+    private Easing offsetEasing = Easing.LINEAR,
+            rotationEasing = Easing.LINEAR,
+            scaleEasing = Easing.LINEAR;
 
     public float getOffsetX() {
         return this.offsetX;
@@ -43,6 +49,18 @@ public final class JointMutator {
 
     public float getScaleZ() {
         return this.scaleZ;
+    }
+
+    public Easing getOffsetEasing() {
+        return offsetEasing;
+    }
+
+    public Easing getRotationEasing() {
+        return rotationEasing;
+    }
+
+    public Easing getScaleEasing() {
+        return scaleEasing;
     }
 
     public void setOffset(float x, float y, float z) {
@@ -81,4 +99,18 @@ public final class JointMutator {
         this.scaleZ += z;
     }
 
+    public void setOffsetEasing(Easing offsetEasing) {
+        if (offsetEasing != null)
+            this.offsetEasing = offsetEasing;
+    }
+
+    public void setRotationEasing(Easing rotationEasing) {
+        if (rotationEasing != null)
+            this.rotationEasing = rotationEasing;
+    }
+
+    public void setScaleEasing(Easing scaleEasing) {
+        if (scaleEasing != null)
+            this.scaleEasing = scaleEasing;
+    }
 }

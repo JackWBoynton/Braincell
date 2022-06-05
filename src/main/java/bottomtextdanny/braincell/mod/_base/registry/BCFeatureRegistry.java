@@ -36,7 +36,13 @@ public final class BCFeatureRegistry<T extends Feature<?>> extends Wrap<T> {
 
     public Holder<ConfiguredFeature<?, ?>> getConfigured(int index) {
         if (this.built) {
-            return ((BCFeatureData.Post<T>)this.data).confGetter().get(index);
+            return ((BCFeatureData.Configured)this.data).confGetter().get(index);
+        } else throw unbuiltException();
+    }
+
+    public Holder<PlacedFeature> getPlaced(int index) {
+        if (this.built) {
+            return ((BCFeatureData.Post<T>)this.data).placedGetter().get(index);
         } else throw unbuiltException();
     }
 
@@ -49,9 +55,10 @@ public final class BCFeatureRegistry<T extends Feature<?>> extends Wrap<T> {
     public void makeExtraRegistries() {
         if (this.data instanceof BCFeatureData.Pre<T> pre) {
             this.built = true;
-            this.data = pre.makePost(
-                    (rl, sup) -> BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_FEATURE, rl, sup.get()),
-                    (rl, sup) -> BuiltinRegistries.register(BuiltinRegistries.PLACED_FEATURE, rl, sup.get()));
+            this.data = pre.makeConfigured(
+                    (rl, sup) -> BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_FEATURE, rl, sup.get()));
+
+            this.data = ((BCFeatureData.Config<T>)data).makePost((rl, sup) -> BuiltinRegistries.register(BuiltinRegistries.PLACED_FEATURE, rl, sup.get()));
         }
     }
 

@@ -318,12 +318,8 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Inject(at = @At(value = "HEAD"), method = "tickDeath", remap = true, cancellable = true)
 	public void cancelTickDeath(CallbackInfo ci) {
-		if (this instanceof LivingAnimatableProvider provider && provider.operateAnimatableModule()) {
-			LivingAnimatableModule module = provider.animatableModule();
-			if (module.deathHasBegun()) {
-				module.tickDeathHook();
-			}
-		}
+		if (this instanceof LivingAnimatableProvider provider && provider.operateAnimatableModule())
+			ci.cancel();
 	}
 
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V"), method = "handleRelativeFrictionAndCalculateMovement", remap = true)

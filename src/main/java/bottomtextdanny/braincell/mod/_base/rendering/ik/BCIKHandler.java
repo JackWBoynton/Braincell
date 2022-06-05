@@ -1,5 +1,6 @@
 package bottomtextdanny.braincell.mod._base.rendering.ik;
 
+import bottomtextdanny.braincell.base.Easing;
 import bottomtextdanny.braincell.base.matrix.RotationMatrix;
 import com.mojang.math.Vector3f;
 import bottomtextdanny.braincell.mod._base.animation.AnimatableModelComponent;
@@ -9,6 +10,8 @@ import bottomtextdanny.braincell.mod._base.rendering.core_modeling.BCModel;
 import bottomtextdanny.braincell.mod._base.rendering.core_modeling.ModelSectionReseter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
+
+import java.util.Map;
 
 import static bottomtextdanny.braincell.base.BCMath.*;
 import static net.minecraft.util.Mth.RAD_TO_DEG;
@@ -459,15 +462,16 @@ public class BCIKHandler<T> implements ModelSectionReseter, AnimatableModelCompo
     }
 
     @Override
-    public void animationTransitionerPrevious(PosMutator previous, float multiplier, float progression, float invertedProgression) {
+    public void animationTransitionerPrevious(PosMutator previous, PosMutator current, float multiplier, float progression, Map<Easing, Float> easingMap) {
+        progression = 1 - progression;
         this.goal.add(
-                invertedProgression * previous.getPosX(),
-                invertedProgression * previous.getPosY(),
-                invertedProgression * previous.getPosZ());
+                progression * previous.getPosX(),
+                progression * previous.getPosY(),
+                progression * previous.getPosZ());
     }
 
     @Override
-    public void animationTransitionerCurrent(PosMutator current, float multiplier, float progression, float invertedProgression) {
+    public void animationTransitionerCurrent(PosMutator current, float multiplier, float progression, Map<Easing, Float> easingMap) {
         this.goal.add(
                 progression * current.getPosX(),
                 progression * current.getPosY(),

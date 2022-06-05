@@ -16,6 +16,12 @@ public final class BCMath {
     public static final double RAD2DEG = 57.29577951308232;
     public static final float FRAD2DEG = (float)RAD2DEG;
 
+    public static int roundUp(int val, int alignment) {
+        int mod = val % alignment;
+        if (mod == 0) return val;
+        return val + alignment - mod;
+    }
+
     public static double dot3(final double x, final double y, final double z) {
         return x * x + y * y + z * z;
     }

@@ -17,6 +17,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import org.apache.commons.io.IOUtils;
 
@@ -51,13 +52,16 @@ public final class SchemaManager {
     public SchemaMemo parseSchema(ResourceLocation dir) {
         if (!active()) {
             SchemaMemo memo = unbuiltMemo(dir);
-            this.cache.put(dir, unbuiltMemo(dir));
+            this.cache.put(dir, memo);
             return memo;
-        }
-        if (this.cache.containsKey(dir) && this.cache.get(dir).isBuilt()) {
-            return cache.get(dir);
         } else {
-            Schema schema = Schema.DUMMY;
+            boolean existing = this.cache.containsKey(dir);
+
+            if (existing && this.cache.get(dir).isBuilt())
+                return cache.get(dir);
+
+            SchemaMemo memo = existing ? cache.get(dir) : unbuiltMemo(dir);
+            Schema schema = null;
             String file = null;
             JsonObject json = null;
 
@@ -150,17 +154,15 @@ public final class SchemaManager {
                                 blockDataSerial.get(2).getAsInt()));
                         schemaIndices.add(blockDataSerial.get(3).getAsInt());
                     }
-
                     schema = new Schema(Collections.unmodifiableList(propertyValueMatrix), flagsEntries, schemaBlockPositions, schemaPropertyValueIndices, schemaIndices);
+                    cache.put(dir, memo);
+                    memo.setBuilt(schema, this.key);
                 } catch (Exception ex) {
                     failedParsing(dir, "the json file has invalid schema metadata.");
                     ex.printStackTrace();
                 }
             }
 
-            SchemaMemo memo = unbuiltMemo(dir);
-            cache.put(dir, memo);
-            memo.setBuilt(schema, this.key);
             return memo;
         }
     }

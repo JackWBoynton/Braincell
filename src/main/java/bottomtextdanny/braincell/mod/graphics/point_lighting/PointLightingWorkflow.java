@@ -1,5 +1,6 @@
 package bottomtextdanny.braincell.mod.graphics.point_lighting;
 
+import bottomtextdanny.braincell.Braincell;
 import bottomtextdanny.braincell.mod._base.opengl.ShaderBuffer;
 import bottomtextdanny.braincell.mod._base.opengl.ShaderWorkflow;
 import bottomtextdanny.braincell.mod._base.opengl.TextureBuffer;
@@ -14,9 +15,9 @@ import static org.lwjgl.opengl.GL42.*;
 @OnlyIn(Dist.CLIENT)
 public class PointLightingWorkflow extends ShaderWorkflow {
     public static final int MAX_LIGHTS = 256;
-    public static final int MAX_LIGHTS_PER_TILE = 50;
+    public static final int MAX_LIGHTS_PER_TILE = 48;
     public static final int GRID_SCALE_X = 24;
-    public static final int GRID_SCALE_Y = 14;
+    public static final int GRID_SCALE_Y = 16;
     public static final boolean DEBUG_ENABLED = false;
     private final PointLightingPixelProgram lightRenderingProgram;
     private final PointLightingCompProgram frustumCalcProgram;
@@ -44,8 +45,6 @@ public class PointLightingWorkflow extends ShaderWorkflow {
 
         this.lightRenderingProgram.flow();
 
-        this.lastRenderedLights = 0;
-
         clearLights();
     }
 
@@ -54,14 +53,15 @@ public class PointLightingWorkflow extends ShaderWorkflow {
     }
 
     public boolean addLight(IPointLight light) {
-        if (light != null && this.lights.size() < MAX_LIGHTS) {
+        if (!invalidated && shouldApply() && light != null && this.lights.size() < MAX_LIGHTS) {
             this.lastRenderedLights++;
             return this.lights.add(light);
         }
         return false;
     }
 
-    public void clearLights() {
+    private void clearLights() {
+        this.lastRenderedLights = 0;
         this.lights.clear();
     }
 
@@ -75,6 +75,6 @@ public class PointLightingWorkflow extends ShaderWorkflow {
 
     @Override
     protected boolean shouldApply() {
-        return true;
+        return Braincell.client().config().lights();
     }
 }

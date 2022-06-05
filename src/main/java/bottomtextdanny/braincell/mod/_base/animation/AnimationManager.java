@@ -1,5 +1,6 @@
 package bottomtextdanny.braincell.mod._base.animation;
 
+import bottomtextdanny.braincell.base.Easing;
 import com.google.common.collect.Maps;
 import com.google.gson.*;
 import bottomtextdanny.braincell.base.BCStringUtil;
@@ -33,6 +34,35 @@ public class AnimationManager {
         map.put("rotation", AnimationInstructionActor.ROTATE);
         map.put("position", AnimationInstructionActor.POSITION);
         map.put("scale", AnimationInstructionActor.SCALE);
+
+        return Collections.unmodifiableMap(map);
+    });
+    private static final Map<String, Easing> EASING_PARSER = Util.make(() -> {
+        Map<String, Easing> map = Maps.newHashMap();
+
+        map.put("ease_in_sine", Easing.EASE_IN_SINE);
+        map.put("ease_out_sine", Easing.EASE_OUT_SINE);
+        map.put("ease_in_out_sine", Easing.EASE_IN_OUT_SINE);
+
+        map.put("ease_in_square", Easing.EASE_IN_SQUARE);
+        map.put("ease_out_square", Easing.EASE_OUT_SQUARE);
+        map.put("ease_in_out_square", Easing.EASE_IN_OUT_SQUARE);
+
+        map.put("ease_in_cubic", Easing.EASE_IN_CUBIC);
+        map.put("ease_out_cubic", Easing.EASE_OUT_CUBIC);
+        map.put("ease_in_out_cubic", Easing.EASE_IN_OUT_CUBIC);
+
+        map.put("ease_in_quart", Easing.EASE_IN_QUART);
+        map.put("ease_out_quart", Easing.EASE_OUT_QUART);
+        map.put("ease_in_out_quart", Easing.EASE_IN_OUT_QUART);
+
+        map.put("ease_in_quint", Easing.EASE_IN_QUINT);
+        map.put("ease_out_quint", Easing.EASE_OUT_QUINT);
+        map.put("ease_in_out_quint", Easing.EASE_IN_OUT_QUINT);
+
+        map.put("bounce_in", Easing.BOUNCE_IN);
+        map.put("bounce_out", Easing.BOUNCE_OUT);
+        map.put("bounce_in_out", Easing.BOUNCE_IN_OUT);
 
         return Collections.unmodifiableMap(map);
     });
@@ -137,6 +167,7 @@ public class AnimationManager {
 
         String jointIdentifier = elements.get(0).getValue().getAsString();
         String instructionIdentifier = elements.get(1).getKey();
+        Easing easing = null;
 
         nameTester.accept(jointIdentifier);
         AnimationInstructionActor actor = null;
@@ -158,7 +189,15 @@ public class AnimationManager {
             }
         }
 
-        return new AnimationInstruction(actor, index, vector[0], vector[1], vector[2]);
+        if (instructionsMetadata.has("easing")) {
+            String easingIdentifier = instructionsMetadata.get("easing").getAsString();
+
+            if (EASING_PARSER.containsKey(easingIdentifier)) {
+                easing = EASING_PARSER.get(easingIdentifier);
+            }
+        }
+
+        return new AnimationInstruction(actor, index, vector[0], vector[1], vector[2], easing);
     }
 
     @Nullable

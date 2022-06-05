@@ -1,5 +1,7 @@
 package bottomtextdanny.braincell.mod.graphics.screen_tonemapping;
 
+import bottomtextdanny.braincell.Braincell;
+import bottomtextdanny.braincell.mod.entity.psyche.actions.MoveReactionToEntityAction;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import bottomtextdanny.braincell.mod._base.BCStaticData;
@@ -27,7 +29,9 @@ public class TonemapWorkflow extends ShaderWorkflow {
 
     @Override
     protected void tick() {
-        if (!Minecraft.getInstance().isPaused() && !this.agents.isEmpty()) {
+        if (this.agents.isEmpty()) return;
+
+        if (!Minecraft.getInstance().isPaused()) {
             agents.removeIf(agent -> {
                 agent.tick();
                 return agent.removeIf();
@@ -55,7 +59,7 @@ public class TonemapWorkflow extends ShaderWorkflow {
     }
 
     public boolean addAgent(TonemapAgent agent) {
-        if (agent != null) {
+        if (!invalidated && shouldApply() && agent != null) {
             return this.agents.add(agent);
         }
         return false;
@@ -63,6 +67,6 @@ public class TonemapWorkflow extends ShaderWorkflow {
 
     @Override
     protected boolean shouldApply() {
-        return MC.player != null;
+        return MC.player != null && Braincell.client().config().screenTonemapping();
     }
 }

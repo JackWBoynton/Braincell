@@ -21,14 +21,18 @@ public class LivingAnimatableModule extends BaseAnimatableModule<LivingAnimatabl
     public void tick() {
         super.tick();
 
-        if (this.living.isEffectiveAi() && this.living.getHealth() <= 0.0F) {
+        if (this.living.getHealth() <= 0.0F) {
+            Animation<?> deathAnimation = this.provider.getDeathAnimation();
             if (!this.deathHasBegun) {
-                if (this.provider.getDeathAnimation() != null) {
-                    this.localHandler.play(this.provider.getDeathAnimation());
-
+                if (deathAnimation != null) {
+                    if (!living.level.isClientSide) this.localHandler.play(deathAnimation);
                 }
                 this.deathHasBegun = true;
                 this.provider.onDeathAnimationStart();
+            } else if (deathAnimation != null && localHandler.isPlaying(deathAnimation)) {
+                tickDeathHook(deathAnimation.getDuration());
+            } else {
+                tickDeathHook(20);
             }
         }
     }
@@ -37,13 +41,12 @@ public class LivingAnimatableModule extends BaseAnimatableModule<LivingAnimatabl
         return this.localHandler;
     }
 
-    public void tickDeathHook() {
+    public void tickDeathHook(int time) {
         ++this.living.deathTime;
-        int duration = this.provider.getDeathAnimation() == null ? 20 : this.provider.getDeathAnimation().getDuration();
 
-        if (this.living.deathTime >= duration) {
+        if (!this.living.level.isClientSide && this.living.deathTime >= time) {
             this.provider.onDeathAnimationEnd();
-            this.living.remove(Entity.RemovalReason.DISCARDED);
+            this.living.remove(Entity.RemovalReason.KILLED);
         }
     }
 

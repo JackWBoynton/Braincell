@@ -20,12 +20,7 @@ import java.util.Map;
 
 public class AccessoryKey<E extends IAccessory> {
     private static Map<AccessoryKey<?>, AccessoryAttributeModifierData> ATTRIBUTE_DATA;
-    private static final ObjectOpenHashSet<AccessoryKey<?>> EMPTY_LOOKUP = Util.make(() -> {
-        ObjectOpenHashSet<AccessoryKey<?>> table = new ObjectOpenHashSet<>(16);
-        table.add(BCAccessoryKeys.EMPTY);
-        table.add(BCAccessoryKeys.STACK_EMPTY);
-        return table;
-    });
+    private static final ObjectOpenHashSet<AccessoryKey<?>> EMPTY_LOOKUP = new ObjectOpenHashSet<>(16);
     private static List<AccessoryKey<?>> ACCESSORIES_BY_ID = Lists.newLinkedList();
     private static Map<ResourceLocation, AccessoryKey<?>> ACCESSORIES_BY_LOCATION = Maps.newHashMap();
     private static boolean initialized;
@@ -93,6 +88,8 @@ public class AccessoryKey<E extends IAccessory> {
             FMLJavaModLoadingContext.get().getModEventBus().addListener((FMLCommonSetupEvent event) -> {
                 EmptyAccessoryKeyCollectorEvent collectorEvent = new EmptyAccessoryKeyCollectorEvent();
                 MinecraftForge.EVENT_BUS.post(collectorEvent);
+                EMPTY_LOOKUP.add(BCAccessoryKeys.EMPTY);
+                EMPTY_LOOKUP.add(BCAccessoryKeys.STACK_EMPTY);
                 EMPTY_LOOKUP.addAll(collectorEvent.getCollection());
             });
             ImmutableMap.Builder<AccessoryKey<?>, AccessoryAttributeModifierData> dataBuilder = ImmutableMap.builder();

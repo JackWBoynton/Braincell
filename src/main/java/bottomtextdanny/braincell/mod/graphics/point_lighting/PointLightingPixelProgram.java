@@ -1,10 +1,12 @@
 package bottomtextdanny.braincell.mod.graphics.point_lighting;
 
 import bottomtextdanny.braincell.Braincell;
+import bottomtextdanny.braincell.base.BCMath;
 import bottomtextdanny.braincell.base.pair.Pair;
 import bottomtextdanny.braincell.mod._base.opengl.PixelProgram;
 import bottomtextdanny.braincell.mod._base.opengl.UniformManager;
 import bottomtextdanny.braincell.mod._base.opengl.enums.ShaderType;
+import bottomtextdanny.braincell.mod._mod.client_sided.BraincellClientConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -38,12 +40,15 @@ public class PointLightingPixelProgram extends PixelProgram<PointLightingWorkflo
     @Override
     protected String[] getSourceTransformers(ShaderType type) {
         if (type == ShaderType.FRAGMENT) {
+            BraincellClientConfig config = Braincell.client().config();
+            int xTileDiv = BCMath.roundUp(config.xTileDivisions(), 4);
+            int yTileDiv = BCMath.roundUp(config.yTileDivisions(), 4);
             return new String[]{
-                    "&xgrid", String.valueOf(PointLightingWorkflow.GRID_SCALE_X),
-                    "&ygrid", String.valueOf(PointLightingWorkflow.GRID_SCALE_Y),
-                    "&g_square", String.valueOf(PointLightingWorkflow.GRID_SCALE_X * PointLightingWorkflow.GRID_SCALE_Y),
-                    "&max_lights", String.valueOf(PointLightingWorkflow.MAX_LIGHTS),
-                    "&region_lights", String.valueOf(PointLightingWorkflow.MAX_LIGHTS_PER_TILE),
+                    "&xgrid", String.valueOf(xTileDiv),
+                    "&ygrid", String.valueOf(yTileDiv),
+                    "&g_square", String.valueOf(xTileDiv * yTileDiv),
+                    "&max_lights", String.valueOf(BCMath.roundUp(config.maxLights(), 4)),
+                    "&region_lights", String.valueOf(BCMath.roundUp(config.maxLightsPerTile(), 4)),
                     "&debug", PointLightingWorkflow.DEBUG_ENABLED ? "dif += vec4(texture(debug, coords.xy).x, 0, 0, 1);" : ""
             };
         } else {

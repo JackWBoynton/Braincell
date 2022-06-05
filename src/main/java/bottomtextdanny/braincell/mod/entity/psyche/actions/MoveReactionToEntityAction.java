@@ -16,6 +16,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.util.Lazy;
 
 import javax.annotation.Nullable;
+import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
 import java.util.function.DoubleSupplier;
 import java.util.function.ToDoubleFunction;
 
@@ -25,6 +27,7 @@ public class MoveReactionToEntityAction<T extends PathfinderMob, U extends Entit
     private final MobMatchPredicate<U> mobFinder;
     private ToDoubleFunction<U> moveSpeedByTarget;
     private SearchPredicate<U> searchPredicate;
+    private BiConsumer<T, U> focusFoundCallout;
     private DoubleSupplier searchRange;
     @Nullable
     private U focus;
@@ -33,11 +36,11 @@ public class MoveReactionToEntityAction<T extends PathfinderMob, U extends Entit
     private int refreshRate;
 
     public MoveReactionToEntityAction(T mob, MobMatchPredicate<? super U> mobPredicate,
-                                      MobPosProcessor<U> posFinder) {
+                                      MobPosProcessor<? super U> posFinder) {
         super(mob);
         this.refreshRate = DEFAULT_PATH_REFRESH_RATE;
         this.mobFinder = mobPredicate.cast();
-        this.posFinder = posFinder;
+        this.posFinder = posFinder.cast();
         this.moveSpeedByTarget = target -> 1.0;
         this.searchRange = () -> mob.getAttributeValue(Attributes.FOLLOW_RANGE);
         this.searchPredicate = SearchPredicates.nearestEntity().cast();
@@ -48,18 +51,23 @@ public class MoveReactionToEntityAction<T extends PathfinderMob, U extends Entit
         return this;
     }
 
-    public MoveReactionToEntityAction<T, U> searchBy(SearchPredicate<U> predicate) {
-        this.searchPredicate = predicate;
+    public MoveReactionToEntityAction<T, U> searchBy(SearchPredicate<? super U> predicate) {
+        this.searchPredicate = (SearchPredicate<U>)predicate;
         return this;
     }
 
-    public MoveReactionToEntityAction<T, U> speedByTarget(ToDoubleFunction<U> moveSpeedByTarget) {
-        this.moveSpeedByTarget = moveSpeedByTarget;
+    public MoveReactionToEntityAction<T, U> speedByTarget(ToDoubleFunction<? super U> moveSpeedByTarget) {
+        this.moveSpeedByTarget = (ToDoubleFunction<U>)moveSpeedByTarget;
         return this;
     }
 
     public MoveReactionToEntityAction<T, U> searchRange(DoubleSupplier searchRange) {
         this.searchRange = searchRange;
+        return this;
+    }
+
+    public MoveReactionToEntityAction<T, U> onFocusFound(BiConsumer<? super T, ? super U> callout) {
+        this.focusFoundCallout = (BiConsumer<T, U>) callout;
         return this;
     }
 
@@ -124,11 +132,20 @@ public class MoveReactionToEntityAction<T extends PathfinderMob, U extends Entit
 
     protected void updateFocus() {
         double range = this.searchRange.getAsDouble();
+        U entity = focus;
 
         this.focus = this.searchPredicate.search(this.mob,
                 (ServerLevel)this.mob.level,
                 RangeTest.awayFrom(this.mob, range, DistanceCalc3.MANHATTAN),
                 this.getTargetSearchArea(range), this.mobFinder.and(MobMatchPredicates.noCreativeOrSpectator()));
+
+        if (focusFoundCallout != null && entity != focus) {
+            focusFoundCallout.accept(mob, focus);
+        }
+    }
+
+    public void inferFocus(U newFocus) {
+        this.focus = newFocus;
     }
 
     protected Lazy<AABB> getTargetSearchArea(double p_26069_) {

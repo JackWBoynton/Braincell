@@ -26,7 +26,7 @@ public sealed abstract class AnimationRunner {
 
             for (AnimationInstruction instruction : instructionListed) {
                 instruction.actor().act(animator, frameIndices.get(instruction.index()),
-                        instruction.x(), instruction.y(), instruction.z());
+                        instruction.x(), instruction.y(), instruction.z(), instruction.easing());
             }
 
             animator.apply();

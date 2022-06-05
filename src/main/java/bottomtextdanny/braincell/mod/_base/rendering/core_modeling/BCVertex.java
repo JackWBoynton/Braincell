@@ -1,9 +1,12 @@
 package bottomtextdanny.braincell.mod._base.rendering.core_modeling;
 
+import bottomtextdanny.braincell.base.Easing;
 import bottomtextdanny.braincell.mod._base.animation.AnimatableModelComponent;
 import bottomtextdanny.braincell.mod._base.animation.PosMutator;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public class BCVertex implements ModelSectionReseter, AnimatableModelComponent<PosMutator> {
@@ -39,14 +42,15 @@ public class BCVertex implements ModelSectionReseter, AnimatableModelComponent<P
     }
 
     @Override
-    public void animationTransitionerPrevious(PosMutator previous, float multiplier, float progression, float invertedProgression) {
-        this.x += invertedProgression * previous.getPosX();
-        this.y += invertedProgression * previous.getPosY();
-        this.z += invertedProgression * previous.getPosZ();
+    public void animationTransitionerPrevious(PosMutator previous, PosMutator current, float multiplier, float progression, Map<Easing, Float> easingMap) {
+        progression = 1 - progression;
+        this.x += progression * previous.getPosX();
+        this.y += progression * previous.getPosY();
+        this.z += progression * previous.getPosZ();
     }
 
     @Override
-    public void animationTransitionerCurrent(PosMutator current, float multiplier, float progression, float invertedProgression) {
+    public void animationTransitionerCurrent(PosMutator current, float multiplier, float progression, Map<Easing, Float> easingMap) {
         this.x += progression * current.getPosX();
         this.y += progression * current.getPosY();
         this.z += progression * current.getPosZ();

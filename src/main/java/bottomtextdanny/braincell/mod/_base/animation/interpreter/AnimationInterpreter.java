@@ -1,5 +1,8 @@
 package bottomtextdanny.braincell.mod._base.animation.interpreter;
 
+import bottomtextdanny.dannys_expansion._util._client.CMC;
+import bottomtextdanny.dannys_expansion.content._client.model.entities.living_entities.FoamcasterModel;
+import bottomtextdanny.dannys_expansion.content._client.model.entities.living_entities.ghoul.GhoulModel;
 import com.google.common.collect.Maps;
 import bottomtextdanny.braincell.base.function.Lazy;
 import bottomtextdanny.braincell.mod._base.animation.ModelAnimator;
@@ -31,6 +34,9 @@ public class AnimationInterpreter {
             indexJoints();
         }
 
+        if (animator.model instanceof GhoulModel)
+            CMC.chatMsg(data.get().runners().size());
+
         data.get().runners().forEach(timedInstructions -> {
             runRunner(timedInstructions, animator);
         });
@@ -42,7 +48,7 @@ public class AnimationInterpreter {
 
         for (Map.Entry<Float, List<AnimationInstruction>> entry : timedInstructions.entrySet()) {
             float frame = entry.getKey() - addedTime;
-            addedTime += frame;
+            addedTime = entry.getKey();
 
             List<AnimationInstruction> instructionListed = entry.getValue();
 
@@ -54,7 +60,7 @@ public class AnimationInterpreter {
                 if (joint != null) {
 
                     instruction.actor().act(animator, joint,
-                            instruction.x(), instruction.y(), instruction.z());
+                            instruction.x(), instruction.y(), instruction.z(), instruction.easing());
                 }
             }
 

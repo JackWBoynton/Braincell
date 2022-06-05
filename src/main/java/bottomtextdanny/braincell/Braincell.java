@@ -1,7 +1,10 @@
 package bottomtextdanny.braincell;
 
 import bottomtextdanny.braincell.mod._base.registry.managing.DeferrorType;
+import bottomtextdanny.braincell.mod.capability.level.speck.PointLightSpeck;
+import bottomtextdanny.braincell.mod.capability.level.speck.ShootLighSpeck;
 import bottomtextdanny.braincell.mod.capability.player.accessory.MiniAttribute;
+import bottomtextdanny.braincell.mod.graphics.point_lighting.SimplePointLight;
 import bottomtextdanny.braincell.mod.hooks.*;
 import bottomtextdanny.braincell.mod.network.Connection;
 import bottomtextdanny.braincell.mod.network.OnlyHandledOnClient;
@@ -13,9 +16,14 @@ import bottomtextdanny.braincell.mod._mod.common_sided.BCCommonSide;
 import bottomtextdanny.braincell.mod._mod.object_tables.BraincellEntities;
 import bottomtextdanny.braincell.mod._mod.object_tables.BraincellRecipes;
 import bottomtextdanny.braincell.mod.capability.player.accessory.BCAccessoryKeys;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -23,6 +31,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.opengl.GL30;
 
 import static bottomtextdanny.braincell.Braincell.ID;
 
@@ -57,7 +66,7 @@ public class Braincell {
 //
 //            client().getShaderHandler().getLightingWorkflow().addLight(light);
 //        });
-
+//
 //        forgeEventBus.addListener((TickEvent.ClientTickEvent event) -> {
 //            if (event.phase == TickEvent.Phase.END) return;
 //
@@ -66,9 +75,7 @@ public class Braincell {
 //            if (player == null) return;
 //
 //            if (Minecraft.getInstance().options.keyDrop.isDown()) {
-//                String glsl = GL30.glGetString(GL30.GL_SHADING_LANGUAGE_VERSION);
 //
-//                if (glsl != null) player.chat(glsl);
 //                client().resetShaderHandler();
 //
 //                PointLightSpeck light = new ShootLighSpeck(player.level, 10, 10, 10);

@@ -33,6 +33,7 @@ public final class BCPacketInitialization {
         register(token, new MSGHandAccessoryClientMessenger(-1));
         register(token, new MSGTrivialEntityActions(-1, -1));
         register(token, new MSGComms(-1, (FriendlyByteBuf) null));
+        register(token, new MSGAnimatedEntityDeathEnd(-1));
     }
 
     private static void initializeServerNetworkPackets(MutableInt token) {

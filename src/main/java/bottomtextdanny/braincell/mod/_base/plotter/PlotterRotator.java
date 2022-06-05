@@ -52,20 +52,20 @@ public final class PlotterRotator {
     });
     private static final List<BooleanProperty> SIMPLE_DIR_PROP = List.of(
             NORTH,
-            SOUTH,
             EAST,
+            SOUTH,
             WEST
     );
     private static final List<Property<RedstoneSide>> REDSTONE_DIR_PROP = List.of(
             NORTH_REDSTONE,
-            SOUTH_REDSTONE,
             EAST_REDSTONE,
+            SOUTH_REDSTONE,
             WEST_REDSTONE
     );
     private static final List<Property<WallSide>> WALL_DIR_PROP = List.of(
             NORTH_WALL,
-            SOUTH_WALL,
             EAST_WALL,
+            SOUTH_WALL,
             WEST_WALL
     );
 
@@ -110,12 +110,12 @@ public final class PlotterRotator {
 
     private static <V extends Comparable<V>> BlockState solveSingleDirectionProperties(List<? extends Property<V>> propertyList, Rotation rot, BlockState bs) {
         V north = bs.getValue(propertyList.get(0));
-        V south = bs.getValue(propertyList.get(1));
-        V east = bs.getValue(propertyList.get(2));
+        V east = bs.getValue(propertyList.get(1));
+        V south = bs.getValue(propertyList.get(2));
         V west = bs.getValue(propertyList.get(3));
         V rNorth = north;
-        V rSouth = south;
         V rEast = east;
+        V rSouth = south;
         V rWest = west;
         switch (rot) {
             case CLOCKWISE_90 -> {

@@ -1,5 +1,6 @@
 package bottomtextdanny.braincell.mod.entity.psyche.pos_finder;
 
+import bottomtextdanny.braincell.mod.entity.psyche.targeting.MobMatchPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Mob;
 
@@ -21,6 +22,10 @@ public interface MobPosProcessor<T> {
     }
 
     default <U extends T> MobPosProcessor<U> generic(Class<U> clazz) {
+        return (MobPosProcessor<U>)this;
+    }
+
+    default <U extends T> MobPosProcessor<U> cast() {
         return (MobPosProcessor<U>)this;
     }
 }

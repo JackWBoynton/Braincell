@@ -4,6 +4,7 @@ import bottomtextdanny.braincell.Braincell;
 import bottomtextdanny.braincell.mod._mod.common_sided.SolvingHook;
 import com.google.common.collect.Maps;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.GameData;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -52,7 +53,6 @@ public final class ModDeferringManager {
             this.deferrorAccessors.forEach((type, registry) -> {
                 solveDeferror(bus, type, registry);
             });
-            GameData.revertToFrozen();
             this.open = false;
         }
     }
@@ -104,7 +104,7 @@ public final class ModDeferringManager {
                 if (entry instanceof Wrap<?> wrap) {
                     wrap.solve();
                     if (wrap.obj == null) {
-                        throw new IllegalStateException(String.join("Solving Object shouldn't point null after solving process. ", wrap.getKey().toString()));
+                        throw new IllegalStateException("Solving Object shouldn't point null after solving process. " + wrap.getKey().toString());
                     }
                 }
                 finalSolvingHook.execute(entry.get(), this);

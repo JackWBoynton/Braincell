@@ -1,5 +1,6 @@
 package bottomtextdanny.braincell.mod._base.rendering.core_modeling;
 
+import bottomtextdanny.braincell.base.Easing;
 import bottomtextdanny.braincell.base.matrix.RotationMatrix;
 import bottomtextdanny.braincell.mod._base.animation.AnimatableModelComponent;
 import bottomtextdanny.braincell.mod._base.animation.JointMutator;
@@ -18,6 +19,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 @OnlyIn(Dist.CLIENT)
@@ -351,35 +353,39 @@ public final class BCJoint implements ModelSectionReseter, AnimatableModelCompon
 
         modelPosition = modelPosition.add(0.0, 1.5, 0.0);
 
-        return  entityPos.add(modelPosition);
+        return entityPos.add(modelPosition);
     }
 
     @Override
-    public void animationTransitionerPrevious(JointMutator previous, float multiplier, float progression, float invertedProgression) {
-
-        this.xRot += invertedProgression * previous.getRotationX();
-        this.yRot += invertedProgression * previous.getRotationY();
-        this.zRot += invertedProgression * previous.getRotationZ();
-        this.x += invertedProgression * previous.getOffsetX();
-        this.y += invertedProgression * previous.getOffsetY();
-        this.z += invertedProgression * previous.getOffsetZ();
-        this.scaleX += invertedProgression * previous.getScaleX();
-        this.scaleY += invertedProgression * previous.getScaleY();
-        this.scaleZ += invertedProgression * previous.getScaleZ();
+    public void animationTransitionerPrevious(JointMutator previous, JointMutator current, float multiplier, float progression, Map<Easing, Float> easingMap) {
+        float eased = (1 - easingMap.computeIfAbsent(current.getRotationEasing(), (p) -> p.progression(progression))) * multiplier;
+        this.xRot += eased * previous.getRotationX();
+        this.yRot += eased * previous.getRotationY();
+        this.zRot += eased * previous.getRotationZ();
+        eased = (1 - easingMap.computeIfAbsent(current.getOffsetEasing(), (p) -> p.progression(progression))) * multiplier;
+        this.x += eased * previous.getOffsetX();
+        this.y += eased * previous.getOffsetY();
+        this.z += eased * previous.getOffsetZ();
+        eased = (1 - easingMap.computeIfAbsent(current.getScaleEasing(), (p) -> p.progression(progression))) * multiplier;
+        this.scaleX += eased * previous.getScaleX();
+        this.scaleY += eased * previous.getScaleY();
+        this.scaleZ += eased * previous.getScaleZ();
     }
 
     @Override
-    public void animationTransitionerCurrent(JointMutator current, float multiplier, float progression, float invertedProgression) {
-
-        this.xRot += progression * current.getRotationX();
-        this.yRot += progression * current.getRotationY();
-        this.zRot += progression * current.getRotationZ();
-        this.x += progression * current.getOffsetX();
-        this.y += progression * current.getOffsetY();
-        this.z += progression * current.getOffsetZ();
-        this.scaleX += progression * current.getScaleX();
-        this.scaleY += progression * current.getScaleY();
-        this.scaleZ += progression * current.getScaleZ();
+    public void animationTransitionerCurrent(JointMutator current, float multiplier, float progression, Map<Easing, Float> easingMap) {
+        float eased = (easingMap.computeIfAbsent(current.getRotationEasing(), (p) -> p.progression(progression))) * multiplier;
+        this.xRot += eased * current.getRotationX();
+        this.yRot += eased * current.getRotationY();
+        this.zRot += eased * current.getRotationZ();
+        eased = (easingMap.computeIfAbsent(current.getOffsetEasing(), (p) -> p.progression(progression))) * multiplier;
+        this.x += eased * current.getOffsetX();
+        this.y += eased * current.getOffsetY();
+        this.z += eased * current.getOffsetZ();
+        eased = (easingMap.computeIfAbsent(current.getScaleEasing(), (p) -> p.progression(progression))) * multiplier;
+        this.scaleX += eased * current.getScaleX();
+        this.scaleY += eased * current.getScaleY();
+        this.scaleZ += eased * current.getScaleZ();
     }
 
     public BCModel getModel() {

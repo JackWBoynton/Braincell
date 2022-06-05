@@ -39,7 +39,7 @@ public final class BCRenderTypes extends RenderType {
     }
 
     public static RenderType getFlatShading(ResourceLocation locationIn) {
-        CompositeState compositeState = CompositeState.builder().setShaderState(RenderStateShard.RENDERTYPE_ENTITY_TRANSLUCENT_SHADER).setOutputState(FLAT_LIGHTING_TARGET).setTextureState(new TextureStateShard(locationIn, false, false)).setTransparencyState(TRANSLUCENT_TRANSPARENCY).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY).setCullState(NO_CULL).createCompositeState(true);
+        CompositeState compositeState = CompositeState.builder().setShaderState(RenderStateShard.RENDERTYPE_ENTITY_CUTOUT_SHADER).setOutputState(FLAT_LIGHTING_TARGET).setTextureState(new TextureStateShard(locationIn, false, false)).setTransparencyState(NO_TRANSPARENCY).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY).setCullState(NO_CULL).createCompositeState(true);
         return RenderType.create("flat_lighting", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, false, compositeState);
     }
 }

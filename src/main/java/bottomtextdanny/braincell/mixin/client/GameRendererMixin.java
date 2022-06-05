@@ -14,6 +14,7 @@ public class GameRendererMixin {
     public void updateCameraAndRender(float partialTick, long nanoTime, boolean renderWorldIn, CallbackInfo ci) {
         Braincell.client().getRenderingHandler().setDataOutdated();
         Braincell.client().getRenderingHandler().captureInitialization(partialTick);
+        Braincell.client().hackyItemEntityTracker = null;
     }
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;doEntityOutline()V", shift = At.Shift.BEFORE), method = "render", remap = true)
