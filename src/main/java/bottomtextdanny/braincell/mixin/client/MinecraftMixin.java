@@ -2,7 +2,7 @@ package bottomtextdanny.braincell.mixin.client;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import bottomtextdanny.braincell.Braincell;
-import bottomtextdanny.braincell.mod.rendering.ResizeEvent;
+import bottomtextdanny.braincell.events.ResizeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Final;

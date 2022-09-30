@@ -2,7 +2,7 @@ package bottomtextdanny.braincell.mixin;
 
 import com.google.gson.JsonElement;
 import bottomtextdanny.braincell.Braincell;
-import bottomtextdanny.braincell.mod.world.ChestOverriderRecipe;
+import bottomtextdanny.braincell.libraries._minor.chest.ChestOverriderRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;

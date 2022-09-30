@@ -1,8 +1,8 @@
 package bottomtextdanny.braincell.mixin;
 
-import bottomtextdanny.braincell.mod.capability.BCCapabilityHelper;
-import bottomtextdanny.braincell.mod.capability.player.BCAccessoryModule;
-import bottomtextdanny.braincell.mod.capability.player.accessory.MiniAttribute;
+import bottomtextdanny.braincell.libraries.capability.BCCapabilityHelper;
+import bottomtextdanny.braincell.libraries.accessory.BCAccessoryModule;
+import bottomtextdanny.braincell.tables.BCAttributes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -24,8 +24,8 @@ public abstract class ProjectileMixin {
 	public void tryPutModifiers(CallbackInfo ci) {
 		if (!this.appliedModifiers && (Object)this instanceof AbstractArrow arrow && getOwner() instanceof Player player) {
 			BCAccessoryModule cap = BCCapabilityHelper.accessoryModule(player);
-			arrow.setDeltaMovement(arrow.getDeltaMovement().scale(cap.getLesserModifier(MiniAttribute.ARROW_SPEED_MLT) / 100.0F));
-			arrow.setBaseDamage((arrow.getBaseDamage() + cap.getLesserModifier(MiniAttribute.ARCHERY_DAMAGE_ADD)) * (cap.getLesserModifier(MiniAttribute.ARCHERY_DAMAGE_MLT) / 100.0F));
+			arrow.setDeltaMovement(arrow.getDeltaMovement().scale(player.getAttributeValue(BCAttributes.ARROW_SPEED_MULTIPLIER.get())));
+			arrow.setBaseDamage((arrow.getBaseDamage() * player.getAttributeValue(BCAttributes.ARCHERY_DAMAGE_MULTIPLIER.get())));
             this.appliedModifiers = true;
 		}
 	}

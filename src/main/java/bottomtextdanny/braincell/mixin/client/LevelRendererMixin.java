@@ -1,8 +1,8 @@
 package bottomtextdanny.braincell.mixin.client;
 
-import bottomtextdanny.braincell.mod.capability.CapabilityHelper;
-import bottomtextdanny.braincell.mod.capability.level.BCLevelCapability;
-import bottomtextdanny.braincell.mod.capability.level.SpeckManagerModule;
+import bottomtextdanny.braincell.libraries.capability.CapabilityHelper;
+import bottomtextdanny.braincell.libraries.speck.BCSpeckCapability;
+import bottomtextdanny.braincell.libraries.speck.SpeckManagerModule;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import net.minecraft.client.Camera;
@@ -24,7 +24,7 @@ public class LevelRendererMixin {
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endLastBatch()V", shift = At.Shift.BEFORE), method = "renderLevel", remap = true)
     public void hookSpeckRendering(PoseStack stack, float partialTick, long unused0, boolean unused1, Camera camera, GameRenderer unused2, LightTexture unused3, Matrix4f unused4, CallbackInfo ci) {
-        SpeckManagerModule module = CapabilityHelper.get(this.level, BCLevelCapability.TOKEN).getSpeckManager();
+        SpeckManagerModule module = CapabilityHelper.get(this.level, BCSpeckCapability.TOKEN).getSpeckManager();
         MultiBufferSource.BufferSource multibuffersource = this.renderBuffers.bufferSource();
 
         module.render(stack, multibuffersource);

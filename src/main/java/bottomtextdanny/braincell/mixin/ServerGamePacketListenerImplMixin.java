@@ -1,8 +1,8 @@
 package bottomtextdanny.braincell.mixin;
 
-import bottomtextdanny.braincell.mod.capability.BCCapabilityHelper;
-import bottomtextdanny.braincell.mod.capability.player.BCAccessoryModule;
-import bottomtextdanny.braincell.mod.capability.player.accessory.IQueuedJump;
+import bottomtextdanny.braincell.libraries.capability.BCCapabilityHelper;
+import bottomtextdanny.braincell.libraries.accessory.BCAccessoryModule;
+import bottomtextdanny.braincell.libraries.accessory.IQueuedJump;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
@@ -22,6 +22,9 @@ public abstract class ServerGamePacketListenerImplMixin {
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V", shift = At.Shift.BEFORE), method = "handleMovePlayer", remap = true)
 	public void de_updateJumpAccessories(ServerboundMovePlayerPacket packet, CallbackInfo ci) {
 		BCAccessoryModule accessoryModule = BCCapabilityHelper.accessoryModule(this.player);
+
+		if (accessoryModule == null) return;
+
 		double d1 = de_clampVertical(packet.getY(this.player.getY()));
 		double d8 = d1 - this.lastGoodY;
 		

@@ -1,6 +1,8 @@
 package bottomtextdanny.braincell.base;
 
+import com.mojang.math.Vector3f;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 
 public final class BCMath {
     public static final double SQRT_2 = 1.4142135623730951;
@@ -11,10 +13,74 @@ public final class BCMath {
     public static final float FPI_BY_TWO = (float)PI_BY_TWO;
     public static final double PI_HALF = Math.PI / 2.0;
     public static final float FPI_HALF = (float)PI_HALF;
-//    public static final double PI_QUARTER = Math.PI / 4.0; nah
-//    public static final float FPI_QUARTER = (float)PI_QUARTER; nah
     public static final double RAD2DEG = 57.29577951308232;
     public static final float FRAD2DEG = (float)RAD2DEG;
+
+    public static void rotateX(float rad, Vector3f vec) {
+        float sin = BCMath.sin(rad);
+        float cos = BCMath.cos(rad);
+        float y = vec.y();
+        vec.setY(y * cos - vec.z() * sin);
+        vec.setZ(y * sin + vec.z() * cos);
+    }
+
+    public static Vector3f rotatedX(float rad, Vector3f vec) {
+        float sin = BCMath.sin(rad);
+        float cos = BCMath.cos(rad);
+        return new Vector3f(vec.x(), vec.y() * cos - vec.z() * sin,
+            vec.y() * sin + vec.z() * cos);
+    }
+
+    public static Vec3 rotateX(float rad, Vec3 vec) {
+        float sin = BCMath.sin(rad);
+        float cos = BCMath.cos(rad);
+        return new Vec3(vec.x, vec.y * cos - vec.z * sin,
+            vec.y * sin + vec.z * cos);
+    }
+
+    public static void rotateY(float rad, Vector3f vec) {
+        float sin = BCMath.sin(rad);
+        float cos = BCMath.cos(rad);
+        float x = vec.x();
+        vec.setX(x * cos + vec.z() * sin);
+        vec.setZ(-x * sin + vec.z() * cos);
+    }
+
+    public static Vector3f rotatedY(float rad, Vector3f vec) {
+        float sin = BCMath.sin(rad);
+        float cos = BCMath.cos(rad);
+        return new Vector3f(vec.x() * cos + vec.z() * sin,
+            vec.y(), -vec.x() * sin + vec.z() * cos);
+    }
+
+    public static Vec3 rotateY(float rad, Vec3 vec) {
+        float sin = BCMath.sin(rad);
+        float cos = BCMath.cos(rad);
+        return new Vec3(vec.x * cos + vec.z * sin,
+            vec.y, -vec.x * sin + vec.z * cos);
+    }
+
+    public static void rotateZ(float rad, Vector3f vec) {
+        float sin = BCMath.sin(rad);
+        float cos = BCMath.cos(rad);
+        float x = vec.x();
+        vec.setX(x * cos - vec.y() * sin);
+        vec.setY(x * sin + vec.y() * cos);
+    }
+
+    public static Vector3f rotatedZ(float rad, Vector3f vec) {
+        float sin = BCMath.sin(rad);
+        float cos = BCMath.cos(rad);
+        return new Vector3f(vec.x() * cos - vec.y() * sin,
+            vec.x() * sin + vec.y() * cos, vec.z());
+    }
+
+    public static Vec3 rotateZ(float rad, Vec3 vec) {
+        float sin = BCMath.sin(rad);
+        float cos = BCMath.cos(rad);
+        return new Vec3(vec.x * cos - vec.y * sin,
+            vec.x * sin + vec.y * cos, vec.z);
+    }
 
     public static int roundUp(int val, int alignment) {
         int mod = val % alignment;
@@ -85,13 +151,22 @@ public final class BCMath {
         return Mth.cos((float)rad);
     }
 
-    public static float radianAngleDiff(float a, float b) {
+    public static float normalizeRad(float radian) {
+        radian = radian % FPI_BY_TWO;
+        if (radian > FPI) {
+            return radian - FPI_BY_TWO;
+        }
+        return radian;
+    }
 
-        float plainDif = FRAD2DEG * (a - b) % 360;
-        float dif = (float)Math.abs(plainDif) % 360;
+    public static float radianAngleDiff(float a, float b) {
+//        a = a - b;
+//        a = ((a + FPI) % FPI_BY_TWO) - FPI;
+//        return a;
+        float plainDif = (FRAD2DEG * (a - b)) % 360;
+        float dif = Math.abs(plainDif) % 360;
 
         if (dif > 180) dif = 360 - dif;
-        float r = FRAD * (dif) * ((plainDif >= 0 && plainDif <= 180) || (plainDif <= -180 && plainDif >= -360) ? 1 : -1);
-        return r;
+        return FRAD * (dif) * ((plainDif >= 0 && plainDif <= 180) || (plainDif <= -180 && plainDif >= -360) ? 1 : -1);
     }
 }

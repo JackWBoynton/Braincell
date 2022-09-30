@@ -20,8 +20,7 @@ public final class SparedHashCollection<K, V> extends AbstractCollection<K> {
 	public void insert(K key, V value) {
 		this.map.remove(key);
 		if (this.queue.size() >= this.threshold) {
-			this.map.remove(this.queue.element());
-			this.queue.remove();
+			this.map.remove(this.queue.poll());
 		}
 		this.map.put(key, value);
 		this.queue.add(key);

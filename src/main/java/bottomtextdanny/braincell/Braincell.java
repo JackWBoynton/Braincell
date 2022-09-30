@@ -1,29 +1,15 @@
 package bottomtextdanny.braincell;
 
-import bottomtextdanny.braincell.mod._base.registry.managing.DeferrorType;
-import bottomtextdanny.braincell.mod.capability.level.speck.PointLightSpeck;
-import bottomtextdanny.braincell.mod.capability.level.speck.ShootLighSpeck;
-import bottomtextdanny.braincell.mod.capability.player.accessory.MiniAttribute;
-import bottomtextdanny.braincell.mod.graphics.point_lighting.SimplePointLight;
-import bottomtextdanny.braincell.mod.hooks.*;
-import bottomtextdanny.braincell.mod.network.Connection;
-import bottomtextdanny.braincell.mod.network.OnlyHandledOnClient;
-import bottomtextdanny.braincell.mod._base.BCEvaluations;
-import bottomtextdanny.braincell.mod.hooks.*;
-import bottomtextdanny.braincell.mod._base.registry.managing.ModDeferringManager;
-import bottomtextdanny.braincell.mod._mod.client_sided.BCClientSide;
-import bottomtextdanny.braincell.mod._mod.common_sided.BCCommonSide;
-import bottomtextdanny.braincell.mod._mod.object_tables.BraincellEntities;
-import bottomtextdanny.braincell.mod._mod.object_tables.BraincellRecipes;
-import bottomtextdanny.braincell.mod.capability.player.accessory.BCAccessoryKeys;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.world.phys.Vec3;
+import bottomtextdanny.braincell.tables.*;
+import bottomtextdanny.braincell.libraries.network.Connection;
+import bottomtextdanny.braincell.libraries.network.OnlyHandledOnClient;
+import bottomtextdanny.braincell.libraries.mod.BCEvaluations;
+import bottomtextdanny.braincell.libraries.registry.ModDeferringManager;
+import bottomtextdanny.braincell.interaction.*;
+import net.minecraft.core.Registry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -31,7 +17,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.opengl.GL30;
 
 import static bottomtextdanny.braincell.Braincell.ID;
 
@@ -62,7 +47,7 @@ public class Braincell {
 //        forgeEventBus.addListener((RenderLivingEvent.Post<?, ?> event) -> {
 //            if (event.getEntity() == null) return;
 //            SimplePointLight light = new SimplePointLight(event.getEntity().position(),
-//                    new Vec3(1.0F, 0.0F, 0.0F), 5.0F, 1.3F, 0.8F);
+//                    new Vec3(1, 0.8, .1), 5.0F, 0.8F, 1.8F);
 //
 //            client().getShaderHandler().getLightingWorkflow().addLight(light);
 //        });
@@ -76,10 +61,11 @@ public class Braincell {
 //
 //            if (Minecraft.getInstance().options.keyDrop.isDown()) {
 //
+//                player.chat(String.valueOf(BCContextualSerializers.REGISTRY.get() != null));
 //                client().resetShaderHandler();
 //
-//                PointLightSpeck light = new ShootLighSpeck(player.level, 10, 10, 10);
-//                light.setLight(new SimplePointLight(player.position(), new Vec3(1, 0, 0), 5, 1, 1));
+//                PointLightSpeck light = new ShootLightSpeck(player.level, 10, 10, 10);
+//                light.setLight(new SimplePointLight(player.position(), new Vec3(1, 0.8, .1), 5, 1, 1));
 //                light.addToLevel();
 //            }
 //        });
@@ -89,11 +75,28 @@ public class Braincell {
             modEventBus.addListener(Braincell::clientSetupPhaseHook);
             ((BCClientSide)client).modLoadingCallOut();
         });
-        BCAccessoryKeys.loadClass();
+        BCStepDataTypes.registerRegistry();
+        BCCharts.registerRegistry();
+        BCSerializers.registerRegistry();
+        BCContextualSerializers.registerRegistry();
+        BCAccessoryKeys.registerRegistry();
+        BCAccessoryAttributeModifiers.registerRegistry();
         BCEvaluations.loadClass();
-        MiniAttribute.loadClass();
-        DEFERRING_STATE.addRegistryDeferror(DeferrorType.RECIPE_SERIALIZER, BraincellRecipes.ENTRIES);
-        DEFERRING_STATE.addRegistryDeferror(DeferrorType.ENTITY_TYPE, BraincellEntities.ENTRIES);
+        BCEntityKeys.registerRegistry();
+        DEFERRING_STATE.addRegistryDeferror(Registry.ATTRIBUTE_REGISTRY, BCAttributes.ENTRIES);
+        DEFERRING_STATE.addRegistryDeferror(BCAccessoryKeys.REGISTRY_KEY, BCAccessoryKeys.ENTRIES);
+        DEFERRING_STATE.addRegistryDeferror(BCAccessoryAttributeModifiers.REGISTRY_KEY, BCAccessoryAttributeModifiers.ENTRIES);
+        DEFERRING_STATE.addRegistryDeferror(BCStepDataTypes.REGISTRY_KEY, BCStepDataTypes.ENTRIES);
+        DEFERRING_STATE.addRegistryDeferror(BCCharts.REGISTRY_KEY, BCCharts.ENTRIES);
+        DEFERRING_STATE.addRegistryDeferror(BCSerializers.REGISTRY_KEY, BCSerializers.ENTRIES);
+        DEFERRING_STATE.addRegistryDeferror(BCContextualSerializers.REGISTRY_KEY, BCContextualSerializers.ENTRIES);
+        DEFERRING_STATE.addRegistryDeferror(Registry.STRUCTURE_PIECE_REGISTRY, BCStructureTypes.ENTRIES);
+        DEFERRING_STATE.addRegistryDeferror(Registry.RECIPE_SERIALIZER_REGISTRY, BCRecipes.ENTRIES);
+        DEFERRING_STATE.addRegistryDeferror(BCEntityKeys.REGISTRY_KEY, BCEntityKeys.ENTRIES);
+        DEFERRING_STATE.addRegistryDeferror(Registry.BLOCK_REGISTRY, BCBlocks.ENTRIES);
+        DEFERRING_STATE.addRegistryDeferror(Registry.ITEM_REGISTRY, BCItems.ENTRIES);
+        DEFERRING_STATE.addRegistryDeferror(Registry.BLOCK_ENTITY_TYPE_REGISTRY, BCBlockEntities.ENTRIES);
+        DEFERRING_STATE.addRegistryDeferror(Registry.ENTITY_TYPE_REGISTRY, BCEntities.ENTRIES);
         DEFERRING_STATE.solveAndLockForeverEver();
     }
 

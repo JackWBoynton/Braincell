@@ -1,8 +1,8 @@
 package bottomtextdanny.braincell.mixin.client;
 
 import com.mojang.blaze3d.Blaze3D;
-import bottomtextdanny.braincell.mod.BraincellModules;
-import bottomtextdanny.braincell.mod._mod.client_sided.events.MouseMovementEvent;
+import bottomtextdanny.braincell.BraincellModules;
+import bottomtextdanny.braincell.events.MouseMovementEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.util.SmoothDouble;
@@ -40,7 +40,7 @@ public class MouseHelperMixin {
 
 			if (mouseGrabbed && minecraft.isWindowActive()) {
 				int finalMultiplierFactor = 1;
-				double sensitivityFactor = minecraft.options.sensitivity * (1 - reduction) * (double) 0.6F + (double)0.2F;
+				double sensitivityFactor = minecraft.options.sensitivity().get() * (1 - reduction) * (double) 0.6F + (double)0.2F;
 				double easedSensitivityFactor = sensitivityFactor * sensitivityFactor * sensitivityFactor;
 				double movementFactor = easedSensitivityFactor * 8.0D;
 				double deltaXMovement;
@@ -62,7 +62,7 @@ public class MouseHelperMixin {
 					deltaYMovement = accumulatedDeltaY * movementFactor;
 				}
 
-				if (minecraft.options.invertYMouse) {
+				if (minecraft.options.invertYMouse().get()) {
 					finalMultiplierFactor = -1;
 				}
 

@@ -51,8 +51,8 @@ public final class WeightArray<T> {
 	 * @param positionInbound the position where the element will be gotten from {@link #elementArray}.
 	 * @return the element that is found at the given position.
 	 *
-	 * @throws IndexOutOfBoundsException if the given index is out of range
-	 * ({@code index < 0 || index >= {@link #weightArraySizeSize}})
+	 * @throws IndexOutOfBoundsException if the given layer is out of range
+	 * ({@code layer < 0 || layer >= {@link #weightArraySizeSize}})
 	 */
 	public T map(int positionInbound) {
 		return this.elementArray[positionInbound];

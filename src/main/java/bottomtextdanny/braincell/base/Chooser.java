@@ -1,8 +1,9 @@
 package bottomtextdanny.braincell.base;
 
+import net.minecraft.util.RandomSource;
+
 import java.util.NavigableMap;
 import java.util.TreeMap;
-import java.util.random.RandomGenerator;
 
 public class Chooser<T> {
     private final NavigableMap<Float, T> weightTable;
@@ -30,11 +31,15 @@ public class Chooser<T> {
         return new Builder<>();
     }
 
-    public T pick(RandomGenerator chooser) {
+    public T pick(RandomSource chooser) {
         return weightTable.higherEntry(total * chooser.nextFloat()).getValue();
     }
 
-    public void fillArray(T[] array, RandomGenerator chooser) {
+    public T pick(float value) {
+        return weightTable.higherEntry(value).getValue();
+    }
+
+    public void fillArray(T[] array, RandomSource chooser) {
         for (int i = 0; i < array.length; i++) {
             array[i] = weightTable.higherEntry(total * chooser.nextFloat()).getValue();
         }

@@ -1,19 +1,18 @@
 buildscript {
     repositories {
-        maven {
-            url = 'https://files.minecraftforge.net/maven'
-        }
-        maven {
-            url = "https://repo.spongepowered.org/repository/maven-public/"
-        }
+        maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = 'https://repo.spongepowered.org/maven' }
+        mavenCentral()
     }
     dependencies {
-        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.+", changing: true
-        classpath group: "org.spongepowered", name: "mixingradle", version: "0.7-SNAPSHOT"
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1+', changing: true
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
 
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'maven-publish'
 
 repositories{
     maven {
@@ -36,18 +35,14 @@ repositories{
     mavenCentral()
 }
 
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
-apply plugin: 'org.spongepowered.mixin'
-
-version = '1.16'
+version = '1.19'
 group = 'com.bottomtextdanny'
 archivesBaseName = 'braincell'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
-    mappings channel: "official", version: "1.18.2"
+    mappings channel: "official", version: "1.19.2"
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -91,7 +86,8 @@ minecraft {
 }
 
 mixin {
-    add sourceSets.main, "braincell.refmap.json"
+    add sourceSets.main, 'braincell.mixins.refmap.json'
+    config 'braincell.mixins.json'
 }
 
 sourceSets.main.resources {
@@ -101,16 +97,18 @@ sourceSets.main.resources {
 dependencies {
     //implementation fg.deobf("curse.maven:alexs_mobs-426558:3575698")
     //implementation fg.deobf("curse.maven:citadel-331936:3574790")
-    //implementation fg.deobf("curse.maven:mob-battle-mod-268746:3573470")
+    implementation fg.deobf("curse.maven:mob-battle-mod-268746:3952789")
     //implementation fg.deobf("curse.maven:torohealth-damage-indicators-245733:3556931")
-    implementation fg.deobf("asd:dannys_expansion:1.2.5")
-    compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.3.143:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.3.143")
-    minecraft 'net.minecraftforge:forge:1.18.2-40.0.15'
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    implementation fg.deobf("curse.maven:neat-435044:3738180")
+
+    implementation fg.deobf("asd:dannys_expansion:1.2.8")
+//    compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.3.143:api")
+//    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.3.143")
+    minecraft 'net.minecraftforge:forge:1.19.2-43.1.25'
+//    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+//    implementation fg.deobf("curse.maven:better-third-person-238372:3593906")
+//    implementation fg.deobf("curse.maven:neat-435044:3738180")
 }
-// Example for how to get properties into the manifest for reading by the runtime..
+
 jar {
     manifest {
         attributes([

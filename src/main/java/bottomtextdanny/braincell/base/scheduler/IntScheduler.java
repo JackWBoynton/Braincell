@@ -2,12 +2,12 @@ package bottomtextdanny.braincell.base.scheduler;
 
 import bottomtextdanny.braincell.base.FloatRandomPicker;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.IntSupplier;
 
 public abstract class IntScheduler implements Scheduler<Integer> {
-    public static final ThreadLocalRandom INNER_RANDOM = ThreadLocalRandom.current();
+    public static final RandomSource INNER_RANDOM = RandomSource.create();
     protected int current;
 
     public static Simple simple(int bound) {

@@ -20,4 +20,8 @@ public class ObjectFetcher {
 	public <A> A get(int index, Class<A> clazz) {
 		return (A) this.objects[index];
 	}
+
+	public int size() {
+		return objects.length;
+	}
 }

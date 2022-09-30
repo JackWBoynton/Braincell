@@ -1,8 +1,8 @@
 package bottomtextdanny.braincell.mixin;
 
-import bottomtextdanny.braincell.mod.entity.modules.looped_walk.LoopedWalkProvider;
-import bottomtextdanny.braincell.mod.entity.modules.animatable.BaseAnimatableProvider;
-import bottomtextdanny.braincell.mod.entity.modules.data_manager.BCDataManagerProvider;
+import bottomtextdanny.braincell.libraries._minor.entity.looped_walk.LoopedWalkProvider;
+import bottomtextdanny.braincell.libraries.entity_animation.BaseAnimatableProvider;
+import bottomtextdanny.braincell.libraries._minor.entity_data_manager.BCDataManagerProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
@@ -21,7 +21,7 @@ public class EntityMixin {
     public void tickHook(CallbackInfo ci) {
         if (this instanceof BaseAnimatableProvider provider) {
             if (provider.operateAnimatableModule()) {
-                provider.animatableModule().tick();
+                provider.animatableModule().tick((Entity & BaseAnimatableProvider)provider);
             }
         }
     }

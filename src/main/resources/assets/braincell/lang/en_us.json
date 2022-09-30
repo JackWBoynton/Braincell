@@ -1,3 +1,14 @@
 {
-  "description.braincell.unstable": "[Unstable]"
+  "description.braincell.unstable": "[Unstable]",
+  "flagged_schema_maker.position": "Position",
+  "flagged_schema_maker.size": "Size",
+  "flagged_schema_maker.offset": "Offset",
+  "flagged_schema_maker.save": "Save",
+  "flagged_schema_maker.parse": "Parse To Clipboard",
+  "flagged_schema_maker.add": "Add",
+  "flagged_schema_maker.delete": "Delete",
+  "flagged_schema_maker.block_id": "\"minecraft:stone\"",
+  "flagged_schema_maker.name": "\"fancy_block\"",
+  "flagged_schema_maker.flags": "\"1, 2, 3, 4\"",
+  "flagged_schema_maker.properties": "\"mc:lit\""
 }

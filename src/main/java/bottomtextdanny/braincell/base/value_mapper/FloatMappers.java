@@ -1,9 +1,9 @@
 package bottomtextdanny.braincell.base.value_mapper;
 
 import it.unimi.dsi.fastutil.floats.FloatFloatMutablePair;
+import net.minecraft.util.RandomSource;
 
 import java.util.function.Consumer;
-import java.util.random.RandomGenerator;
 
 public final class FloatMappers {
 
@@ -29,7 +29,7 @@ public final class FloatMappers {
         }
 
         @Override
-        public float map(RandomGenerator random) {
+        public float map(RandomSource random) {
             return this.value;
         }
     }
@@ -43,8 +43,8 @@ public final class FloatMappers {
             this.maximum = maximum;
         }
 
-        public float map(RandomGenerator random) {
-            return this.minimum + random.nextFloat(this.maximum - this.minimum);
+        public float map(RandomSource random) {
+            return this.minimum + random.nextFloat() * (this.maximum - this.minimum);
         }
     }
 
@@ -57,9 +57,9 @@ public final class FloatMappers {
             this.getter = getter;
         }
 
-        public float map(RandomGenerator random) {
+        public float map(RandomSource random) {
             this.getter.accept(this.minMax);
-            return this.minMax.leftFloat() + random.nextFloat(this.minMax.rightFloat() - this.minMax.leftFloat());
+            return this.minMax.leftFloat() + random.nextFloat() * (this.minMax.rightFloat() - this.minMax.leftFloat());
         }
     }
 }

@@ -11,6 +11,7 @@
     "client.ItemRendererMixin",
     "client.ItemStackClientMixin",
     "client.LevelRendererMixin",
+    "client.LivingEntityRendererMixin",
     "client.MinecraftMixin",
     "client.MouseHelperMixin",
     "client.PlayerModelMixin",
@@ -18,7 +19,9 @@
     "client.WorldRendererMixin"
   ],
   "mixins": [
+    "BeardifierMixin",
     "EntityMixin",
+    "EntityTypeMixin",
     "ItemEntityMixin",
     "LivingEntityMixin",
     "MobMixin",

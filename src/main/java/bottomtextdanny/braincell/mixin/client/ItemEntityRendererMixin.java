@@ -2,19 +2,12 @@ package bottomtextdanny.braincell.mixin.client;
 
 import bottomtextdanny.braincell.Braincell;
 import com.mojang.blaze3d.vertex.PoseStack;
-import bottomtextdanny.braincell.mixin_support.ItemEntityExtensor;
-import bottomtextdanny.braincell.mod._base.registry.item_extensions.ExtraModelProvider;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemEntityRenderer;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemEntityRenderer.class)

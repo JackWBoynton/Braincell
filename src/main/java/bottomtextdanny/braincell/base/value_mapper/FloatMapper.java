@@ -1,12 +1,11 @@
 package bottomtextdanny.braincell.base.value_mapper;
 
 import bottomtextdanny.braincell.base.FloatRandomPicker;
-
-import java.util.random.RandomGenerator;
+import net.minecraft.util.RandomSource;
 
 @FunctionalInterface
 public interface FloatMapper {
-    float map(RandomGenerator random);
+    float map(RandomSource random);
 
     static FloatMapper of(float value) {
         return r -> {

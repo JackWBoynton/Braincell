@@ -1,7 +1,7 @@
 package bottomtextdanny.braincell.mixin.client;
 
-import bottomtextdanny.braincell.mod.BraincellModules;
-import bottomtextdanny.braincell.mod._mod.client_sided.events.PlayerPoseEvent;
+import bottomtextdanny.braincell.BraincellModules;
+import bottomtextdanny.braincell.events.PlayerPoseEvent;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;

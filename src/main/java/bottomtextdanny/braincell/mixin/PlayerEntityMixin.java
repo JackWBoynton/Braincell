@@ -1,6 +1,6 @@
 package bottomtextdanny.braincell.mixin;
 
-import bottomtextdanny.braincell.mod.world.item_utilities.CustomSweepAnimation;
+import bottomtextdanny.braincell.libraries._minor.CustomSweepAnimationItem;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -18,8 +18,8 @@ public class PlayerEntityMixin {
 			cancellable = true)
 	public void spawnSweepParticles(CallbackInfo ci) {
 		Item mainItem = ((Player)(Object)this).getItemInHand(InteractionHand.MAIN_HAND).getItem();
-		if (mainItem instanceof CustomSweepAnimation) {
-			((CustomSweepAnimation) mainItem).sweepParticleHook((Player) (Object) this);
+		if (mainItem instanceof CustomSweepAnimationItem) {
+			((CustomSweepAnimationItem) mainItem).sweepParticleHook((Player) (Object) this);
 			ci.cancel();
 		}
 	}

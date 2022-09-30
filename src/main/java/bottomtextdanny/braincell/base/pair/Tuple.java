@@ -4,7 +4,7 @@ package bottomtextdanny.braincell.base.pair;
  * <p>Basic tuple interface mostly thought for polymorphism between implementations.</p>
  *
  * <p>Immutability is not enforced,
- * however would be nice for mutable implementations to explicitly state it.</p>
+ * however would be nice for mutable implementations to explicitly block it.</p>
  * @see MutablePair
  *
  * <p>implementations should store an instance of both {@param <L>} and {@param <R>} parameters,

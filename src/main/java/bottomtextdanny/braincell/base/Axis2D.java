@@ -1,15 +1,14 @@
 package bottomtextdanny.braincell.base;
 
-import com.mojang.serialization.Codec;
 import net.minecraft.Util;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public enum Axis2D implements StringRepresentable {
@@ -33,7 +32,6 @@ public enum Axis2D implements StringRepresentable {
     };
 
     public static final Axis2D[] VALUES = values();
-    public static final Codec<Direction.Axis> CODEC = StringRepresentable.fromEnum(Direction.Axis::values, Direction.Axis::byName);
     private static final Map<String, Axis2D> BY_NAME = Arrays.stream(VALUES).collect(Collectors.toMap(Axis2D::getName, (p_122470_) -> {
         return p_122470_;
     }));
@@ -64,7 +62,7 @@ public enum Axis2D implements StringRepresentable {
         return this.name;
     }
 
-    public static Axis2D getRandom(Random p_122476_) {
+    public static Axis2D getRandom(RandomSource p_122476_) {
         return Util.getRandom(VALUES, p_122476_);
     }
 

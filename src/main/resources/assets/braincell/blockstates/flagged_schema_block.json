@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "braincell:block/flagged_schema_block"
+    }
+  }
+}

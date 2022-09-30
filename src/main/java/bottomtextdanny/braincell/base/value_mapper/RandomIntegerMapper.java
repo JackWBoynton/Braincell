@@ -1,7 +1,6 @@
 package bottomtextdanny.braincell.base.value_mapper;
 
-import java.util.Random;
-import java.util.SplittableRandom;
+import net.minecraft.util.RandomSource;
 
 public abstract class RandomIntegerMapper {
 
@@ -15,9 +14,7 @@ public abstract class RandomIntegerMapper {
         return new FakeRangedInteger(value);
     }
 
-    public abstract int map(SplittableRandom random);
-
-    public abstract int map(Random random);
+    public abstract int map(RandomSource random);
 
     private static class FakeRangedInteger extends RandomIntegerMapper {
         private final int value;
@@ -27,12 +24,7 @@ public abstract class RandomIntegerMapper {
         }
 
         @Override
-        public int map(SplittableRandom random) {
-            return this.value;
-        }
-
-        @Override
-        public int map(Random random) {
+        public int map(RandomSource random) {
             return this.value;
         }
     }
@@ -46,11 +38,7 @@ public abstract class RandomIntegerMapper {
             this.maximum = maximum;
         }
 
-        public int map(SplittableRandom random) {
-            return this.minimum + random.nextInt(this.maximum - this.minimum);
-        }
-
-        public int map(Random random) {
+        public int map(RandomSource random) {
             return this.minimum + random.nextInt(this.maximum - this.minimum);
         }
     }

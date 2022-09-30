@@ -1,15 +1,15 @@
 package bottomtextdanny.braincell.base;
 
-import java.util.random.RandomGenerator;
+import net.minecraft.util.RandomSource;
 
 @FunctionalInterface
 public interface FloatRandomPicker {
 
-    float compute(float min, float max, RandomGenerator random);
+    float compute(float min, float max, RandomSource random);
 
     static FloatRandomPicker linear() {
         return (min, max, random) -> {
-            return random.nextFloat(min, max);
+            return random.nextFloat() * (max - min) + min;
         };
     }
 

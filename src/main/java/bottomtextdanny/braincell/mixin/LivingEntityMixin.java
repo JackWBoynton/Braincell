@@ -1,14 +1,14 @@
 package bottomtextdanny.braincell.mixin;
 
-import bottomtextdanny.braincell.mod.entity.modules.looped_walk.LoopedWalkProvider;
-import bottomtextdanny.braincell.mod.entity.modules.additional_motion.ExtraMotionProvider;
-import bottomtextdanny.braincell.mod.entity.modules.animatable.LivingAnimatableModule;
-import bottomtextdanny.braincell.mod.entity.modules.animatable.LivingAnimatableProvider;
-import bottomtextdanny.braincell.mod.entity.modules.motion_util.MotionUtilProvider;
-import bottomtextdanny.braincell.mod.entity.modules.variable.Form;
-import bottomtextdanny.braincell.mod.entity.modules.variable.VariantProvider;
-import bottomtextdanny.braincell.mod.network.stc.MSGTrivialEntityActions;
+import bottomtextdanny.braincell.libraries._minor.entity.looped_walk.LoopedWalkProvider;
+import bottomtextdanny.braincell.libraries._minor.entity.additional_motion.ExtraMotionProvider;
+import bottomtextdanny.braincell.libraries.entity_animation.LivingAnimatableProvider;
+import bottomtextdanny.braincell.libraries._minor.entity.motion_util.MotionUtilProvider;
+import bottomtextdanny.braincell.libraries.entity_variant.Form;
+import bottomtextdanny.braincell.libraries.entity_variant.VariantProvider;
+import bottomtextdanny.braincell.libraries._minor.entity.MSGTrivialEntityActions;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -108,9 +108,23 @@ public abstract class LivingEntityMixin extends Entity {
 		super(entityTypeIn, worldIn);
 	}
 
+	@Inject(at = @At(value = "HEAD"), method = "getLootTable", remap = true, cancellable = true)
+	public void getVariantLootTable(CallbackInfoReturnable<ResourceLocation> cir) {
+		if (this instanceof VariantProvider provider && provider.operatingVariableModule() && provider.variableModule().hasFormTnput()) {
+			Form<?> form = provider.variableModule().getForm();
+
+			if (form != null) {
+				ResourceLocation lootPath = form.customLoot();
+				if (lootPath != null) {
+					cir.setReturnValue(lootPath);
+				}
+			}
+		}
+	}
+
 	@Inject(at = @At(value = "HEAD"), method = "getDimensions", remap = true, cancellable = true)
 	public void getDimensionsHook(Pose pose, CallbackInfoReturnable<EntityDimensions> cir) {
-		if (this instanceof VariantProvider provider && provider.operatingVariableModule() && provider.variableModule().isUpdated()) {
+		if (this instanceof VariantProvider provider && provider.operatingVariableModule() && provider.variableModule().hasFormTnput()) {
 			Form<?> form = provider.variableModule().getForm();
 
 			if (form != null) {
@@ -126,7 +140,7 @@ public abstract class LivingEntityMixin extends Entity {
 	public void tickHook(CallbackInfo ci) {
 		if (this instanceof LoopedWalkProvider provider) {
 			if (provider.operateWalkModule()) {
-				provider.loopedWalkModule().tick();
+				provider.loopedWalkModule().tick((LivingEntity & LoopedWalkProvider) provider);
 			}
 		}
 	}
