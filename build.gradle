@@ -35,7 +35,7 @@ repositories{
     mavenCentral()
 }
 
-version = '1.19'
+version = '1.20'
 group = 'com.bottomtextdanny'
 archivesBaseName = 'braincell'
 
@@ -100,7 +100,7 @@ dependencies {
     implementation fg.deobf("curse.maven:mob-battle-mod-268746:3952789")
     //implementation fg.deobf("curse.maven:torohealth-damage-indicators-245733:3556931")
 
-    implementation fg.deobf("asd:dannys_expansion:1.2.8")
+   // implementation fg.deobf("asd:dannys_expansion:1.2.8")
 //    compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.3.143:api")
 //    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.3.143")
     minecraft 'net.minecraftforge:forge:1.19.2-43.1.25'

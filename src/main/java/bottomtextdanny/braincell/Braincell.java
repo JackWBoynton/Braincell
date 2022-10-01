@@ -97,6 +97,7 @@ public class Braincell {
         DEFERRING_STATE.addRegistryDeferror(Registry.ITEM_REGISTRY, BCItems.ENTRIES);
         DEFERRING_STATE.addRegistryDeferror(Registry.BLOCK_ENTITY_TYPE_REGISTRY, BCBlockEntities.ENTRIES);
         DEFERRING_STATE.addRegistryDeferror(Registry.ENTITY_TYPE_REGISTRY, BCEntities.ENTRIES);
+        DEFERRING_STATE.addRegistryDeferror(Registry.PARTICLE_TYPE_REGISTRY, BCParticles.ENTRIES);
         DEFERRING_STATE.solveAndLockForeverEver();
     }
 
