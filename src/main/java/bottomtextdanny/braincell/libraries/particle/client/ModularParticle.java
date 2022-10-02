@@ -5,36 +5,39 @@
 
 package bottomtextdanny.braincell.libraries.particle.client;
 
+import bottomtextdanny.braincell.libraries.particle.ModularParticleType;
 import bottomtextdanny.braincell.libraries.particle.client.tickers.ParticleAction;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class ModularParticle extends Particle implements MParticle {
-	protected final ParticleAction ticker;
-	protected final ParticleAction start;
-	protected float xRotO;
-	protected float yRotO;
-	protected float zRotO;
-	protected float xRot;
-	protected float yRot;
-	protected float zRot;
-	protected float defaultSize;
-	protected float sizeO;
-	protected float size;
-	protected int glow;
-	protected boolean lookToCamera;
+	protected final ModularParticleType type;
+	protected final ParticleAction<?> ticker;
+	protected final ParticleAction<?> start;
+	public float xRotO;
+	public float yRotO;
+	public float zRotO;
+	public float xRot;
+	public float yRot;
+	public float zRot;
+	public float sizeO;
+	public float size;
+	public byte flags;
 
-	protected ModularParticle(ClientLevel world, double x, double y, double z, ParticleAction start, ParticleAction ticker) {
+	protected ModularParticle(ModularParticleType type, ClientLevel world, double x, double y, double z, ParticleAction start, ParticleAction ticker) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
+		this.type = type;
 		this.ticker = ticker;
 		this.start = start;
 		init(0.0D, 0.0D, 0.0D);
 	}
 
-	public ModularParticle(ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, ParticleAction start, ParticleAction ticker) {
+	public ModularParticle(ModularParticleType type, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, ParticleAction start, ParticleAction ticker) {
 		super(world, x, y, z, xSpeed, ySpeed, zSpeed);
+		this.type = type;
 		this.ticker = ticker;
 		this.start = start;
 		init(xSpeed, ySpeed, zSpeed);
@@ -55,9 +58,8 @@ public abstract class ModularParticle extends Particle implements MParticle {
 		xd = xDelta;
 		yd = yDelta;
 		zd = zDelta;
-		start.execute(this);
+		start._execute(this);
 		customInit();
-		defaultSize = size;
 	}
 
 	public abstract void customInit();
@@ -71,7 +73,28 @@ public abstract class ModularParticle extends Particle implements MParticle {
 
 		super.tick();
 
-		ticker.execute(this);
+		ticker._execute(this);
+	}
+
+	@Override
+	public void move(double xDelta, double yDelta, double zDelta) {
+		if (getFlag(IGNORE_COLLISION)) setPos(getPos().add(xDelta, yDelta, zDelta));
+		else super.move(xDelta, yDelta, zDelta);
+	}
+
+	@Override
+	protected int getLightColor(float tickOffset) {
+		return getFlag(GLOW) ? 15728880 : super.getLightColor(tickOffset);
+	}
+
+	@Override
+	public ParticleRenderType getRenderType() {
+		return getFlag(TRANSLUCENT) ? ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT : ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+	}
+
+	@Override
+	public boolean shouldCull() {
+		return !getFlag(IGNORE_CULLING);
 	}
 
 	@Override
@@ -242,18 +265,13 @@ public abstract class ModularParticle extends Particle implements MParticle {
 	}
 
 	@Override
-	public float getDefaultSize() {
-		return defaultSize;
+	public void setFlags(byte value) {
+		flags = value;
 	}
 
 	@Override
-	public void setGlow(int value) {
-		glow = value;
-	}
-
-	@Override
-	public int getGlow() {
-		return glow;
+	public byte getFlags() {
+		return flags;
 	}
 
 	@Override
@@ -264,10 +282,5 @@ public abstract class ModularParticle extends Particle implements MParticle {
 	@Override
 	public float getGravity() {
 		return gravity;
-	}
-
-	@Override
-	public void setCameraFixation(boolean state) {
-		lookToCamera = state;
 	}
 }

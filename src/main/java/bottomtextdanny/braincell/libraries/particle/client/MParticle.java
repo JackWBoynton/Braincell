@@ -5,13 +5,27 @@
 
 package bottomtextdanny.braincell.libraries.particle.client;
 
+import bottomtextdanny.braincell.libraries.particle.ModularParticleType;
 import bottomtextdanny.braincell.libraries.particle.client.tickers.ParticleAction;
 import com.mojang.math.Vector3f;
+import it.unimi.dsi.fastutil.floats.FloatList;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 
 public interface MParticle {
+	int CAMERA_DISJUNCTION_BIT = 0b1;
+	int GLOW_BIT = 0b10;
+	int TRANSLUCENT_BIT = 0b100;
+	int IGNORE_COLLISION_BIT = 0b1000;
+	int IGNORE_CULLING_BIT = 0b10000;
+	int AUTOKILL_STATE_BIT = 0b100000;
+	int CAMERA_DISJUNCTION = 0;
+	int GLOW = 1;
+	int TRANSLUCENT = 2;
+	int IGNORE_COLLISION = 3;
+	int IGNORE_CULLING = 4;
+	int AUTOKILL_STATE = 5;
 
 	void setPos(double x, double y, double z);
 
@@ -138,9 +152,9 @@ public interface MParticle {
 
 	float getA();
 
-	ParticleAction start();
+	ParticleAction<?> start();
 
-	ParticleAction ticker();
+	ParticleAction<?> ticker();
 
 	ClientLevel level();
 
@@ -184,16 +198,6 @@ public interface MParticle {
 
 	float getSize();
 
-	float getDefaultSize();
-
-	void setGlow(int value);
-
-	default void addGlow(int value) {
-		setGlow(getGlow() + value);
-	}
-
-	int getGlow();
-
 	void setGravity(float value);
 
 	default void addGravity(float value) {
@@ -202,7 +206,15 @@ public interface MParticle {
 
 	float getGravity();
 
-	void setCameraFixation(boolean state);
+	void setFlags(byte value);
+
+	default boolean getFlag(int slot) {
+		return (getFlags() & 1 << slot) != 0;
+	}
+
+	byte getFlags();
+
+	ModularParticleType getType();
 
 	void remove();
 }

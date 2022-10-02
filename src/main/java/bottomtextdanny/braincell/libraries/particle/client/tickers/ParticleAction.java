@@ -11,54 +11,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 @FunctionalInterface
-public interface ParticleAction {
+public interface ParticleAction<T extends MParticle> {
 	ParticleAction NO = particle -> {};
 
-	void execute(MParticle particle);
-
-	default ParticleAction append(ParticleAction other1) {
-		return new ParticleAction() {
-			@Override
-			public void execute(MParticle particle) {
-				ParticleAction.this.execute(particle);
-				other1.execute(particle);
-			}
-
-			@Override
-			public ParticleAction append(ParticleAction other2) {
-				return new ParticleAction() {
-					@Override
-					public void execute(MParticle particle) {
-						ParticleAction.this.execute(particle);
-						other1.execute(particle);
-						other2.execute(particle);
-					}
-
-					@Override
-					public ParticleAction append(ParticleAction other3) {
-						List<ParticleAction> list = new LinkedList<>();
-						list.add(ParticleAction.this);
-						list.add(other1);
-						list.add(other2);
-						list.add(other3);
-						return new ParticleAction() {
-
-							@Override
-							public void execute(MParticle particle) {
-								for (ParticleAction action : list) {
-									action.execute(particle);
-								}
-							}
-
-							@Override
-							public ParticleAction append(ParticleAction other4) {
-								list.add(other4);
-								return this;
-							}
-						};
-					}
-				};
-			}
-		};
+	default void _execute(MParticle particle) {
+		execute((T)particle);
 	}
+
+	void execute(T particle);
 }

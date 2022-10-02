@@ -9,7 +9,8 @@ import bottomtextdanny.braincell.libraries.model.BCBox;
 import bottomtextdanny.braincell.libraries.model.BCTexturedQuad;
 import bottomtextdanny.braincell.libraries.model.BCVertex;
 import bottomtextdanny.braincell.libraries.model.ImpreciseRot;
-import bottomtextdanny.braincell.libraries.particle.ModularParticleData;
+import bottomtextdanny.braincell.libraries.particle.ModularParticleOptions;
+import bottomtextdanny.braincell.libraries.particle.ModularParticleType;
 import bottomtextdanny.braincell.libraries.particle.client.ModularParticle;
 import bottomtextdanny.braincell.libraries.particle.client.tickers.ParticleAction;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -39,8 +40,8 @@ import java.util.List;
 public class LimbParticle extends ModularParticle {
 	protected final Limb limb;
 
-	protected LimbParticle(ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Limb limb, ParticleAction start, ParticleAction ticker) {
-		super(world, x, y, z, xSpeed, ySpeed, zSpeed, start, ticker);
+	protected LimbParticle(ModularParticleType type, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Limb limb, ParticleAction start, ParticleAction ticker) {
+		super(type, world, x, y, z, xSpeed, ySpeed, zSpeed, start, ticker);
 		this.limb = limb;
 	}
 
@@ -65,19 +66,25 @@ public class LimbParticle extends ModularParticle {
 		float wX = (float)(Mth.lerp(tickOffset, xo, x) - cameraPos.x());
 		float wY = (float)(Mth.lerp(tickOffset, yo, y) - cameraPos.y());
 		float wZ = (float)(Mth.lerp(tickOffset, zo, z) - cameraPos.z());
+
 		pose.translate(wX, wY, wZ);
-		if (lookToCamera) {
-			pose.mulPose(ImpreciseRot.zRotDeg(Mth.lerp(tickOffset, zRotO, zRot)));
-			pose.mulPose(ImpreciseRot.xRotDeg(Mth.lerp(tickOffset, xRotO, xRot) + camera.getXRot()));
-			pose.mulPose(ImpreciseRot.yRotDeg(Mth.lerp(tickOffset, yRotO, yRot) + camera.getYRot()));
-		} else {
+
+		if (getFlag(CAMERA_DISJUNCTION)) {
 			pose.mulPose(ImpreciseRot.zRotDeg(Mth.lerp(tickOffset, zRotO, zRot)));
 			pose.mulPose(ImpreciseRot.xRotDeg(Mth.lerp(tickOffset, xRotO, xRot)));
 			pose.mulPose(ImpreciseRot.yRotDeg(Mth.lerp(tickOffset, yRotO, yRot)));
+		} else {
+			pose.mulPose(ImpreciseRot.zRotDeg(Mth.lerp(tickOffset, zRotO, zRot)));
+			pose.mulPose(ImpreciseRot.xRotDeg(Mth.lerp(tickOffset, xRotO, xRot) + camera.getXRot()));
+			pose.mulPose(ImpreciseRot.yRotDeg(Mth.lerp(tickOffset, yRotO, yRot) + camera.getYRot()));
 		}
 		pose.scale(-1.0F, -1.0F, 1.0F);
 
-		int j = getLightColor(tickOffset);
+		int j;
+
+		if (getFlag(GLOW)) j = 15728880;
+		else j = getLightColor(tickOffset);
+
 		float rCol = this.rCol;
 		float gCol = this.gCol;
 		float bCol = this.bCol;
@@ -147,15 +154,18 @@ public class LimbParticle extends ModularParticle {
 		}
 	}
 
+	@Override
+	public ModularParticleType getType() {
+		return type;
+	}
+
 	@OnlyIn(Dist.CLIENT)
-	public static class Factory implements ParticleProvider<ModularParticleData> {
+	public static class Factory implements ParticleProvider<ModularParticleOptions<Limb>> {
 
 		public Factory(SpriteSet spriteSet) {}
 
-		public Particle createParticle(ModularParticleData typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			ParticleAction ticker = typeIn.fetch(1);
-			ParticleAction start = typeIn.fetch(0);
-			return new LimbParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.fetch(2), start == null ? ParticleAction.NO : start, ticker == null ? ParticleAction.NO : ticker);
+		public Particle createParticle(ModularParticleOptions<Limb> typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			return new LimbParticle(typeIn.getType(), worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.extra, typeIn.start, typeIn.tick);
 		}
 	}
 }

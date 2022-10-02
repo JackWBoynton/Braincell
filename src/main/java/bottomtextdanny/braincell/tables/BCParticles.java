@@ -7,11 +7,10 @@ package bottomtextdanny.braincell.tables;
 
 import bottomtextdanny.braincell.Braincell;
 import bottomtextdanny.braincell.libraries.network.Connection;
-import bottomtextdanny.braincell.libraries.particle.ModularParticleData;
+import bottomtextdanny.braincell.libraries.particle.ModularParticleOptions;
 import bottomtextdanny.braincell.libraries.particle.ModularParticleType;
-import bottomtextdanny.braincell.libraries.particle.client.OpaqueParticle;
-import bottomtextdanny.braincell.libraries.particle.client.limb.Limb;
-import bottomtextdanny.braincell.libraries.particle.client.limb.LimbParticle;
+import bottomtextdanny.braincell.libraries.particle.StretchOptions;
+import bottomtextdanny.braincell.libraries.particle.client.StretchableSpriteParticle;
 import bottomtextdanny.braincell.libraries.particle.client.tickers.ParticleAction;
 import bottomtextdanny.braincell.libraries.registry.BCRegistry;
 import bottomtextdanny.braincell.libraries.registry.RegistryHelper;
@@ -28,15 +27,15 @@ public final class BCParticles {
 	public static final BCRegistry<ParticleType<?>> ENTRIES = new BCRegistry<>();
 	public static final RegistryHelper<ParticleType<?>> HELPER = new RegistryHelper<>(Braincell.DEFERRING_STATE, ENTRIES);
 
-	public static final Wrap<ModularParticleType> LIMB = defer("limb",
-		() -> new ModularParticleType(true, ModularParticleData.defaulted(ParticleAction.NO, ParticleAction.NO, null)),
-		() -> o -> new LimbParticle.Factory((SpriteSet) o));
+//	public static final Wrap<ModularParticleType> LIMB = defer("limb",
+//		() -> new ModularParticleType(true, ModularParticleData.defaulted(ParticleAction.NO, ParticleAction.NO, null)),
+//		() -> o -> new LimbParticle.Factory((SpriteSet) o));
 	public static final Wrap<ModularParticleType> DUST = defer("dust",
-		() -> new ModularParticleType(1, true, ModularParticleData.defaulted(ParticleAction.NO, ParticleAction.NO)),
-		() -> o -> new OpaqueParticle.Factory((SpriteSet) o));
+		() -> new ModularParticleType(1, true, ModularParticleOptions.defaulted(ParticleAction.NO, ParticleAction.NO, new StretchOptions(20))),
+		() -> o -> new StretchableSpriteParticle.Factory((SpriteSet) o));
 	public static final Wrap<ModularParticleType> CLOUD = defer("cloud",
-		() -> new ModularParticleType(8, true, ModularParticleData.defaulted(ParticleAction.NO, ParticleAction.NO)),
-		() -> o -> new OpaqueParticle.Factory((SpriteSet) o));
+		() -> new ModularParticleType(8, true, ModularParticleOptions.defaulted(ParticleAction.NO, ParticleAction.NO, new StretchOptions(20))),
+		() -> o -> new StretchableSpriteParticle.Factory((SpriteSet) o));
 
 	private static <D extends ParticleOptions, T extends ParticleType<D>> Wrap<T> defer(String key, Supplier<T> particleType, Supplier<? extends Function<Object, Object>> factory) {
 		Wrap<T> wrapped = HELPER.defer(key, particleType);

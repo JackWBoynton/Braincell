@@ -6,11 +6,14 @@
 package bottomtextdanny.braincell.libraries.particle.client;
 
 import bottomtextdanny.braincell.libraries.model.ImpreciseRot;
+import bottomtextdanny.braincell.libraries.particle.ExtraOptions;
+import bottomtextdanny.braincell.libraries.particle.ModularParticleType;
 import bottomtextdanny.braincell.libraries.particle.client.local_sprites.SpriteGroup;
 import bottomtextdanny.braincell.libraries.particle.client.tickers.ParticleAction;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
+import it.unimi.dsi.fastutil.floats.FloatList;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleRenderType;
@@ -24,18 +27,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class BaseSpriteParticle extends ModularTextureSheetParticle {
+public abstract class BaseSpriteParticle<E extends ExtraOptions> extends ModularTextureSheetParticle<E> {
     protected SpriteGroup sprites;
-    protected float[] frameSpace;
-    private float[] frameSpaceDefault;
-    protected boolean onCeiling;
 
-    protected BaseSpriteParticle(ClientLevel world, double x, double y, double z, ParticleAction start, ParticleAction ticker) {
-        super(world, x, y, z, 0.0D, 0.0D, 0.0D, start, ticker);
-    }
-
-    protected BaseSpriteParticle(ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, ParticleAction start, ParticleAction ticker) {
-        super(world, x, y, z, xSpeed, ySpeed, zSpeed, start, ticker);
+    protected BaseSpriteParticle(ModularParticleType type, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, ParticleAction start, ParticleAction ticker, E options) {
+        super(type, world, x, y, z, xSpeed, ySpeed, zSpeed, start, ticker, options);
     }
 
     public void tick() {
@@ -46,14 +42,16 @@ public abstract class BaseSpriteParticle extends ModularTextureSheetParticle {
         xo = x;
         yo = y;
         zo = z;
-        glow = -1;
-        ticker.execute(this);
+
+        ticker._execute(this);
 
         move(xd, yd, zd);
 
         int lifetime = this.lifetime;
 
-        if (quadSize > 0.005F && age++ < lifetime) {
+        if (getFlag(AUTOKILL_STATE) && (alpha < 0.0F || quadSize < 0.0F)) {
+            remove();
+        } else if (age++ < lifetime) {
             yd -= 0.04D * (double) gravity;
 
             float friction = this.friction;
@@ -71,39 +69,6 @@ public abstract class BaseSpriteParticle extends ModularTextureSheetParticle {
     }
 
     protected abstract void handleSprite(float lifetime);
-
-    public void resetFrames() {
-        frameSpace = frameSpaceDefault.clone();
-    }
-
-    @Override
-    public void move(double x, double y, double z) {
-        double d0 = x;
-        double d1 = y;
-        double d2 = z;
-        if (hasPhysics && (x != 0.0D || y != 0.0D || z != 0.0D)) {
-	        Vec3 vector3d = Entity.collideBoundingBox(null, new Vec3(x, y, z), getBoundingBox(), level, List.of());
-	        x = vector3d.x;
-            y = vector3d.y;
-            z = vector3d.z;
-        }
-
-        if (x != 0.0D || y != 0.0D || z != 0.0D) {
-            setBoundingBox(getBoundingBox().move(x, y, z));
-            setLocationFromBoundingbox();
-        }
-
-        onCeiling = d1 != y && d1 > 0.0D;
-
-        onGround = d1 != y && d1 < 0.0D;
-        if (d0 != x) {
-            xd = 0.0D;
-        }
-
-        if (d2 != z) {
-            zd = 0.0D;
-        }
-    }
     
     public void render(VertexConsumer buffer, Camera renderInfo, float tickOffset) {
         float f4 = Math.max(getQuadSize(tickOffset), 0.0F);
@@ -115,19 +80,20 @@ public abstract class BaseSpriteParticle extends ModularTextureSheetParticle {
         float f1 = (float)(Mth.lerp(tickOffset, yo, y) - vector3d.y());
         float f2 = (float)(Mth.lerp(tickOffset, zo, z) - vector3d.z());
         pose.translate(f, f1, f2);
-        if (lookToCamera) {
-            if (yRotO != 0 || yRot != 0 || renderInfo.getYRot() != 0) {
-                pose.mulPose(ImpreciseRot.yRotDeg(-Mth.lerp(tickOffset, yRotO, yRot) - renderInfo.getYRot()));
-            }
-            if (xRotO != 0 || xRot != 0 || renderInfo.getXRot() != 0) {
-                pose.mulPose(ImpreciseRot.xRotDeg(Mth.lerp(tickOffset, xRotO, xRot) + renderInfo.getXRot()));
-            }
-        } else {
+        if (getFlag(CAMERA_DISJUNCTION)) {
             if (yRotO != 0 || yRot != 0) {
                 pose.mulPose(ImpreciseRot.yRotDeg(-Mth.lerp(tickOffset, yRotO, yRot)));
             }
             if (xRotO != 0 || xRot != 0) {
                 pose.mulPose(ImpreciseRot.xRotDeg(Mth.lerp(tickOffset, xRotO, xRot)));
+            }
+
+        } else {
+            if (yRotO != 0 || yRot != 0 || renderInfo.getYRot() != 0) {
+                pose.mulPose(ImpreciseRot.yRotDeg(-Mth.lerp(tickOffset, yRotO, yRot) - renderInfo.getYRot()));
+            }
+            if (xRotO != 0 || xRot != 0 || renderInfo.getXRot() != 0) {
+                pose.mulPose(ImpreciseRot.xRotDeg(Mth.lerp(tickOffset, xRotO, xRot) + renderInfo.getXRot()));
             }
         }
         if (oRoll != 0 && roll != 0) {
@@ -161,7 +127,7 @@ public abstract class BaseSpriteParticle extends ModularTextureSheetParticle {
         buffer.vertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).uv(minU, minV).color(rCol, gCol, bCol, alpha).uv2(j).endVertex();
         buffer.vertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).uv(minU, maxV).color(rCol, gCol, bCol, alpha).uv2(j).endVertex();
 
-        if (!lookToCamera) {
+        if (!getFlag(CAMERA_DISJUNCTION)) {
             buffer.vertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).uv(minU, maxV).color(rCol, gCol, bCol, alpha).uv2(j).endVertex();
             buffer.vertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).uv(minU, minV).color(rCol, gCol, bCol, alpha).uv2(j).endVertex();
             buffer.vertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).uv(maxU, minV).color(rCol, gCol, bCol, alpha).uv2(j).endVertex();
@@ -182,70 +148,5 @@ public abstract class BaseSpriteParticle extends ModularTextureSheetParticle {
 
     protected final void setLocalSprite(int index) {
         sprite = sprites.fetch(index);
-    }
-//
-//    public void setTicksForEachFrame(int... ticks) {
-//        int lifetime = this.lifetime;
-//        int[] frameTicks = new int[lifetime];
-//
-//        for (int i = 0; i < ticks.length; i++) {
-//            frameTicks[i] = ticks[i];
-//            lifetime += ticks[i];
-//        }
-//
-//        this.lifetime = lifetime;
-//
-//        this.ticksForEachFrameDefault = frameTicks;
-//        resetFrames();
-//    }
-
-    public void setFrameSpace(float... portions) {
-        int size = sprites.size();
-        float[] frameSpace = new float[size];
-
-        for (int i = 0; i < size; i++) {
-            frameSpace[i] = portions[i];
-        }
-
-        frameSpaceDefault = frameSpace.clone();
-        resetFrames();
-    }
-
-
-    public void setLinearFrameSpace() {
-        int size = sprites.size();
-        float[] frameSpace = new float[size];
-
-        float inv = 1.0F / size;
-        float stack = 0.0F;
-
-        for (int i = 0; i < size; i++) {
-            frameSpace[i] = stack += inv;
-        }
-
-        frameSpaceDefault = frameSpace.clone();
-        resetFrames();
-    }
-
-    protected void setDefaultSize(float size) {
-        defaultSize = size;
-        quadSize = size;
-    }
-
-    public float[] getFrameSpace() {
-        return frameSpace;
-    }
-
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_LIT;
-    }
-
-    public float getDefaultSize() {
-        return defaultSize;
-    }
-
-    @Override
-    public boolean shouldCull() {
-        return true;
     }
 }

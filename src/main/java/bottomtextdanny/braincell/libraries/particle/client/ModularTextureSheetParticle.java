@@ -5,39 +5,37 @@
 
 package bottomtextdanny.braincell.libraries.particle.client;
 
+import bottomtextdanny.braincell.libraries.particle.ExtraOptions;
+import bottomtextdanny.braincell.libraries.particle.ModularParticleType;
 import bottomtextdanny.braincell.libraries.particle.client.tickers.ParticleAction;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class ModularTextureSheetParticle extends TextureSheetParticle implements MParticle {
-	public final ParticleAction ticker;
-	public final ParticleAction start;
-	protected float xRotO;
-	protected float yRotO;
-	protected float xRot;
-	protected float yRot;
-	protected float defaultSize;
-	protected float sizeO;
-	protected int glow;
-	protected boolean lookToCamera = true;
+import java.util.List;
 
-	protected ModularTextureSheetParticle(ClientLevel world, double x, double y, double z, ParticleAction start, ParticleAction ticker) {
-		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
-		this.ticker = ticker;
-		this.start = start;
-		init(0.0D, 0.0D, 0.0D);
-		defaultSize = quadSize;
-	}
+public abstract class ModularTextureSheetParticle<E extends ExtraOptions> extends TextureSheetParticle implements MParticle {
+	protected final ModularParticleType type;
+	protected final ParticleAction<?> ticker;
+	protected final ParticleAction<?> start;
+	public final E options;
+	public byte flags;
+	public float xRotO;
+	public float yRotO;
+	public float xRot;
+	public float yRot;
+	public float sizeO;
 
-	protected ModularTextureSheetParticle(ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, ParticleAction start, ParticleAction ticker) {
+	protected ModularTextureSheetParticle(ModularParticleType type, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, ParticleAction start, ParticleAction ticker, E options) {
 		super(world, x, y, z, xSpeed, ySpeed, zSpeed);
+		this.type = type;
 		this.ticker = ticker;
 		this.start = start;
+		this.options = options;
 		init(xSpeed, ySpeed, zSpeed);
-		defaultSize = quadSize;
 	}
 
 	protected void init(double xDelta, double yDelta, double zDelta) {
@@ -48,7 +46,6 @@ public abstract class ModularTextureSheetParticle extends TextureSheetParticle i
 		yRot = 0.0F;
 		roll = 0.0F;
 		sizeO = 0.0F;
-		quadSize = defaultSize;
 		rCol = 1.0F;
 		gCol = 1.0F;
 		bCol = 1.0F;
@@ -56,9 +53,7 @@ public abstract class ModularTextureSheetParticle extends TextureSheetParticle i
 		xd = xDelta;
 		yd = yDelta;
 		zd = zDelta;
-		glow = 0;
-		lookToCamera = true;
-		start.execute(this);
+		start._execute(this);
 		customInit();
 	}
 
@@ -70,24 +65,31 @@ public abstract class ModularTextureSheetParticle extends TextureSheetParticle i
 		yRotO = yRot;
 		oRoll = roll;
 		sizeO = quadSize;
-		glow = -1;
+
 		super.tick();
 
-		ticker.execute(this);
-
-		if (quadSize < 0.008F) {
-			remove();
-		}
+		ticker._execute(this);
 	}
 
 	@Override
-	protected int getLightColor(float p_107249_) {
-		return glow == -1 ? super.getLightColor(p_107249_) : glow;
+	public void move(double xDelta, double yDelta, double zDelta) {
+		if (getFlag(IGNORE_COLLISION)) setPos(getPos().add(xDelta, yDelta, zDelta));
+		else super.move(xDelta, yDelta, zDelta);
+	}
+
+	@Override
+	protected int getLightColor(float tickOffset) {
+		return getFlag(GLOW) ? 15728880 : super.getLightColor(tickOffset);
 	}
 
 	@Override
 	public ParticleRenderType getRenderType() {
-		return null;
+		return getFlag(TRANSLUCENT) ? ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT : ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+	}
+
+	@Override
+	public boolean shouldCull() {
+		return !getFlag(IGNORE_CULLING);
 	}
 
 	@Override
@@ -258,18 +260,18 @@ public abstract class ModularTextureSheetParticle extends TextureSheetParticle i
 	}
 
 	@Override
-	public float getDefaultSize() {
-		return defaultSize;
+	public ModularParticleType getType() {
+		return type;
 	}
 
 	@Override
-	public void setGlow(int value) {
-		glow = value;
+	public void setFlags(byte value) {
+		flags = value;
 	}
 
 	@Override
-	public int getGlow() {
-		return glow;
+	public byte getFlags() {
+		return flags;
 	}
 
 	@Override
@@ -280,10 +282,5 @@ public abstract class ModularTextureSheetParticle extends TextureSheetParticle i
 	@Override
 	public float getGravity() {
 		return gravity;
-	}
-
-	@Override
-	public void setCameraFixation(boolean state) {
-		lookToCamera = state;
 	}
 }

@@ -18,7 +18,7 @@ public class SimpleSpriteGroup implements SpriteGroup {
     }
 
     public static SimpleSpriteGroup of(SpriteSet spriteSet, int size) {
-        return new SimpleSpriteGroup(spriteSet, size);
+        return new SimpleSpriteGroup(spriteSet, Math.max(size - 1, 1));
     }
 
     @Override

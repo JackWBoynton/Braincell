@@ -7,14 +7,16 @@ package bottomtextdanny.braincell.libraries.particle.client.limb;
 
 import bottomtextdanny.braincell.libraries.model.BCBox;
 import bottomtextdanny.braincell.libraries.model.BCBoxPosition;
+import bottomtextdanny.braincell.libraries.particle.ExtraOptions;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public record Limb(RenderType renderType, BCBox[] boxes, Vector3f boxOffset) {
+public record Limb(RenderType renderType, BCBox[] boxes, Vector3f boxOffset) implements ExtraOptions {
 
 	public static Limb make(RenderType type, BCBox... boxes) {
 		float xMax = 0;
