@@ -7,7 +7,7 @@ import java.util.function.IntSupplier;
 
 @OnlyIn(Dist.CLIENT)
 public enum ShaderType implements IntSupplier {
-    FRAGMENT(0x8B30), VERTEX(0x8B31), GEOMETRY(0x8DD9), COMPUTATION(0x91B9);
+    FRAGMENT(0x8B30), VERTEX(0x8B31), GEOMETRY(0x8DD9); //, COMPUTATION(0x91B9);
 
     int glInt;
 

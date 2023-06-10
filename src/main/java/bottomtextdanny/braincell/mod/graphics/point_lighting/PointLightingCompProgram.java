@@ -23,7 +23,7 @@ public class PointLightingCompProgram extends ComputationProgram<PointLightingWo
     private final List<? extends IPointLight> lightList;
 
     public PointLightingCompProgram(PointLightingWorkflow workflow, List<? extends IPointLight> lightList) {
-        super(PointLightingWorkflow.GRID_SCALE_X, PointLightingWorkflow.GRID_SCALE_Y, 1, workflow, new ResourceLocation(Braincell.ID, "point_lighting"));
+        super(workflow, new ResourceLocation(Braincell.ID, "point_lighting"));
         this.lightList = lightList;
     }
 
@@ -36,7 +36,25 @@ public class PointLightingCompProgram extends ComputationProgram<PointLightingWo
 
     @Override
     protected String[] getSourceTransformers(ShaderType type) {
-        if (type == ShaderType.COMPUTATION) {
+        // if (type == ShaderType.COMPUTATION) {
+        //     BraincellClientConfig config = Braincell.client().config();
+        //     int xTileDiv = BCMath.roundUp(config.xTileDivisions(), 4);
+        //     int yTileDiv = BCMath.roundUp(config.yTileDivisions(), 4);
+        //     return new String[]{
+        //             "&xgrid", String.valueOf(xTileDiv),
+        //             "&ygrid", String.valueOf(yTileDiv),
+        //             "&x1ingrid", String.valueOf(1.0F / xTileDiv),
+        //             "&y1ingrid", String.valueOf(1.0F / yTileDiv),
+        //             "&xhalf", String.valueOf((xTileDiv) / 2.0F),
+        //             "&yhalf", String.valueOf((yTileDiv) / 2.0F),
+        //             "&g_square", String.valueOf(xTileDiv * yTileDiv),
+        //             "&max_lights", String.valueOf(BCMath.roundUp(config.maxLights(), 4)),
+        //             "&region_lights", String.valueOf(BCMath.roundUp(config.maxLightsPerTile(), 4)),
+        //             "&debugt", PointLightingWorkflow.DEBUG_ENABLED ? "imageStore(debug, pixel_coords, vec4(lightOffset *  0.2, 0.0, 0.0, 1));" : "",
+        //             "&debugf", PointLightingWorkflow.DEBUG_ENABLED ? "imageStore(debug, pixel_coords, vec4(0.0, 0.0, 0.0, 1));" : ""
+        //     };
+        // } else 
+        if (type == ShaderType.FRAGMENT) { // Change ShaderType to FRAGMENT
             BraincellClientConfig config = Braincell.client().config();
             int xTileDiv = BCMath.roundUp(config.xTileDivisions(), 4);
             int yTileDiv = BCMath.roundUp(config.yTileDivisions(), 4);
@@ -50,8 +68,8 @@ public class PointLightingCompProgram extends ComputationProgram<PointLightingWo
                     "&g_square", String.valueOf(xTileDiv * yTileDiv),
                     "&max_lights", String.valueOf(BCMath.roundUp(config.maxLights(), 4)),
                     "&region_lights", String.valueOf(BCMath.roundUp(config.maxLightsPerTile(), 4)),
-                    "&debugt", PointLightingWorkflow.DEBUG_ENABLED ? "imageStore(debug, pixel_coords, vec4(lightOffset *  0.2, 0.0, 0.0, 1));" : "",
-                    "&debugf", PointLightingWorkflow.DEBUG_ENABLED ? "imageStore(debug, pixel_coords, vec4(0.0, 0.0, 0.0, 1));" : ""
+                    "&debugt", PointLightingWorkflow.DEBUG_ENABLED ? "gl_FragColor = vec4(lightOffset *  0.2, 0.0, 0.0, 1);" : "",
+                    "&debugf", PointLightingWorkflow.DEBUG_ENABLED ? "gl_FragColor = vec4(0.0, 0.0, 0.0, 1);" : ""
             };
         }
         return super.getSourceTransformers(type);
@@ -84,7 +102,7 @@ public class PointLightingCompProgram extends ComputationProgram<PointLightingWo
             uVector4(this.uniformManager.retrieveLocations(POSITION_RADIUS_POINTER)[i], light.position().subtract(mc().gameRenderer.getMainCamera().getPosition()), light.radius());
         }
 
-        dispatchProgram();
+        // dispatchProgram();
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
     }
 }
