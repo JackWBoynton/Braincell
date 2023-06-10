@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL43.GL_SHADER_STORAGE_BUFFER;
+import static org.lwjgl.opengl.GL41.*;
 
 @OnlyIn(Dist.CLIENT)
 public class PointLightingCompProgram extends ComputationProgram<PointLightingWorkflow> {
@@ -103,6 +103,7 @@ public class PointLightingCompProgram extends ComputationProgram<PointLightingWo
         }
 
         // dispatchProgram();
-        glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+        // glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+        glBindBuffer(GL_UNIFORM_BUFFER, 0);
     }
 }

@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 import java.io.StringWriter;
 import java.nio.FloatBuffer;
 
-import static org.lwjgl.opengl.GL43.*;
+import static org.lwjgl.opengl.GL41.*;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class GLProgram<WF extends ShaderWorkflow> {
@@ -169,8 +169,8 @@ public abstract class GLProgram<WF extends ShaderWorkflow> {
     }
 
     protected void bindBuffer(ShaderBuffer buffer) {
-        glBindBuffer(GL_SHADER_STORAGE_BUFFER, buffer.getId());
-        glBindBufferBase(GL_SHADER_STORAGE_BUFFER, this.layoutOffset, buffer.getId());
+        glBindBuffer(GL_UNIFORM_BUFFER, buffer.getId());
+        glBindBufferBase(GL_UNIFORM_BUFFER, this.layoutOffset, buffer.getId());
         this.layoutOffset++;
     }
 

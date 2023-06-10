@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL43.GL_SHADER_STORAGE_BUFFER;
+import static org.lwjgl.opengl.GL41.*;
 
 @OnlyIn(Dist.CLIENT)
 public class PointLightingPixelProgram extends PixelProgram<PointLightingWorkflow> {
@@ -75,6 +75,7 @@ public class PointLightingPixelProgram extends PixelProgram<PointLightingWorkflo
             uVector4(this.uniformManager.retrieveLocations(POSITION_RADIUS_POINTER)[i], light.position().subtract(mc().gameRenderer.getMainCamera().getPosition()), light.radius());
         }
         renderScreenQuad();
-        glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+        // glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+        glBindBuffer(GL_UNIFORM_BUFFER, 0);
     }
 }

@@ -8,7 +8,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Map;
 
-import static org.lwjgl.opengl.GL43.glGetUniformLocation;
+import static org.lwjgl.opengl.GL41.glGetUniformLocation;
 
 @OnlyIn(Dist.CLIENT)
 public final class UniformManager {

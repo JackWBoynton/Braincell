@@ -3,26 +3,32 @@ package bottomtextdanny.braincell.mod._base.opengl;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import static org.lwjgl.opengl.GL43.*;
+import static org.lwjgl.opengl.GL15.*;
 
 @OnlyIn(Dist.CLIENT)
 public class ShaderBuffer {
-	private final int id;
-	
-	public ShaderBuffer(int space) {
-		super();
+    private final int id;
+    private final int size;
+
+    public ShaderBuffer(int space) {
+        super();
         this.id = glGenBuffers();
-		
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, this.id);
-		glBufferData(GL_SHADER_STORAGE_BUFFER, new int[space], GL_DYNAMIC_DRAW);
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-	}
+        this.size = space;
 
-	public void resetData() {
-		glClearBufferData(GL_SHADER_STORAGE_BUFFER, GL_R8, GL_RED, GL_INT, (int[]) null);
-	}
+        glBindBuffer(GL_ARRAY_BUFFER, this.id);
+        glBufferData(GL_ARRAY_BUFFER, this.size * Integer.BYTES, GL_DYNAMIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
 
-	public int getId() {
-		return this.id;
-	}
+    public void resetData() {
+        glBindBuffer(GL_ARRAY_BUFFER, this.id);
+        for (int i = 0; i < this.size; i++) {
+            glBufferSubData(GL_ARRAY_BUFFER, i * Integer.BYTES, new int[]{0});
+        }
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+
+    public int getId() {
+        return this.id;
+    }
 }

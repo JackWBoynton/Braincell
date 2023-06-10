@@ -98,6 +98,15 @@ sourceSets.main.resources {
     srcDir 'src/generated/resources'
 }
 
+task devJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'dev'
+}
+
+artifacts {
+    archives devJar
+}
+
 dependencies {
     //implementation fg.deobf("curse.maven:alexs_mobs-426558:3575698")
     //implementation fg.deobf("curse.maven:citadel-331936:3574790")

@@ -7,7 +7,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import static org.lwjgl.opengl.GL20.glUseProgram;
-// import static org.lwjgl.opengl.GL43.glDispatchCompute;
 
 // @OnlyIn(Dist.CLIENT)
 // public abstract class ComputationProgram<WF extends ShaderWorkflow> extends GLProgram<WF> {
