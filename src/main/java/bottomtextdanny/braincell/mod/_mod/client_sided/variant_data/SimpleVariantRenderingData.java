@@ -7,23 +7,20 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SimpleVariantRenderingData<T extends LivingEntity> implements VariantRenderingData<T> {
-    private final ResourceLocation texturePath;
-    private final EntityModel<T> model;
+public class SimpleVariantRenderingData implements VariantRenderingData {
+   private final ResourceLocation texturePath;
+   private final EntityModel model;
 
-    public SimpleVariantRenderingData(ResourceLocation texturePath, EntityModel<T> model) {
-        super();
-        this.texturePath = texturePath;
-        this.model = model;
-    }
+   public SimpleVariantRenderingData(ResourceLocation texturePath, EntityModel model) {
+      this.texturePath = texturePath;
+      this.model = model;
+   }
 
-    @Override
-    public EntityModel<T> getModel(T entity) {
-        return this.model;
-    }
+   public EntityModel getModel(LivingEntity entity) {
+      return this.model;
+   }
 
-    @Override
-    public ResourceLocation getTexture(T entity) {
-        return this.texturePath;
-    }
+   public ResourceLocation getTexture(LivingEntity entity) {
+      return this.texturePath;
+   }
 }

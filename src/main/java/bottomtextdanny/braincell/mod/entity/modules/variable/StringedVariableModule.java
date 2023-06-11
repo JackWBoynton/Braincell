@@ -10,36 +10,36 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
 public class StringedVariableModule extends VariableModule {
-    public static final String NOT_UPDATED = "not_updated";
-    public static final EntityDataReference<String> VARIANT_REF =
-            BCDataManager.attribute(Entity.class,
-                    RawEntityDataReference.of(
-                            BuiltinSerializers.STRING,
-                            () -> NOT_UPDATED,
-                            VARIANT_TAG)
-            );
-    private final StringedFormManager formManager;
-    private final EntityData<String> formKey;
+   public static final String NOT_UPDATED = "not_updated";
+   public static final EntityDataReference VARIANT_REF;
+   private final StringedFormManager formManager;
+   private final EntityData formKey;
 
-    public StringedVariableModule(LivingEntity entity, StringedFormManager variantList) {
-        super(entity);
-        this.formManager = variantList;
-        if (entity instanceof BCDataManagerProvider manager) {
-            this.formKey = manager.bcDataManager().addSyncedData(EntityData.of(VARIANT_REF));
-        } else {
-            throw new UnsupportedOperationException("StringedVariableModule needs the holder entity to inherit BCDataManager");
-        }
-    }
+   public StringedVariableModule(LivingEntity entity, StringedFormManager variantList) {
+      super(entity);
+      this.formManager = variantList;
+      if (entity instanceof BCDataManagerProvider manager) {
+         this.formKey = manager.bcDataManager().addSyncedData(EntityData.of(VARIANT_REF));
+      } else {
+         throw new UnsupportedOperationException("StringedVariableModule needs the holder entity to inherit BCDataManager");
+      }
+   }
 
-    public Form<?> getForm() {
-        return this.formManager.getForm(this.formKey.get());
-    }
+   public Form getForm() {
+      return this.formManager.getForm((String)this.formKey.get());
+   }
 
-    public void setForm(Form<?> form) {
-        this.formKey.set(this.formManager.getKey(form));
-    }
+   public void setForm(Form form) {
+      this.formKey.set(this.formManager.getKey(form));
+   }
 
-    public boolean isUpdated() {
-        return this.formKey.get() != NOT_UPDATED;
-    }
+   public boolean hasFormTnput() {
+      return this.formKey.get() != "not_updated";
+   }
+
+   static {
+      VARIANT_REF = BCDataManager.attribute(Entity.class, RawEntityDataReference.of(BuiltinSerializers.STRING, () -> {
+         return "not_updated";
+      }, "variant"));
+   }
 }

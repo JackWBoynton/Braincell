@@ -1,7 +1,7 @@
 package bottomtextdanny.braincell.base.screen;
 
 public interface ImageBounds {
-    int width();
+   int width();
 
-    int height();
+   int height();
 }

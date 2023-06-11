@@ -1,64 +1,65 @@
 package bottomtextdanny.braincell.base;
 
+import java.util.Iterator;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.random.RandomGenerator;
 
-public class Chooser<T> {
-    private final NavigableMap<Float, T> weightTable;
-    private final float total;
+public class Chooser {
+   private final NavigableMap weightTable;
+   private final float total;
 
-    private Chooser(NavigableMap<Float, T> weightTable, float total) {
-        super();
-        this.weightTable = weightTable;
-        this.total = total;
-    }
+   private Chooser(NavigableMap weightTable, float total) {
+      this.weightTable = weightTable;
+      this.total = total;
+   }
 
-    public Chooser(NavigableMap<Float, T> weightTable) {
-        super();
-        float total = 0;
+   public Chooser(NavigableMap weightTable) {
+      float total = 0.0F;
 
-        for (Float weight : weightTable.keySet()) {
-            total += weight;
-        }
+      Float weight;
+      for(Iterator var3 = weightTable.keySet().iterator(); var3.hasNext(); total += weight) {
+         weight = (Float)var3.next();
+      }
 
-        this.weightTable = weightTable;
-        this.total = total;
-    }
+      this.weightTable = weightTable;
+      this.total = total;
+   }
 
-    public static <T> Builder<T> builder() {
-        return new Builder<>();
-    }
+   public static Builder builder() {
+      return new Builder();
+   }
 
-    public T pick(RandomGenerator chooser) {
-        return weightTable.higherEntry(total * chooser.nextFloat()).getValue();
-    }
+   public Object pick(RandomGenerator chooser) {
+      return this.weightTable.higherEntry(this.total * chooser.nextFloat()).getValue();
+   }
 
-    public void fillArray(T[] array, RandomGenerator chooser) {
-        for (int i = 0; i < array.length; i++) {
-            array[i] = weightTable.higherEntry(total * chooser.nextFloat()).getValue();
-        }
-    }
+   public void fillArray(Object[] array, RandomGenerator chooser) {
+      for(int i = 0; i < array.length; ++i) {
+         array[i] = this.weightTable.higherEntry(this.total * chooser.nextFloat()).getValue();
+      }
 
-    public static final class Builder<T> {
-        private final NavigableMap<Float, T> weightTable;
-        private float total;
+   }
 
-        private Builder() {
-            weightTable = new TreeMap<>();
-        }
+   public static final class Builder {
+      private final NavigableMap weightTable = new TreeMap();
+      private float total;
 
-        public Builder<T> put(float weight, T item) {
-            if (weight <= 0) return this;
+      private Builder() {
+      }
 
-            total += weight;
-            weightTable.put(total, item);
-
+      public Builder put(float weight, Object item) {
+         if (weight <= 0.0F) {
             return this;
-        }
+         } else {
+            this.total += weight;
+            this.weightTable.put(this.total, item);
+            return this;
+         }
+      }
 
-        public Chooser<T> build() {
-            return new Chooser<>(weightTable, total);
-        }
-    }
+      public Chooser build() {
+         return new Chooser(this.weightTable, this.total);
+      }
+   }
 }

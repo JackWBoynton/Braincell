@@ -1,5 +1,6 @@
 package bottomtextdanny.braincell.mod.entity.psyche.targeting;
 
+import bottomtextdanny.braincell.mod.entity.psyche.targeting.MobMatchPredicate;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;

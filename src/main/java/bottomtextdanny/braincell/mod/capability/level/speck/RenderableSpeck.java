@@ -7,10 +7,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public interface RenderableSpeck {
+   default boolean shouldRender() {
+      return ((Speck)this).getAreaUnloadedTicks() == 0;
+   }
 
-    default boolean shouldRender() {
-        return ((Speck)this).getAreaUnloadedTicks() == 0;
-    }
-
-    void render(float easedX, float easedY, float easedZ, PoseStack matrixStack, MultiBufferSource buffer, float partialTick);
+   void render(float var1, float var2, float var3, PoseStack var4, MultiBufferSource var5, float var6);
 }

@@ -1,75 +1,71 @@
 package bottomtextdanny.braincell.mod._base.animation.interpreter;
 
-import it.unimi.dsi.fastutil.floats.Float2ObjectOpenHashMap;
 import bottomtextdanny.braincell.mod._base.animation.ModelAnimator;
 import bottomtextdanny.braincell.mod._base.rendering.core_modeling.BCJoint;
-
+import it.unimi.dsi.fastutil.floats.Float2ObjectOpenHashMap;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public sealed abstract class AnimationRunner {
+public abstract sealed class AnimationRunner {
+   private AnimationRunner() {
+   }
 
-    private AnimationRunner() {
-        super();
-    }
+   public void run(List indices, Map timedInstructions, ModelAnimator animator) {
+      int iterations = 0;
 
-    public void run(List<List<BCJoint>> indices, Map<Float, List<AnimationInstruction>> timedInstructions, ModelAnimator animator) {
-        int iterations = 0;
+      for(Iterator var5 = timedInstructions.entrySet().iterator(); var5.hasNext(); ++iterations) {
+         Map.Entry entry = (Map.Entry)var5.next();
+         Float frame = (Float)entry.getKey();
+         List instructionListed = (List)entry.getValue();
+         List frameIndices = (List)indices.get(iterations);
+         animator.setupKeyframe(frame);
+         Iterator var10 = instructionListed.iterator();
 
-        for (Map.Entry<Float, List<AnimationInstruction>> entry : timedInstructions.entrySet()) {
-            Float frame = entry.getKey();
-            List<AnimationInstruction> instructionListed = entry.getValue();
-            List<BCJoint> frameIndices = indices.get(iterations);
+         while(var10.hasNext()) {
+            AnimationInstruction instruction = (AnimationInstruction)var10.next();
+            instruction.actor().act(animator, (BCJoint)frameIndices.get(instruction.index()), instruction.x(), instruction.y(), instruction.z(), instruction.easing());
+         }
 
-            animator.setupKeyframe(frame);
+         animator.apply();
+      }
 
-            for (AnimationInstruction instruction : instructionListed) {
-                instruction.actor().act(animator, frameIndices.get(instruction.index()),
-                        instruction.x(), instruction.y(), instruction.z(), instruction.easing());
-            }
+      animator.reset();
+   }
 
-            animator.apply();
-            iterations++;
-        }
-        animator.reset();
-    }
+   protected abstract Map instructions();
 
-    protected abstract Map<Float, List<AnimationInstruction>> instructions();
+   public static final class BuiltAnimationRunner {
+      private final Map instructions;
 
-    public static final class UnbuiltAnimationRunner extends AnimationRunner {
-        private final Float2ObjectOpenHashMap<List<AnimationInstruction>> instructions = new Float2ObjectOpenHashMap<>();
+      public BuiltAnimationRunner(Map instructions) {
+         this.instructions = Collections.unmodifiableMap(instructions);
+      }
 
-        public UnbuiltAnimationRunner() {
-            super();
-        }
+      public Map instructions() {
+         return this.instructions;
+      }
+   }
 
-        public void put(float frame, List<AnimationInstruction> instructions) {
-            if (this.instructions.containsKey(frame)) {
-                this.instructions.get(frame).addAll(instructions);
-            } else {
-                this.instructions.put(frame, instructions);
-            }
-        }
+   public static final class UnbuiltAnimationRunner extends AnimationRunner {
+      private final Float2ObjectOpenHashMap instructions = new Float2ObjectOpenHashMap();
 
-        public BuiltAnimationRunner build() {
-            return new BuiltAnimationRunner(instructions);
-        }
+      public void put(float frame, List instructions) {
+         if (this.instructions.containsKey(frame)) {
+            ((List)this.instructions.get(frame)).addAll(instructions);
+         } else {
+            this.instructions.put(frame, instructions);
+         }
 
-        public Map<Float, List<AnimationInstruction>> instructions() {
-            return instructions;
-        }
-    }
+      }
 
-    public static final class BuiltAnimationRunner {
-        private final Map<Float, List<AnimationInstruction>> instructions;
+      public BuiltAnimationRunner build() {
+         return new BuiltAnimationRunner(this.instructions);
+      }
 
-        public BuiltAnimationRunner(Map<Float, List<AnimationInstruction>> instructions) {
-            this.instructions = Collections.unmodifiableMap(instructions);
-        }
-
-        public Map<Float, List<AnimationInstruction>> instructions() {
-            return instructions;
-        }
-    }
+      public Map instructions() {
+         return this.instructions;
+      }
+   }
 }

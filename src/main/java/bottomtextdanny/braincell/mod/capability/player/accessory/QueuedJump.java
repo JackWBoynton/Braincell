@@ -1,45 +1,40 @@
 package bottomtextdanny.braincell.mod.capability.player.accessory;
 
 public class QueuedJump implements IQueuedJump {
-	private boolean used;
-    private final JumpPriority priority;
-    private final IJumpQueuerAccessory jumpProvider;
+   private boolean used;
+   private final JumpPriority priority;
+   private final IJumpQueuerAccessory jumpProvider;
 
-    public QueuedJump(IJumpQueuerAccessory jumpProvider, JumpPriority priority) {
-        this.jumpProvider = jumpProvider;
-        this.priority = priority;
-    }
+   public QueuedJump(IJumpQueuerAccessory jumpProvider, JumpPriority priority) {
+      this.jumpProvider = jumpProvider;
+      this.priority = priority;
+   }
 
-    @Override
-    public JumpPriority priority() {
-        return this.priority;
-    }
-	
-	@Override
-	public boolean canPerform() {
-		return getAccessory().canPerformJump(this);
-	}
+   public JumpPriority priority() {
+      return this.priority;
+   }
 
-	@Override
-	public void performJump() {
-        this.jumpProvider.performJump(this);
-	}
-	
-	@Override
-	public void reestablish() {
-        this.used = false;
-	}
+   public boolean canPerform() {
+      return this.getAccessory().canPerformJump(this);
+   }
 
-	public void use() {
-		this.used = true;
-	}
+   public void performJump() {
+      this.jumpProvider.performJump(this);
+   }
 
-	public boolean isUsed() {
-		return this.used;
-	}
+   public void reestablish() {
+      this.used = false;
+   }
 
-	@Override
-    public IJumpQueuerAccessory getAccessory() {
-        return this.jumpProvider;
-    }
+   public void use() {
+      this.used = true;
+   }
+
+   public boolean isUsed() {
+      return this.used;
+   }
+
+   public IJumpQueuerAccessory getAccessory() {
+      return this.jumpProvider;
+   }
 }

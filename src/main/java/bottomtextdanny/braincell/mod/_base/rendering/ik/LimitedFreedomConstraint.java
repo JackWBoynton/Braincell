@@ -1,65 +1,58 @@
 package bottomtextdanny.braincell.mod._base.rendering.ik;
 
 import bottomtextdanny.braincell.base.Axis2D;
-import bottomtextdanny.braincell.base.BCMath;
-
-import javax.annotation.Nullable;
 import java.util.Objects;
+import javax.annotation.Nullable;
 
 public final class LimitedFreedomConstraint implements IKConstraint {
-    private final Axis2D axis;
-    private final float clampedFrom;
-    private final float clampedTo;
+   private final Axis2D axis;
+   private final float clampedFrom;
+   private final float clampedTo;
 
-    public LimitedFreedomConstraint(Axis2D axis, float degreeClampedFrom, float degreeClampedTo) {
-        this.axis = axis;
-        this.clampedFrom = degreeClampedFrom * BCMath.FRAD;
-        this.clampedTo = degreeClampedTo * BCMath.FRAD;
-    }
+   public LimitedFreedomConstraint(Axis2D axis, float degreeClampedFrom, float degreeClampedTo) {
+      this.axis = axis;
+      this.clampedFrom = degreeClampedFrom * 0.017453292F;
+      this.clampedTo = degreeClampedTo * 0.017453292F;
+   }
 
-    @Override
-    public void applyToSection(IKPartData parentData, IKPartData data, @Nullable IKPartData childData) {
-        float unclamped = data.getAngleByAxis(this.axis);
-        if (unclamped < this.clampedFrom) {
-            data.setAngleByAxis(this.axis, this.clampedFrom);
-        } else if (unclamped > this.clampedTo) {
-            data.setAngleByAxis(this.axis, this.clampedTo);
-        }
-    }
+   public void applyToSection(IKPartData parentData, IKPartData data, @Nullable IKPartData childData) {
+      float unclamped = data.getAngleByAxis(this.axis);
+      if (unclamped < this.clampedFrom) {
+         data.setAngleByAxis(this.axis, this.clampedFrom);
+      } else if (unclamped > this.clampedTo) {
+         data.setAngleByAxis(this.axis, this.clampedTo);
+      }
 
-    public Axis2D axis() {
-        return axis;
-    }
+   }
 
-    public float clampedFrom() {
-        return clampedFrom;
-    }
+   public Axis2D axis() {
+      return this.axis;
+   }
 
-    public float clampedTo() {
-        return clampedTo;
-    }
+   public float clampedFrom() {
+      return this.clampedFrom;
+   }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (LimitedFreedomConstraint) obj;
-        return Objects.equals(this.axis, that.axis) &&
-                Float.floatToIntBits(this.clampedFrom) == Float.floatToIntBits(that.clampedFrom) &&
-                Float.floatToIntBits(this.clampedTo) == Float.floatToIntBits(that.clampedTo);
-    }
+   public float clampedTo() {
+      return this.clampedTo;
+   }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(axis, clampedFrom, clampedTo);
-    }
+   public boolean equals(Object obj) {
+      if (obj == this) {
+         return true;
+      } else if (obj != null && obj.getClass() == this.getClass()) {
+         LimitedFreedomConstraint that = (LimitedFreedomConstraint)obj;
+         return Objects.equals(this.axis, that.axis) && Float.floatToIntBits(this.clampedFrom) == Float.floatToIntBits(that.clampedFrom) && Float.floatToIntBits(this.clampedTo) == Float.floatToIntBits(that.clampedTo);
+      } else {
+         return false;
+      }
+   }
 
-    @Override
-    public String toString() {
-        return "LimitedFreedomConstraint[" +
-                "axis=" + axis + ", " +
-                "clampedFrom=" + clampedFrom + ", " +
-                "clampedTo=" + clampedTo + ']';
-    }
+   public int hashCode() {
+      return Objects.hash(new Object[]{this.axis, this.clampedFrom, this.clampedTo});
+   }
 
+   public String toString() {
+      return "LimitedFreedomConstraint[axis=" + this.axis + ", clampedFrom=" + this.clampedFrom + ", clampedTo=" + this.clampedTo + "]";
+   }
 }

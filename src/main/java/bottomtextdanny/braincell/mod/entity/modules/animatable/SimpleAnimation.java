@@ -2,14 +2,14 @@ package bottomtextdanny.braincell.mod.entity.modules.animatable;
 
 import java.util.function.Supplier;
 
-public class SimpleAnimation extends AbstractAnimation<AnimationData> {
+public class SimpleAnimation extends AbstractAnimation {
+   public SimpleAnimation(int duration) {
+      super(duration);
+   }
 
-    public SimpleAnimation(int duration) {
-        super(duration);
-    }
-
-    @Override
-    public Supplier<AnimationData> dataForPlay() {
-        return () -> AnimationData.NULL;
-    }
+   public Supplier dataForPlay() {
+      return () -> {
+         return AnimationData.NULL;
+      };
+   }
 }

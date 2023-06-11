@@ -1,25 +1,19 @@
 package bottomtextdanny.braincell.mod.capability.player.accessory;
 
 import com.google.common.collect.Lists;
-import net.minecraftforge.eventbus.api.Event;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
+import net.minecraftforge.eventbus.api.Event;
 
 public class EmptyAccessoryKeyCollectorEvent extends Event {
-    private final LinkedList<AccessoryKey<?>> externalEmptyKeys;
+   private final LinkedList externalEmptyKeys = Lists.newLinkedList();
 
-    public EmptyAccessoryKeyCollectorEvent() {
-        super();
-        this.externalEmptyKeys = Lists.newLinkedList();
-    }
+   public boolean addKey(AccessoryKey key) {
+      return this.externalEmptyKeys.add(key);
+   }
 
-    public boolean addKey(AccessoryKey<?> key) {
-        return this.externalEmptyKeys.add(key);
-    }
-
-    public Collection<AccessoryKey<?>> getCollection() {
-        return Collections.unmodifiableList(this.externalEmptyKeys);
-    }
+   public Collection getCollection() {
+      return Collections.unmodifiableList(this.externalEmptyKeys);
+   }
 }

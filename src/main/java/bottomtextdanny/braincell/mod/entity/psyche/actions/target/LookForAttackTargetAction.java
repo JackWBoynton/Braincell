@@ -1,148 +1,126 @@
 package bottomtextdanny.braincell.mod.entity.psyche.actions.target;
 
 import bottomtextdanny.braincell.base.scheduler.IntScheduler;
+import bottomtextdanny.braincell.base.vector.DistanceCalc3;
+import bottomtextdanny.braincell.mod.entity.psyche.MarkedTimer;
+import bottomtextdanny.braincell.mod.entity.psyche.actions.OccasionalThoughtAction;
+import bottomtextdanny.braincell.mod.entity.psyche.input.ActionInputKey;
+import bottomtextdanny.braincell.mod.entity.psyche.input.ActionInputs;
 import bottomtextdanny.braincell.mod.entity.psyche.targeting.MobMatchPredicate;
 import bottomtextdanny.braincell.mod.entity.psyche.targeting.RangeTest;
 import bottomtextdanny.braincell.mod.entity.psyche.targeting.SearchPredicate;
 import bottomtextdanny.braincell.mod.entity.psyche.targeting.TargetPredicates;
-import bottomtextdanny.braincell.base.vector.DistanceCalc3;
-import bottomtextdanny.braincell.mod.entity.psyche.input.ActionInputKey;
-import bottomtextdanny.braincell.mod.entity.psyche.input.ActionInputs;
-import bottomtextdanny.braincell.mod.entity.psyche.MarkedTimer;
-import bottomtextdanny.braincell.mod.entity.psyche.actions.OccasionalThoughtAction;
-import bottomtextdanny.braincell.mod.entity.psyche.targeting.*;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
+import javax.annotation.Nullable;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.util.Lazy;
 
-import javax.annotation.Nullable;
-import java.util.function.BiConsumer;
+public class LookForAttackTargetAction extends OccasionalThoughtAction {
+   public static final int DEFAULT_UPDATE_INTERVAL = 4;
+   @Nullable
+   private BiConsumer findTargetCallOut;
+   @Nullable
+   protected MobMatchPredicate targetPredicate;
+   protected SearchPredicate searchPredicate;
+   protected LivingEntity targetAsLocal;
 
+   public LookForAttackTargetAction(PathfinderMob mob, IntScheduler updateInterval, MobMatchPredicate targeter, SearchPredicate searcher) {
+      super(mob, updateInterval);
+      this.targetPredicate = targeter.cast();
+      this.searchPredicate = searcher.hackyCast();
+   }
 
-public class LookForAttackTargetAction<E extends PathfinderMob> extends OccasionalThoughtAction<E> {
-    public static final int DEFAULT_UPDATE_INTERVAL = 4;
-    @Nullable
-    private BiConsumer<Mob, LivingEntity> findTargetCallOut;
-    @Nullable
-    protected MobMatchPredicate<LivingEntity> targetPredicate;
-    protected SearchPredicate<LivingEntity> searchPredicate;
-    protected LivingEntity targetAsLocal;
+   public LookForAttackTargetAction findTargetCallOut(BiConsumer callOut) {
+      this.findTargetCallOut = callOut;
+      return this;
+   }
 
-    public LookForAttackTargetAction(E mob, IntScheduler updateInterval,
-                                     MobMatchPredicate<? super LivingEntity> targeter,
-                                     SearchPredicate<? extends LivingEntity> searcher) {
-        super(mob, updateInterval);
-        this.targetPredicate = targeter.cast();
-        this.searchPredicate = searcher.hackyCast();
-    }
+   protected Lazy getTargetSearchArea(double p_26069_) {
+      return Lazy.of(() -> {
+         return this.mob.getBoundingBox().inflate(p_26069_, 4.0, p_26069_);
+      });
+   }
 
-    public LookForAttackTargetAction<E> findTargetCallOut(BiConsumer<Mob, LivingEntity> callOut) {
-        this.findTargetCallOut = callOut;
-        return this;
-    }
+   protected double getFollowDistance() {
+      return this.mob.getAttributeValue(Attributes.FOLLOW_RANGE);
+   }
 
-    protected Lazy<AABB> getTargetSearchArea(double p_26069_) {
-        return Lazy.of(() -> this.mob.getBoundingBox().inflate(p_26069_, 4.0D, p_26069_));
-    }
+   public void thoughtAction(int timeSinceBefore) {
+      ActionInputs inputs = this.getPsyche().getInputs();
+      if (inputs.containsInput(ActionInputKey.MARKED_UNSEEN)) {
+         MobMatchPredicate sightPredicate = (MobMatchPredicate)inputs.getOfDefault(ActionInputKey.SEE_TARGET_PREDICATE);
+         boolean previousLocalTargetIsNull = this.targetAsLocal == null;
+         MarkedTimer markedUnseen = (MarkedTimer)((Supplier)inputs.get(ActionInputKey.MARKED_UNSEEN)).get();
+         this.processTarget(sightPredicate, markedUnseen, previousLocalTargetIsNull);
+      }
 
-    protected double getFollowDistance() {
-        return this.mob.getAttributeValue(Attributes.FOLLOW_RANGE);
-    }
+   }
 
-    @Override
-    public void thoughtAction(int timeSinceBefore) {
-        ActionInputs inputs = getPsyche().getInputs();
+   protected void processTarget(MobMatchPredicate sightPredicate, MarkedTimer markedUnseen, boolean previousLocalTargetIsNull) {
+      if (markedUnseen.isMarkedBy(this) || !((MobMatchPredicate)this.getPsyche().getInputs().getOfDefault(ActionInputKey.TARGET_VALIDATOR)).test(this.mob, this.mob.getTarget())) {
+         if (markedUnseen.isUnmarkedOrMarkedBy(this)) {
+            if (this.targetAsLocal == null) {
+               markedUnseen.timer.end();
+            } else if (this.mob.getSensing().hasLineOfSight(this.targetAsLocal)) {
+               markedUnseen.timer.reset();
+            } else {
+               markedUnseen.timer.advance();
+            }
+         }
 
-        if (inputs.containsInput(ActionInputKey.MARKED_UNSEEN)) {
-            MobMatchPredicate<LivingEntity> sightPredicate = inputs.getOfDefault(ActionInputKey.SEE_TARGET_PREDICATE);
-            boolean previousLocalTargetIsNull = this.targetAsLocal == null;
-            MarkedTimer markedUnseen = inputs.get(ActionInputKey.MARKED_UNSEEN).get();
-
-            processTarget(sightPredicate, markedUnseen, previousLocalTargetIsNull);
-        }
-    }
-
-    protected void processTarget(MobMatchPredicate<LivingEntity> sightPredicate,
-                                 MarkedTimer markedUnseen,
-                                 boolean previousLocalTargetIsNull) {
-
-        if (!(markedUnseen.isMarkedBy(this))
-                && getPsyche().getInputs().getOfDefault(ActionInputKey.TARGET_VALIDATOR).test(this.mob, this.mob.getTarget())) {
-            return;
-        }
-
-        //if local target is not chosen then unseen timer is forced to end
-        //or else if there is a local target chosen and the mob can see it, unseen timer resets
-        //or if there is a chosen target, and it can not be seen by the mob, the unseen timer advances.
-        if (markedUnseen.isUnmarkedOrMarkedBy(this)) {
-            if (this.targetAsLocal == null) markedUnseen.timer.end();
-            else if (mob.getSensing().hasLineOfSight(this.targetAsLocal)) markedUnseen.timer.reset();
-            else markedUnseen.timer.advance();
-        }
-
-        if (this.targetAsLocal != null) {
+         if (this.targetAsLocal != null) {
             boolean previousTargetIsStillValid = this.targetPredicate.and(TargetPredicates.noCreativeOrSpectator()).test(this.mob, this.targetAsLocal);
-
-            //if target is still valid, and it is not unseen yet, we assert that this targeting action is our mark.
             if (!markedUnseen.timer.hasEnded() && previousTargetIsStillValid) {
-                markedUnseen.setMarkedBy(this);
+               markedUnseen.setMarkedBy(this);
+            } else {
+               if (markedUnseen.isMarkedBy(this)) {
+                  markedUnseen.unmark();
+               }
+
+               this.targetAsLocal = null;
             }
-            //or else we just free the mark (if it was marked by this targeting action).
-            else {
-                if (markedUnseen.isMarkedBy(this)) markedUnseen.unmark();
-                this.targetAsLocal = null;
-            }
-        }
+         }
 
-        //if previous target is null, or it was forgotten just now, we look for another.
-        if (this.targetAsLocal == null) {
-            //fetches raw new target, can return null.
-            //validation of this new target should be already handled by this action's SearchNearestPredicate.
-            this.targetAsLocal = this.searchPredicate.search(this.mob, (ServerLevel) this.mob.level, RangeTest.awayFrom(this.mob, getFollowDistance(), DistanceCalc3.MANHATTAN), getTargetSearchArea(getFollowDistance()), this.targetPredicate.and(sightPredicate).and(TargetPredicates.noCreativeOrSpectator()));
-
-
-            //if new target is not null then this new target is our new local target.
+         if (this.targetAsLocal == null) {
+            this.targetAsLocal = (LivingEntity)this.searchPredicate.search(this.mob, (ServerLevel)this.mob.level, RangeTest.awayFrom(this.mob, this.getFollowDistance(), DistanceCalc3.MANHATTAN), this.getTargetSearchArea(this.getFollowDistance()), this.targetPredicate.and(sightPredicate).and(TargetPredicates.noCreativeOrSpectator()));
             if (this.targetAsLocal != null) {
-                //we assert that the mark belongs to here then.
-                markedUnseen.setMarkedBy(this);
+               markedUnseen.setMarkedBy(this);
+               if (previousLocalTargetIsNull) {
+                  this.mob.getNavigation().stop();
+               }
+            } else if (markedUnseen.isMarkedBy(this)) {
+               markedUnseen.unmark();
+            }
+         }
 
-                //if we did not have a target before, we stop entity this current path, so activities like chasing are instant.
-                if (previousLocalTargetIsNull) {
-                    this.mob.getNavigation().stop();
-                }
+         if (markedUnseen.isMarkedBy(this) && previousLocalTargetIsNull) {
+            Runnable newTargetInput = (Runnable)this.getPsyche().getInputs().get(ActionInputKey.SET_TARGET_CALL);
+            if (newTargetInput != null) {
+               newTargetInput.run();
             }
 
-            //if previous local target was null or discarded, and a new target could not be found, we just remove our mark (if it is ours).
-            else if (markedUnseen.isMarkedBy(this)) {
-                markedUnseen.unmark();
+            if (this.findTargetCallOut != null) {
+               this.findTargetCallOut.accept(this.mob, this.targetAsLocal);
             }
-        }
+         }
 
-        //tries to run custom call out if new target.
-        if (markedUnseen.isMarkedBy(this) && previousLocalTargetIsNull) {
-            Runnable newTargetInput = getPsyche().getInputs().get(ActionInputKey.SET_TARGET_CALL);
-            if (newTargetInput != null) newTargetInput.run();
-            if (this.findTargetCallOut != null)
-                this.findTargetCallOut.accept(this.mob, this.targetAsLocal);
-        }
-
-        if (this.targetAsLocal == null && !previousLocalTargetIsNull) this.mob.setTarget(null);
-
-        //if local target is valid and the mark is ours, we finally change the real mob's target.
-        if (this.targetAsLocal != null && markedUnseen.isMarkedBy(this))
+         if (this.targetAsLocal != null && markedUnseen.isMarkedBy(this)) {
             this.mob.setTarget(this.targetAsLocal);
-    }
+         }
 
-    @Override
-    public boolean cancelNext() {
-        if (this.getPsyche().getInputs().containsInput(ActionInputKey.MARKED_UNSEEN)) {
-            MarkedTimer markedUnseen = this.getPsyche().getInputs().get(ActionInputKey.MARKED_UNSEEN).get();
-            return markedUnseen.isMarkedBy(this);
-        }
-        return false;
-    }
+      }
+   }
+
+   public boolean cancelNext() {
+      if (this.getPsyche().getInputs().containsInput(ActionInputKey.MARKED_UNSEEN)) {
+         MarkedTimer markedUnseen = (MarkedTimer)((Supplier)this.getPsyche().getInputs().get(ActionInputKey.MARKED_UNSEEN)).get();
+         return markedUnseen.isMarkedBy(this);
+      } else {
+         return false;
+      }
+   }
 }

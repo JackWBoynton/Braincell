@@ -1,3 +1,4 @@
 package bottomtextdanny.braincell.mod._base.plotter.processor_plotter;
 
-public final class PlotterProcessors {}
+public final class PlotterProcessors {
+}

@@ -1,5 +1,6 @@
 package bottomtextdanny.braincell.mod.entity.psyche.targeting;
 
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.entity.EntityTypeTest;
@@ -25,40 +26,66 @@ public final class SearchNearestPredicates {
     }
 
     public static SearchNearestPredicate nearestLiving() {
-        return (mob, level, radius, searchArea, post) -> {
-            double[] d0 = {-1.0D};
-            LivingEntity[] t = {null};
+      return (mob, level, radius, searchArea, post) -> {
+          double[] d0 = {-1.0D};
+          LivingEntity[] t = {null};
+  
+          AABB boundingBox = new AABB(
+              mob.getX() - (double) searchArea.get(),
+              mob.getY() - (double)searchArea.get(),
+              mob.getZ() - (double)searchArea.get(),
+              mob.getX() + (double)searchArea.get(),
+              mob.getY() + (double)searchArea.get(),
+              mob.getZ() + (double)searchArea.get()
+          );
+  
+          level.getEntities().get(
+              EntityTypeTest.forClass(LivingEntity.class),
+              boundingBox,
+              le -> {
+                  double d1 = radius.test(le.getX(), le.getY(), le.getZ());
+                  if (d1 > 0 && (d0[0] == -1.0D || d1 < d0[0])) {
+                      if (post.test(mob, le)) {
+                          d0[0] = d1;
+                          t[0] = le;
+                      }
+                  }
+              }
+          );
+  
+          return t[0];
+      };
+  }
 
-            level.getEntities().get(EntityTypeTest.forClass(LivingEntity.class), searchArea.get(), le -> {
-                double d1 = radius.test(le.getX(), le.getY(), le.getZ());
-                if (d1 > 0 && (d0[0] == -1.0D || d1 < d0[0])) {
-                    if (post.test(mob, le)) {
-                        d0[0] = d1;
-                        t[0] = le;
-                    }
-                }
-            });
+  public static SearchNearestPredicate nearestOfType(Class<? extends LivingEntity> clazz) {
+   return (mob, level, radius, searchArea, post) -> {
+       double[] d0 = {-1.0D};
+       LivingEntity[] t = {null};
 
-            return t[0];
-        };
-    }
+       AABB boundingBox = new AABB(
+           mob.getX() - (float)searchArea.get(),
+           mob.getY() - (float)searchArea.get(),
+           mob.getZ() - (float)searchArea.get(),
+           mob.getX() + (float)searchArea.get(),
+           mob.getY() + (float)searchArea.get(),
+           mob.getZ() + (float)searchArea.get()
+       );
 
-    public static SearchNearestPredicate nearestOfType(Class<? extends LivingEntity> clazz) {
-        return (mob, level, radius, searchArea, post) -> {
-            double[] d0 = {-1.0D};
-            LivingEntity[] t = {null};
+       level.getEntities().get(
+           EntityTypeTest.forClass(clazz),
+           boundingBox,
+           le -> {
+               double d1 = radius.test(le.getX(), le.getY(), le.getZ());
+               if (d1 > 0 && (d0[0] == -1.0D || d1 < d0[0])) {
+                   if (post.test(mob, le)) {
+                       d0[0] = d1;
+                       t[0] = le;
+                   }
+               }
+           }
+       );
 
-            level.getEntities().get(EntityTypeTest.forClass(clazz), searchArea.get(), le -> {
-                double d1 = radius.test(le.getX(), le.getY(), le.getZ());
-                if (d1 > 0 && (d0[0] == -1.0D || d1 < d0[0])) {
-                    if (post.test(mob, le)) {
-                        d0[0] = d1;
-                        t[0] = le;
-                    }
-                }
-            });
-
-            return t[0];
-        };
-    }
+       return t[0];
+   };
+} 
 }

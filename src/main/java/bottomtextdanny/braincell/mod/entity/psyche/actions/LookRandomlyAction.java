@@ -7,61 +7,58 @@ import bottomtextdanny.braincell.base.value_mapper.RandomIntegerMapper;
 import bottomtextdanny.braincell.mod.entity.psyche.Action;
 import net.minecraft.world.entity.PathfinderMob;
 
-public class LookRandomlyAction extends Action<PathfinderMob> {
-    private static final RandomIntegerMapper DEFAULT_COOLDOWN_MAPPER = RandomIntegerMapper.of(150, 220);
-    private static final FloatMapper NO_VERTICAL_ROTATION = FloatMappers.of(0.0F);
-    private final RandomIntegerMapper cooldownMapper;
-    private FloatMapper yLookLocationMapper = NO_VERTICAL_ROTATION;
-    private int lookCooldownTracker;
-    private float lookX;
-    private float lookY;
-    private float lookZ;
-    private int lookTime;
+public class LookRandomlyAction extends Action {
+   private static final RandomIntegerMapper DEFAULT_COOLDOWN_MAPPER = RandomIntegerMapper.of(150, 220);
+   private static final FloatMapper NO_VERTICAL_ROTATION = FloatMappers.of(0.0F);
+   private final RandomIntegerMapper cooldownMapper;
+   private FloatMapper yLookLocationMapper;
+   private int lookCooldownTracker;
+   private float lookX;
+   private float lookY;
+   private float lookZ;
+   private int lookTime;
 
-    public LookRandomlyAction(PathfinderMob mob, RandomIntegerMapper cooldownMapper) {
-        super(mob);
-        this.cooldownMapper = cooldownMapper;
-    }
+   public LookRandomlyAction(PathfinderMob mob, RandomIntegerMapper cooldownMapper) {
+      super(mob);
+      this.yLookLocationMapper = NO_VERTICAL_ROTATION;
+      this.cooldownMapper = cooldownMapper;
+   }
 
-    public LookRandomlyAction(PathfinderMob mob) {
-        this(mob, DEFAULT_COOLDOWN_MAPPER);
-    }
+   public LookRandomlyAction(PathfinderMob mob) {
+      this(mob, DEFAULT_COOLDOWN_MAPPER);
+   }
 
-    public LookRandomlyAction vertical(FloatMapper mapper) {
-        this.yLookLocationMapper = mapper;
-        return this;
-    }
+   public LookRandomlyAction vertical(FloatMapper mapper) {
+      this.yLookLocationMapper = mapper;
+      return this;
+   }
 
-    @Override
-    public boolean canStart() {
-        if (!active()) return false;
+   public boolean canStart() {
+      if (!this.active()) {
+         return false;
+      } else if (this.lookCooldownTracker > 0) {
+         --this.lookCooldownTracker;
+         return false;
+      } else {
+         this.lookCooldownTracker = this.cooldownMapper.map(UNSAFE_RANDOM);
+         return true;
+      }
+   }
 
-        if (this.lookCooldownTracker > 0) {
-            this.lookCooldownTracker--;
-            return false;
-        }
+   protected void start() {
+      float d0 = 6.2831855F * this.mob.getRandom().nextFloat();
+      this.lookX = BCMath.cos(d0);
+      this.lookY = this.yLookLocationMapper.map(UNSAFE_RANDOM);
+      this.lookZ = BCMath.sin(d0);
+      this.lookTime = 20 + UNSAFE_RANDOM.nextInt(20);
+   }
 
-        this.lookCooldownTracker = this.cooldownMapper.map(UNSAFE_RANDOM);
-        return true;
-    }
+   protected void update() {
+      --this.lookTime;
+      this.mob.getLookControl().setLookAt(this.mob.getX() + (double)this.lookX, this.mob.getEyeY() + (double)this.lookY, this.mob.getZ() + (double)this.lookZ);
+   }
 
-    @Override
-    protected void start() {
-        float d0 = (float) Math.PI * 2.0F * this.mob.getRandom().nextFloat();
-        this.lookX = BCMath.cos(d0);
-        this.lookY = this.yLookLocationMapper.map(UNSAFE_RANDOM);
-        this.lookZ = BCMath.sin(d0);
-        this.lookTime = 20 + UNSAFE_RANDOM.nextInt(20);
-    }
-
-    @Override
-    protected void update() {
-        --this.lookTime;
-        this.mob.getLookControl().setLookAt(this.mob.getX() + this.lookX, this.mob.getEyeY() + this.lookY, this.mob.getZ() + this.lookZ);
-    }
-
-    @Override
-    public boolean shouldKeepGoing() {
-        return this.lookTime > 0;
-    }
+   public boolean shouldKeepGoing() {
+      return this.lookTime > 0;
+   }
 }

@@ -1,14 +1,13 @@
 package bottomtextdanny.braincell.mod.capability.player.accessory;
 
 public interface IQueuedJump {
+   boolean canPerform();
 
-	boolean canPerform();
+   void performJump();
 
-    void performJump();
-    
-    void reestablish();
+   void reestablish();
 
-    JumpPriority priority();
+   JumpPriority priority();
 
-    IJumpQueuerAccessory getAccessory();
+   IJumpQueuerAccessory getAccessory();
 }

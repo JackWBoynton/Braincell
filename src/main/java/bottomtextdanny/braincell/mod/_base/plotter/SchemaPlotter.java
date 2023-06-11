@@ -7,6 +7,7 @@ import bottomtextdanny.braincell.mod._base.plotter.schema.SchemaGetter;
 import bottomtextdanny.braincell.mod._base.plotter.schema.FlagsEntry;
 import bottomtextdanny.braincell.mod._base.plotter.schema.Schema;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,12 +24,12 @@ public class SchemaPlotter extends SpecialPlotter<SchemaPlotter.Data> {
     }
 
     @Override
-    public void makeOwnThing(BlockPos pos, PlotterIterator<Data> iterator, Rotation rotation) {
+public void makeOwnThing(BlockPos pos, PlotterIterator<Data> iterator, Rotation rotation) {
         SchemaPlotter.MuData data = new MuData(this, null, null, null, null, NT_RANDOM);
 
         Schema schema = this.list.make(this.level, NT_RANDOM);
         schema.iterate((lp, p, f) -> {
-            lp = PlotterRotator.rotatedOf(rotation, lp);
+            lp = PlotterRotator.rotatedOf(rotation, (Vec3i) lp);
             BlockPos worldPos = pos.offset(lp);
             BlockState state = this.level.getBlockState(worldPos);
             data.setEntry(f);

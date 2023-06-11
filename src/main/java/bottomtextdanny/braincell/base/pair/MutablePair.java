@@ -1,30 +1,27 @@
 package bottomtextdanny.braincell.base.pair;
 
-public class MutablePair<L, R> implements Tuple<L, R> {
-    private L left;
-    private R right;
+public class MutablePair implements Tuple {
+   private Object left;
+   private Object right;
 
-    public MutablePair(L leftValue, R rightValue) {
-        super();
-        this.left = leftValue;
-        this.right = rightValue;
-    }
+   public MutablePair(Object leftValue, Object rightValue) {
+      this.left = leftValue;
+      this.right = rightValue;
+   }
 
-    @Override
-    public L left() {
-        return this.left;
-    }
+   public Object left() {
+      return this.left;
+   }
 
-    @Override
-    public R right() {
-        return this.right;
-    }
+   public Object right() {
+      return this.right;
+   }
 
-    public void setLeft(L left) {
-        this.left = left;
-    }
+   public void setLeft(Object left) {
+      this.left = left;
+   }
 
-    public void setRight(R right) {
-        this.right = right;
-    }
+   public void setRight(Object right) {
+      this.right = right;
+   }
 }

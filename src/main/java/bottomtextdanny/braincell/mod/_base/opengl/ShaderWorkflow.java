@@ -6,34 +6,37 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class ShaderWorkflow {
-    public static final Minecraft MC = Minecraft.getInstance();
-    protected boolean invalidated;
+   public static final Minecraft MC = Minecraft.getInstance();
+   protected boolean invalidated;
 
-    protected abstract void execute();
+   protected abstract void execute();
 
-    protected abstract void tick();
+   protected abstract void tick();
 
-    public void _processFrame() {
-        if (!this.invalidated && shouldApply()) {
-            execute();
-        }
-    }
+   public void _processFrame() {
+      if (!this.invalidated && this.shouldApply()) {
+         this.execute();
+      }
 
-    public void _processTick() {
-        if (!this.invalidated && shouldApply()) {
-            tick();
-        }
-    }
+   }
 
-    public void finish() {}
+   public void _processTick() {
+      if (!this.invalidated && this.shouldApply()) {
+         this.tick();
+      }
 
-    protected abstract boolean shouldApply();
+   }
 
-    public void invalidate() {
-        this.invalidated = false;
-    }
+   public void finish() {
+   }
 
-    public boolean isInvalid() {
-        return this.invalidated;
-    }
+   protected abstract boolean shouldApply();
+
+   public void invalidate() {
+      this.invalidated = false;
+   }
+
+   public boolean isInvalid() {
+      return this.invalidated;
+   }
 }

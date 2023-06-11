@@ -1,66 +1,63 @@
 package bottomtextdanny.braincell.mod.capability.player.accessory;
 
-import bottomtextdanny.braincell.base.pair.Pair;
-
 import java.util.List;
 
 public interface AttributeModifierAccessory extends IAccessory {
+   void populateModifierData(List var1, List var2);
 
-    void populateModifierData(List<Pair<ModifierType, Double>> modifierList, List<Pair<MiniAttribute, Float>> lesserModifierList);
+   default double getModifierBase(ModifierType modifierType) {
+      return ((AccessoryAttributeModifierData)AccessoryKey.getAttributeData().get(this.getKey())).getBaseValue(modifierType);
+   }
 
-    default double getModifierBase(ModifierType modifierType) {
-        return AccessoryKey.getAttributeData().get(getKey()).getBaseValue(modifierType);
-    }
+   default boolean isModifierActive(ModifierType modifierType) {
+      return ((AccessoryAttributeModifierData)AccessoryKey.getAttributeData().get(this.getKey())).containsModifier(modifierType);
+   }
 
-    default boolean isModifierActive(ModifierType modifierType) {
-        return AccessoryKey.getAttributeData().get(getKey()).containsModifier(modifierType);
-    }
+   default float getLesserModifierBase(MiniAttribute modifierType) {
+      return ((AccessoryAttributeModifierData)AccessoryKey.getAttributeData().get(this.getKey())).getBaseValue(modifierType);
+   }
 
-    default float getLesserModifierBase(MiniAttribute modifierType) {
-        return AccessoryKey.getAttributeData().get(getKey()).getBaseValue(modifierType);
-    }
+   default boolean isLesserModifierActive(MiniAttribute modifierType) {
+      return ((AccessoryAttributeModifierData)AccessoryKey.getAttributeData().get(this.getKey())).containsLesserModifier(modifierType);
+   }
 
-    default boolean isLesserModifierActive(MiniAttribute modifierType) {
-        return AccessoryKey.getAttributeData().get(getKey()).containsLesserModifier(modifierType);
-    }
+   default double getFinalSpeedMultiplier() {
+      return this.getModifierBase(ModifierType.MOVEMENT_SPEED_MLT) / 100.0 + 1.0;
+   }
 
-    default double getFinalSpeedMultiplier() {
-        return getModifierBase(ModifierType.MOVEMENT_SPEED_MLT) / 100.0 + 1.0;
-    }
+   default double getFinalAttackSpeedAddition() {
+      return this.getModifierBase(ModifierType.ATTACK_SPEED_ADD);
+   }
 
-    default double getFinalAttackSpeedAddition() {
-        return getModifierBase(ModifierType.ATTACK_SPEED_ADD);
-    }
+   default double getFinalAttackDamageAddition() {
+      return this.getModifierBase(ModifierType.ATTACK_DAMAGE_ADD);
+   }
 
-    default double getFinalAttackDamageAddition() {
-        return getModifierBase(ModifierType.ATTACK_DAMAGE_ADD);
-    }
+   default double getFinalAttackKnockbackAddition() {
+      return this.getModifierBase(ModifierType.ATTACK_KNOCKBACK_ADD);
+   }
 
-    default double getFinalAttackKnockbackAddition() {
-        return getModifierBase(ModifierType.ATTACK_KNOCKBACK_ADD);
-    }
+   default double getFinalKnockbackResistanceMultiplier() {
+      return this.getModifierBase(ModifierType.KNOCKBACK_RESISTANCE_MLT);
+   }
 
-    default double getFinalKnockbackResistanceMultiplier() {
-        return getModifierBase(ModifierType.KNOCKBACK_RESISTANCE_MLT);
-    }
+   default double getFinalKnockbackResistanceAddition() {
+      return this.getModifierBase(ModifierType.KNOCKBACK_RESISTANCE_ADD);
+   }
 
-    default double getFinalKnockbackResistanceAddition() {
-        return getModifierBase(ModifierType.KNOCKBACK_RESISTANCE_ADD);
-    }
+   default double getFinalArmorAddition() {
+      return this.getModifierBase(ModifierType.ARMOR_ADD);
+   }
 
-    default double getFinalArmorAddition() {
-        return getModifierBase(ModifierType.ARMOR_ADD);
-    }
+   default double getFinalLuckAddition() {
+      return this.getModifierBase(ModifierType.LUCK_ADD);
+   }
 
-    default double getFinalLuckAddition() {
-        return getModifierBase(ModifierType.LUCK_ADD);
-    }
+   default float getFinalLesserAttributeValue(MiniAttribute attribute) {
+      return this.getLesserModifierBase(attribute);
+   }
 
-    default float getFinalLesserAttributeValue(MiniAttribute attribute) {
-        return getLesserModifierBase(attribute);
-    }
-
-    default List<ModifierType> modifiedAttributes() {
-        return AccessoryKey.getAttributeData().get(getKey()).modifierIterable;
-    }
+   default List modifiedAttributes() {
+      return ((AccessoryAttributeModifierData)AccessoryKey.getAttributeData().get(this.getKey())).modifierIterable;
+   }
 }

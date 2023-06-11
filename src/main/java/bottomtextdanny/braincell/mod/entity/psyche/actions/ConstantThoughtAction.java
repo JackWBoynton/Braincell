@@ -1,31 +1,31 @@
 package bottomtextdanny.braincell.mod.entity.psyche.actions;
 
 import bottomtextdanny.braincell.mod.entity.psyche.Action;
+import java.util.function.Consumer;
+import javax.annotation.Nullable;
 import net.minecraft.world.entity.PathfinderMob;
 
-import javax.annotation.Nullable;
-import java.util.function.Consumer;
+public class ConstantThoughtAction extends Action {
+   @Nullable
+   protected final Consumer updateFunction;
 
-public class ConstantThoughtAction<E extends PathfinderMob> extends Action<E> {
-    @Nullable
-    protected final Consumer<E> updateFunction;
+   public ConstantThoughtAction(PathfinderMob mob, @Nullable Consumer updateFunction) {
+      super(mob);
+      this.updateFunction = updateFunction;
+   }
 
-    public ConstantThoughtAction(E mob, @Nullable Consumer<E> updateFunction) {
-        super(mob);
-        this.updateFunction = updateFunction;
-    }
+   public static ConstantThoughtAction withUpdateCallback(PathfinderMob mob, Consumer doOnUpdate) {
+      return new ConstantThoughtAction(mob, doOnUpdate);
+   }
 
-    public static <E extends PathfinderMob> ConstantThoughtAction<E> withUpdateCallback(E mob, Consumer<E> doOnUpdate) {
-        return new ConstantThoughtAction<>(mob, doOnUpdate);
-    }
+   protected void update() {
+      if (this.updateFunction != null) {
+         this.updateFunction.accept(this.mob);
+      }
 
-    @Override
-    protected void update() {
-        if (this.updateFunction != null) this.updateFunction.accept(this.mob);
-    }
+   }
 
-    @Override
-    public final boolean shouldKeepGoing() {
-        return active();
-    }
+   public final boolean shouldKeepGoing() {
+      return this.active();
+   }
 }

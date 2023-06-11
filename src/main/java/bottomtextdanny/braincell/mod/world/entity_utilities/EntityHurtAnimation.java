@@ -4,17 +4,17 @@ import bottomtextdanny.braincell.mod.entity.modules.animatable.LivingAnimatableP
 import net.minecraft.world.damagesource.DamageSource;
 
 public interface EntityHurtAnimation extends EntityHurtCallout, LivingAnimatableProvider {
-	
-	@Override
-	default float hurtCallOut(float damage, DamageSource source) {
-		if (canPlayHurtAnimation(damage,source))
-			playHurtAnimation(damage,source);
-		return damage;
-	}
-	
-	default boolean canPlayHurtAnimation(float damage, DamageSource source) {
-		return true;
-	}
-	
-	void playHurtAnimation(float damage, DamageSource source);
+   default float hurtCallOut(float damage, DamageSource source) {
+      if (this.canPlayHurtAnimation(damage, source)) {
+         this.playHurtAnimation(damage, source);
+      }
+
+      return damage;
+   }
+
+   default boolean canPlayHurtAnimation(float damage, DamageSource source) {
+      return true;
+   }
+
+   void playHurtAnimation(float var1, DamageSource var2);
 }

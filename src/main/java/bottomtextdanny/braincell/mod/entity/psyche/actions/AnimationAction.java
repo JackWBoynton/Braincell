@@ -2,42 +2,39 @@ package bottomtextdanny.braincell.mod.entity.psyche.actions;
 
 import bottomtextdanny.braincell.mod.entity.modules.animatable.Animation;
 import bottomtextdanny.braincell.mod.entity.modules.animatable.AnimationHandler;
-import bottomtextdanny.braincell.mod.entity.modules.animatable.BaseAnimatableProvider;
 import bottomtextdanny.braincell.mod.entity.psyche.Action;
+import java.util.function.Supplier;
 import net.minecraft.world.entity.PathfinderMob;
 
-import java.util.function.Supplier;
+public class AnimationAction extends Action {
+   protected final Supplier animationProvider;
+   protected Animation animation;
+   protected final AnimationHandler animationHandler;
 
-public class AnimationAction<E extends PathfinderMob & BaseAnimatableProvider<?>, A extends Animation<?>> extends Action<E> {
-    protected final Supplier<A> animationProvider;
-    protected A animation;
-    protected final AnimationHandler<?> animationHandler;
+   public AnimationAction(PathfinderMob mob, Animation animation, AnimationHandler animationModule) {
+      super(mob);
+      this.animationProvider = () -> {
+         return animation;
+      };
+      this.animationHandler = animationModule;
+   }
 
-    public AnimationAction(E mob, A animation, AnimationHandler<?> animationModule) {
-        super(mob);
-        this.animationProvider = () -> animation;
-        this.animationHandler = animationModule;
-    }
+   public AnimationAction(PathfinderMob mob, Supplier animation, AnimationHandler animationModule) {
+      super(mob);
+      this.animationProvider = animation;
+      this.animationHandler = animationModule;
+   }
 
-    public AnimationAction(E mob, Supplier<A> animation, AnimationHandler<?> animationModule) {
-        super(mob);
-        this.animationProvider = animation;
-        this.animationHandler = animationModule;
-    }
+   public boolean canStart() {
+      return this.active();
+   }
 
-    @Override
-    public boolean canStart() {
-        return active();
-    }
+   protected void start() {
+      super.start();
+      this.animationHandler.play(this.animation = (Animation)this.animationProvider.get());
+   }
 
-    @Override
-    protected void start() {
-        super.start();
-        this.animationHandler.play(this.animation = this.animationProvider.get());
-    }
-
-    @Override
-    public boolean shouldKeepGoing() {
-        return active() && this.animationHandler.isPlaying(this.animation);
-    }
+   public boolean shouldKeepGoing() {
+      return this.active() && this.animationHandler.isPlaying(this.animation);
+   }
 }

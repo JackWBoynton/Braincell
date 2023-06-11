@@ -7,107 +7,88 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class BCTexturedQuad implements ModelSectionReseter {
-    public final BCVertex[] vertices;
-    public float[][] defaultPositions;
-    public float[][] positions;
-    public final Vector3f normal;
+   public final BCVertex[] vertices;
+   public float[][] defaultPositions;
+   public float[][] positions;
+   public final Vector3f normal;
 
-    public BCTexturedQuad(BCVertex[] vertices,
-                          float left,
-                          float top,
-                          float right,
-                          float bottom,
-                          float texWidth,
-                          float texHeight,
-                          boolean mirrorIn,
-                          Direction directionIn) {
-        this.vertices = vertices;
-        this.defaultPositions = new float[][]{
-                {right / texWidth, top / texHeight},
-                {left / texWidth, top / texHeight},
-                {left / texWidth, bottom / texHeight},
-                {right / texWidth, bottom / texHeight}
-        };
-        if (mirrorIn) {
-            int last = vertices.length - 1;
-            int lengthByTwo = vertices.length / 2;
+   public BCTexturedQuad(BCVertex[] vertices, float left, float top, float right, float bottom, float texWidth, float texHeight, boolean mirrorIn, Direction directionIn) {
+      this.vertices = vertices;
+      this.defaultPositions = new float[][]{{right / texWidth, top / texHeight}, {left / texWidth, top / texHeight}, {left / texWidth, bottom / texHeight}, {right / texWidth, bottom / texHeight}};
+      if (mirrorIn) {
+         int last = vertices.length - 1;
+         int lengthByTwo = vertices.length / 2;
 
-            for(int j = 0; j < lengthByTwo; ++j) {
-                BCVertex mirroredVertex = vertices[j];
-                float[] mirroredUV = this.defaultPositions[j];
-                vertices[j] = vertices[last - j];
-                this.defaultPositions[j] = this.defaultPositions[last - j];
-                vertices[last - j] = mirroredVertex;
-                this.defaultPositions[last - j] = mirroredUV;
-            }
-        }
-        this.positions = this.defaultPositions.clone();
-        this.normal = directionIn.step();
-        if (mirrorIn) {
-            this.normal.mul(-1.0F, 1.0F, 1.0F);
-        }
-    }
+         for(int j = 0; j < lengthByTwo; ++j) {
+            BCVertex mirroredVertex = vertices[j];
+            float[] mirroredUV = this.defaultPositions[j];
+            vertices[j] = vertices[last - j];
+            this.defaultPositions[j] = this.defaultPositions[last - j];
+            vertices[last - j] = mirroredVertex;
+            this.defaultPositions[last - j] = mirroredUV;
+         }
+      }
 
-    public void setDefault(BCModel model, float posX, float posY, float width, float height) {
-        posX /= model.getTexWidth();
-        posY /= model.getTexHeight();
-        width /= model.getTexWidth();
-        height /= model.getTexHeight();
+      this.positions = (float[][])this.defaultPositions.clone();
+      this.normal = directionIn.step();
+      if (mirrorIn) {
+         this.normal.mul(-1.0F, 1.0F, 1.0F);
+      }
 
-        this.defaultPositions = new float[][]{
-                {posX + width, posY},
-                {posX, posY},
-                {posX, posY + height},
-                {posX + width, posY + height}
-        };
-    }
+   }
 
-    public void move(BCModel model, float xPosAddition, float yPosAddition) {
-        xPosAddition /= model.getTexWidth();
-        yPosAddition /= model.getTexHeight();
+   public void setDefault(BCModel model, float posX, float posY, float width, float height) {
+      posX /= (float)model.getTexWidth();
+      posY /= (float)model.getTexHeight();
+      width /= (float)model.getTexWidth();
+      height /= (float)model.getTexHeight();
+      this.defaultPositions = new float[][]{{posX + width, posY}, {posX, posY}, {posX, posY + height}, {posX + width, posY + height}};
+   }
 
-        for (float[] position : this.positions) {
-            position[0] += xPosAddition;
-            position[1] += yPosAddition;
-        }
-    }
+   public void move(BCModel model, float xPosAddition, float yPosAddition) {
+      xPosAddition /= (float)model.getTexWidth();
+      yPosAddition /= (float)model.getTexHeight();
+      float[][] var4 = this.positions;
+      int var5 = var4.length;
 
-    public void set(BCModel model, float posX, float posY, float width, float height) {
-        posX /= model.getTexWidth();
-        posY /= model.getTexHeight();
-        width /= model.getTexWidth();
-        height /= model.getTexHeight();
+      for(int var6 = 0; var6 < var5; ++var6) {
+         float[] position = var4[var6];
+         position[0] += xPosAddition;
+         position[1] += yPosAddition;
+      }
 
-        this.positions = new float[][]{
-                {posX + width, posY},
-                {posX, posY},
-                {posX, posY + height},
-                {posX + width, posY + height}
-        };
-    }
+   }
 
-    public BCVertex getVertex(int index) {
-        return this.vertices[index];
-    }
+   public void set(BCModel model, float posX, float posY, float width, float height) {
+      posX /= (float)model.getTexWidth();
+      posY /= (float)model.getTexHeight();
+      width /= (float)model.getTexWidth();
+      height /= (float)model.getTexHeight();
+      this.positions = new float[][]{{posX + width, posY}, {posX, posY}, {posX, posY + height}, {posX + width, posY + height}};
+   }
 
-    public float[] getUV(int index) {
-        return this.positions[index];
-    }
+   public BCVertex getVertex(int index) {
+      return this.vertices[index];
+   }
 
-    public float[] getUV(BCUV type) {
-        return this.positions[type.ordinal()];
-    }
+   public float[] getUV(int index) {
+      return this.positions[index];
+   }
 
-    public void setUVCorner(BCModel model, BCUV type, float x, float y) {
-        this.positions[type.ordinal()][0] = x / model.getTexWidth();
-        this.positions[type.ordinal()][1] = y / model.getTexHeight();
-    }
+   public float[] getUV(BCUV type) {
+      return this.positions[type.ordinal()];
+   }
 
-    @Override
-    public void reset(BCModel model) {
-        for (int i = 0; i < this.defaultPositions.length; i++) {
-            this.positions[i][0] = this.defaultPositions[i][0];
-            this.positions[i][1] = this.defaultPositions[i][1];
-        }
-    }
+   public void setUVCorner(BCModel model, BCUV type, float x, float y) {
+      this.positions[type.ordinal()][0] = x / (float)model.getTexWidth();
+      this.positions[type.ordinal()][1] = y / (float)model.getTexHeight();
+   }
+
+   public void reset(BCModel model) {
+      for(int i = 0; i < this.defaultPositions.length; ++i) {
+         this.positions[i][0] = this.defaultPositions[i][0];
+         this.positions[i][1] = this.defaultPositions[i][1];
+      }
+
+   }
 }

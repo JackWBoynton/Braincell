@@ -13,41 +13,38 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.simple.SimpleChannel;
 
-public final class MSGAnimatedEntityDeathEnd extends BCEntityPacket<MSGAnimatedEntityDeathEnd, Entity> {
+public final class MSGAnimatedEntityDeathEnd extends BCEntityPacket {
+   public MSGAnimatedEntityDeathEnd(int entityId) {
+      super(entityId);
+   }
 
-	public MSGAnimatedEntityDeathEnd(int entityId) {
-		super(entityId);
-	}
+   public void serialize(FriendlyByteBuf stream) {
+      super.serialize(stream);
+   }
 
-	@Override
-	public void serialize(FriendlyByteBuf stream) {
-		super.serialize(stream);
-	}
+   @OnlyIn(Dist.CLIENT)
+   public MSGAnimatedEntityDeathEnd deserialize(FriendlyByteBuf stream) {
+      return new MSGAnimatedEntityDeathEnd(stream.readInt());
+   }
 
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public MSGAnimatedEntityDeathEnd deserialize(FriendlyByteBuf stream) {
-		return new MSGAnimatedEntityDeathEnd(stream.readInt());
-	}
+   @OnlyIn(Dist.CLIENT)
+   public void postDeserialization(NetworkEvent.Context ctx, Level world) {
+      Connection.doClientSide(() -> {
+         Entity entity = this.getEntityAsReceptor(world);
+         if (entity instanceof LivingAnimatableProvider provider) {
+            if (provider.operateAnimatableModule()) {
+               provider.onDeathAnimationEndClient();
+            }
+         }
 
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void postDeserialization(NetworkEvent.Context ctx, Level world) {
-		Connection.doClientSide(() -> {
-			Entity entity = getEntityAsReceptor(world);
-			if (entity instanceof LivingAnimatableProvider provider && provider.operateAnimatableModule()) {
-				provider.onDeathAnimationEndClient();
-			}
-		});
-	}
-	
-	@Override
-	public LogicalSide side() {
-		return LogicalSide.CLIENT;
-	}
+      });
+   }
 
-	@Override
-	public SimpleChannel mainChannel() {
-		return BCPacketInitialization.CHANNEL;
-	}
+   public LogicalSide side() {
+      return LogicalSide.CLIENT;
+   }
+
+   public SimpleChannel mainChannel() {
+      return BCPacketInitialization.CHANNEL;
+   }
 }

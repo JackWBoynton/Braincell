@@ -1,19 +1,20 @@
 package bottomtextdanny.braincell.base.pair;
 
-/**
- * <p>Record implementation of {@link Tuple} that defaults {@link Float} as left type.</p>
- *
- * @param <T> right element type.
- */
-public record FloatPair<T>(Float left, T right) implements Tuple<Float, T> {
+public record FloatPair(Float left, Object right) implements Tuple {
+   public FloatPair(Float left, Object right) {
+      this.left = left;
+      this.right = right;
+   }
 
-    /**
-     * <p>A fancy instantiation.</p>
-     * @param left the {@code float} value that will be taken as {@link #left} value.
-     * @param right the {@param <T>} value that will be taken as {@link #right} value.
-     * @return a newly created instance with the given parameters.
-     */
-    public static <T> FloatPair<T> of(float left, T right) {
-        return new FloatPair<>(left, right);
-    }
+   public static FloatPair of(float left, Object right) {
+      return new FloatPair(left, right);
+   }
+
+   public Float left() {
+      return this.left;
+   }
+
+   public Object right() {
+      return this.right;
+   }
 }

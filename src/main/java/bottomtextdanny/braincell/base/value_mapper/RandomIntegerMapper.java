@@ -4,54 +4,52 @@ import java.util.Random;
 import java.util.SplittableRandom;
 
 public abstract class RandomIntegerMapper {
+   private RandomIntegerMapper() {
+   }
 
-    private RandomIntegerMapper() {}
+   public static RandomIntegerMapper of(int minimum, int maximum) {
+      return new RangedInteger(minimum, maximum);
+   }
 
-    public static RandomIntegerMapper of(int minimum, int maximum) {
-        return new RangedInteger(minimum, maximum);
-    }
+   public static RandomIntegerMapper of(int value) {
+      return new FakeRangedInteger(value);
+   }
 
-    public static RandomIntegerMapper of(int value) {
-        return new FakeRangedInteger(value);
-    }
+   public abstract int map(SplittableRandom var1);
 
-    public abstract int map(SplittableRandom random);
+   public abstract int map(Random var1);
 
-    public abstract int map(Random random);
+   private static class RangedInteger extends RandomIntegerMapper {
+      private final int minimum;
+      private final int maximum;
 
-    private static class FakeRangedInteger extends RandomIntegerMapper {
-        private final int value;
+      private RangedInteger(int minimum, int maximum) {
+         this.minimum = minimum;
+         this.maximum = maximum;
+      }
 
-        private FakeRangedInteger(int value) {
-            this.value = value;
-        }
+      public int map(SplittableRandom random) {
+         return this.minimum + random.nextInt(this.maximum - this.minimum);
+      }
 
-        @Override
-        public int map(SplittableRandom random) {
-            return this.value;
-        }
+      public int map(Random random) {
+         return this.minimum + random.nextInt(this.maximum - this.minimum);
+      }
+   }
 
-        @Override
-        public int map(Random random) {
-            return this.value;
-        }
-    }
+   private static class FakeRangedInteger extends RandomIntegerMapper {
+      private final int value;
 
-    private static class RangedInteger extends RandomIntegerMapper {
-        private final int minimum;
-        private final int maximum;
+      private FakeRangedInteger(int value) {
+         this.value = value;
+      }
 
-        private RangedInteger(int minimum, int maximum) {
-            this.minimum = minimum;
-            this.maximum = maximum;
-        }
+      public int map(SplittableRandom random) {
+         return this.value;
+      }
 
-        public int map(SplittableRandom random) {
-            return this.minimum + random.nextInt(this.maximum - this.minimum);
-        }
-
-        public int map(Random random) {
-            return this.minimum + random.nextInt(this.maximum - this.minimum);
-        }
-    }
+      public int map(Random random) {
+         return this.value;
+      }
+   }
 }

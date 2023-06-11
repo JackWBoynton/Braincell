@@ -5,17 +5,15 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 
-@Mixin(ItemStack.class)
+@Mixin({ItemStack.class})
 public class ItemStackClientMixin implements ItemStackClientExtensor {
-    public LivingEntity cachedHolder;
+   public LivingEntity cachedHolder;
 
-    @Override
-    public void setCachedHolder(LivingEntity entity) {
-        this.cachedHolder = entity;
-    }
+   public void setCachedHolder(LivingEntity entity) {
+      this.cachedHolder = entity;
+   }
 
-    @Override
-    public LivingEntity getCachedHolder() {
-        return this.cachedHolder;
-    }
+   public LivingEntity getCachedHolder() {
+      return this.cachedHolder;
+   }
 }

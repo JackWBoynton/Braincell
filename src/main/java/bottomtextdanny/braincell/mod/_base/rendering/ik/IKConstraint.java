@@ -1,20 +1,17 @@
 package bottomtextdanny.braincell.mod._base.rendering.ik;
 
+import java.util.Objects;
+import javax.annotation.Nullable;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
-import java.util.Objects;
-
 public interface IKConstraint {
+   void applyToSection(IKPartData var1, IKPartData var2, @Nullable IKPartData var3);
 
-    void applyToSection(IKPartData parentData, IKPartData data, @Nullable IKPartData childData);
-
-    @NotNull
-    default IKConstraint andThen(@NotNull IKConstraint after) {
-        Objects.requireNonNull(after);
-        return (IKPartData v, IKPartData t, IKPartData u) -> {
-            applyToSection(v, t, u);
-            after.applyToSection(v, t, u);
-        };
-    }
+   default @NotNull IKConstraint andThen(@NotNull IKConstraint after) {
+      Objects.requireNonNull(after);
+      return (v, t, u) -> {
+         this.applyToSection(v, t, u);
+         after.applyToSection(v, t, u);
+      };
+   }
 }

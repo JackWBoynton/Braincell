@@ -1,17 +1,14 @@
 package bottomtextdanny.braincell.mixin;
 
-import net.minecraft.world.level.levelgen.GenerationStep;
+import java.util.Map;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import java.util.Map;
-
-@Mixin(StructureFeature.class)
+@Mixin({StructureFeature.class})
 public interface StructureFeatureMixin {
-
-    @Accessor("STEP")
-    static Map<StructureFeature<?>, GenerationStep.Decoration> getSTEP() {
-        throw new UnsupportedOperationException();
-    }
+   @Accessor("STEP")
+   static Map getSTEP() {
+      throw new UnsupportedOperationException();
+   }
 }

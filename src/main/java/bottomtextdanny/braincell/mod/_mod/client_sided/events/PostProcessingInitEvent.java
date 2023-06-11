@@ -7,14 +7,13 @@ import net.minecraftforge.eventbus.api.Event;
 
 @OnlyIn(Dist.CLIENT)
 public class PostProcessingInitEvent extends Event {
-    private final ShaderHandler handler;
+   private final ShaderHandler handler;
 
-    public PostProcessingInitEvent(ShaderHandler handler) {
-        super();
-        this.handler = handler;
-    }
+   public PostProcessingInitEvent(ShaderHandler handler) {
+      this.handler = handler;
+   }
 
-    public ShaderHandler getHandler() {
-        return handler;
-    }
+   public ShaderHandler getHandler() {
+      return this.handler;
+   }
 }

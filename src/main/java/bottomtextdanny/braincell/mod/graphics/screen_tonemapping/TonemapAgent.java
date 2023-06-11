@@ -8,34 +8,33 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class TonemapAgent {
-	private Vector3f channelModifier = new Vector3f();
-	protected float saturationModifier;
-	protected final LocalPlayer player;
-	
-	public TonemapAgent() {
-		super();
-		this.player = Minecraft.getInstance().player;
-	}
-	
-	public abstract void render(float partialTick);
-	
-	public abstract void tick();
+   private Vector3f channelModifier = new Vector3f();
+   protected float saturationModifier;
+   protected final LocalPlayer player;
 
-	public abstract boolean removeIf();
-	
-	public Vector3f getChannelModifier() {
-		return this.channelModifier;
-	}
+   public TonemapAgent() {
+      this.player = Minecraft.getInstance().player;
+   }
 
-	public void setChannelModifier(Vector3f channelModifier) {
-		this.channelModifier = channelModifier;
-	}
+   public abstract void render(float var1);
 
-	public void setSaturationModifier(float saturationModifier) {
-		this.saturationModifier = saturationModifier;
-	}
+   public abstract void tick();
 
-	public float getSaturationModifier() {
-		return this.saturationModifier;
-	}
+   public abstract boolean removeIf();
+
+   public Vector3f getChannelModifier() {
+      return this.channelModifier;
+   }
+
+   public void setChannelModifier(Vector3f channelModifier) {
+      this.channelModifier = channelModifier;
+   }
+
+   public void setSaturationModifier(float saturationModifier) {
+      this.saturationModifier = saturationModifier;
+   }
+
+   public float getSaturationModifier() {
+      return this.saturationModifier;
+   }
 }

@@ -6,6 +6,5 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 @FunctionalInterface
 public interface ModelSectionReseter {
-
-    void reset(BCModel model);
+   void reset(BCModel var1);
 }

@@ -4,113 +4,129 @@ import bottomtextdanny.braincell.base.Easing;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import javax.annotation.Nullable;
-
 @OnlyIn(Dist.CLIENT)
 public final class JointMutator {
-    private float offsetX, offsetY, offsetZ;
-    private float rotationX, rotationY, rotationZ;
-    private float scaleX, scaleY, scaleZ;
-    private Easing offsetEasing = Easing.LINEAR,
-            rotationEasing = Easing.LINEAR,
-            scaleEasing = Easing.LINEAR;
+   private float offsetX;
+   private float offsetY;
+   private float offsetZ;
+   private float rotationX;
+   private float rotationY;
+   private float rotationZ;
+   private float scaleX;
+   private float scaleY;
+   private float scaleZ;
+   private Easing offsetEasing;
+   private Easing rotationEasing;
+   private Easing scaleEasing;
 
-    public float getOffsetX() {
-        return this.offsetX;
-    }
+   public JointMutator() {
+      this.offsetEasing = Easing.LINEAR;
+      this.rotationEasing = Easing.LINEAR;
+      this.scaleEasing = Easing.LINEAR;
+   }
 
-    public float getOffsetY() {
-        return this.offsetY;
-    }
+   public float getOffsetX() {
+      return this.offsetX;
+   }
 
-    public float getOffsetZ() {
-        return this.offsetZ;
-    }
+   public float getOffsetY() {
+      return this.offsetY;
+   }
 
-    public float getRotationX() {
-        return this.rotationX;
-    }
+   public float getOffsetZ() {
+      return this.offsetZ;
+   }
 
-    public float getRotationY() {
-        return this.rotationY;
-    }
+   public float getRotationX() {
+      return this.rotationX;
+   }
 
-    public float getRotationZ() {
-        return this.rotationZ;
-    }
+   public float getRotationY() {
+      return this.rotationY;
+   }
 
-    public float getScaleX() {
-        return this.scaleX;
-    }
+   public float getRotationZ() {
+      return this.rotationZ;
+   }
 
-    public float getScaleY() {
-        return this.scaleY;
-    }
+   public float getScaleX() {
+      return this.scaleX;
+   }
 
-    public float getScaleZ() {
-        return this.scaleZ;
-    }
+   public float getScaleY() {
+      return this.scaleY;
+   }
 
-    public Easing getOffsetEasing() {
-        return offsetEasing;
-    }
+   public float getScaleZ() {
+      return this.scaleZ;
+   }
 
-    public Easing getRotationEasing() {
-        return rotationEasing;
-    }
+   public Easing getOffsetEasing() {
+      return this.offsetEasing;
+   }
 
-    public Easing getScaleEasing() {
-        return scaleEasing;
-    }
+   public Easing getRotationEasing() {
+      return this.rotationEasing;
+   }
 
-    public void setOffset(float x, float y, float z) {
-        this.offsetX = x;
-        this.offsetY = y;
-        this.offsetZ = z;
-    }
+   public Easing getScaleEasing() {
+      return this.scaleEasing;
+   }
 
-    public void addOffset(float x, float y, float z) {
-        this.offsetX += x;
-        this.offsetY += y;
-        this.offsetZ += z;
-    }
+   public void setOffset(float x, float y, float z) {
+      this.offsetX = x;
+      this.offsetY = y;
+      this.offsetZ = z;
+   }
 
-    public void setRotation(float x, float y, float z) {
-        this.rotationX = (float)Math.toRadians(x);
-        this.rotationY = (float)Math.toRadians(y);
-        this.rotationZ = (float)Math.toRadians(z);
-    }
+   public void addOffset(float x, float y, float z) {
+      this.offsetX += x;
+      this.offsetY += y;
+      this.offsetZ += z;
+   }
 
-    public void addRotation(float x, float y, float z) {
-        this.rotationX += (float)Math.toRadians(x);
-        this.rotationY += (float)Math.toRadians(y);
-        this.rotationZ += (float)Math.toRadians(z);
-    }
+   public void setRotation(float x, float y, float z) {
+      this.rotationX = (float)Math.toRadians((double)x);
+      this.rotationY = (float)Math.toRadians((double)y);
+      this.rotationZ = (float)Math.toRadians((double)z);
+   }
 
-    public void setScale(float x, float y, float z) {
-        this.scaleX = x;
-        this.scaleY = y;
-        this.scaleZ = z;
-    }
+   public void addRotation(float x, float y, float z) {
+      this.rotationX += (float)Math.toRadians((double)x);
+      this.rotationY += (float)Math.toRadians((double)y);
+      this.rotationZ += (float)Math.toRadians((double)z);
+   }
 
-    public void addScale(float x, float y, float z) {
-        this.scaleX += x;
-        this.scaleY += y;
-        this.scaleZ += z;
-    }
+   public void setScale(float x, float y, float z) {
+      this.scaleX = x;
+      this.scaleY = y;
+      this.scaleZ = z;
+   }
 
-    public void setOffsetEasing(Easing offsetEasing) {
-        if (offsetEasing != null)
-            this.offsetEasing = offsetEasing;
-    }
+   public void addScale(float x, float y, float z) {
+      this.scaleX += x;
+      this.scaleY += y;
+      this.scaleZ += z;
+   }
 
-    public void setRotationEasing(Easing rotationEasing) {
-        if (rotationEasing != null)
-            this.rotationEasing = rotationEasing;
-    }
+   public void setOffsetEasing(Easing offsetEasing) {
+      if (offsetEasing != null) {
+         this.offsetEasing = offsetEasing;
+      }
 
-    public void setScaleEasing(Easing scaleEasing) {
-        if (scaleEasing != null)
-            this.scaleEasing = scaleEasing;
-    }
+   }
+
+   public void setRotationEasing(Easing rotationEasing) {
+      if (rotationEasing != null) {
+         this.rotationEasing = rotationEasing;
+      }
+
+   }
+
+   public void setScaleEasing(Easing scaleEasing) {
+      if (scaleEasing != null) {
+         this.scaleEasing = scaleEasing;
+      }
+
+   }
 }

@@ -2,40 +2,43 @@ package bottomtextdanny.braincell.mod.entity.modules.additional_motion;
 
 import bottomtextdanny.braincell.mod.entity.modules.EntityModule;
 import com.google.common.collect.Lists;
+import java.util.Iterator;
+import java.util.List;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.List;
+public class ExtraMotionModule extends EntityModule {
+   private final List customMotions;
+   private Vec3 additionalMotion;
 
-public class ExtraMotionModule extends EntityModule<Entity, ExtraMotionProvider> {
-    private final List<ExternalMotion> customMotions;
-    private Vec3 additionalMotion = Vec3.ZERO;
+   public ExtraMotionModule(Entity entity) {
+      super(entity);
+      this.additionalMotion = Vec3.ZERO;
+      this.customMotions = Lists.newLinkedList();
+   }
 
-    public ExtraMotionModule(Entity entity) {
-        super(entity);
-        this.customMotions = Lists.newLinkedList();
-    }
+   public void travelHook() {
+      double x = 0.0;
+      double y = 0.0;
+      double z = 0.0;
+      Iterator var7 = this.customMotions.iterator();
 
-    public void travelHook() {
-        double x = 0.0;
-        double y = 0.0;
-        double z = 0.0;
+      while(var7.hasNext()) {
+         ExternalMotion m = (ExternalMotion)var7.next();
+         x += m.getAcceleratedMotion().x();
+         y += m.getAcceleratedMotion().y();
+         z += m.getAcceleratedMotion().z();
+         m.tick();
+      }
 
-        for (ExternalMotion m : this.customMotions) {
-            x += m.getAcceleratedMotion().x();
-            y += m.getAcceleratedMotion().y();
-            z += m.getAcceleratedMotion().z();
-            m.tick();
-        }
+      this.additionalMotion = new Vec3(x, y, z);
+   }
 
-        this.additionalMotion = new Vec3(x, y, z);
-    }
+   public final void addMotion(ExternalMotion motion) {
+      this.customMotions.add(motion);
+   }
 
-    public final void addMotion(ExternalMotion motion) {
-        this.customMotions.add(motion);
-    }
-
-    public Vec3 getAdditionalMotion() {
-        return this.additionalMotion;
-    }
+   public Vec3 getAdditionalMotion() {
+      return this.additionalMotion;
+   }
 }

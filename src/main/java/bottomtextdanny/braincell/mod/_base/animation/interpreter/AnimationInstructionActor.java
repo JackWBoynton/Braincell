@@ -6,9 +6,9 @@ import bottomtextdanny.braincell.mod._base.rendering.core_modeling.BCJoint;
 
 @FunctionalInterface
 public interface AnimationInstructionActor {
-    AnimationInstructionActor ROTATE = ModelAnimator::rotate;
-    AnimationInstructionActor POSITION = ModelAnimator::move;
-    AnimationInstructionActor SCALE = ModelAnimator::scale;
+   AnimationInstructionActor ROTATE = ModelAnimator::rotate;
+   AnimationInstructionActor POSITION = ModelAnimator::move;
+   AnimationInstructionActor SCALE = ModelAnimator::scale;
 
-    void act(ModelAnimator animator, BCJoint joint, float x, float y, float z, Easing easing);
+   void act(ModelAnimator var1, BCJoint var2, float var3, float var4, float var5, Easing var6);
 }

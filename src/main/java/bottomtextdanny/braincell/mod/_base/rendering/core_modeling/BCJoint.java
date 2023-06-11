@@ -365,8 +365,7 @@ public final class BCJoint implements ModelSectionReseter, AnimatableModelCompon
         eased = (1 - easingMap.computeIfAbsent(current.getOffsetEasing(), (p) -> p.progression(progression))) * multiplier;
         this.x += eased * previous.getOffsetX();
         this.y += eased * previous.getOffsetY();
-        this.z += eased * previous.getOffsetZ();
-        eased = (1 - easingMap.computeIfAbsent(current.getScaleEasing(), (p) -> p.progression(progression))) * multiplier;
+        this.z += eased * (progression) * multiplier;
         this.scaleX += eased * previous.getScaleX();
         this.scaleY += eased * previous.getScaleY();
         this.scaleZ += eased * previous.getScaleZ();

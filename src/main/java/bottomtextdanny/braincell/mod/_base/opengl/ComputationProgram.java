@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import static org.lwjgl.opengl.GL41.*;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 
 // @OnlyIn(Dist.CLIENT)

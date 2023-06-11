@@ -4,9 +4,10 @@ import net.minecraft.world.entity.LivingEntity;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public interface FinnMakeMeleeCritical {
-    int MAKE_CRITICAL_PRIORITY_HIGH = 0, MAKE_CRITICAL_PRIORITY_LOW = 1;
+   int MAKE_CRITICAL_PRIORITY_HIGH = 0;
+   int MAKE_CRITICAL_PRIORITY_LOW = 1;
 
-    int critMakingModulePriority();
+   int critMakingModulePriority();
 
-    void makeMeleeCritical(LivingEntity entity, MutableFloat chance, CriticalStateMutable directState);
+   void makeMeleeCritical(LivingEntity var1, MutableFloat var2, CriticalStateMutable var3);
 }

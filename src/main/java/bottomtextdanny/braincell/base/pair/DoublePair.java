@@ -1,19 +1,20 @@
 package bottomtextdanny.braincell.base.pair;
 
-/**
- * <p>Record implementation of {@link Tuple} that defaults {@link Double} as left type.</p>
- *
- * @param <T> right element type.
- */
-public record DoublePair<T>(Double left, T right) implements Tuple<Double, T>  {
+public record DoublePair(Double left, Object right) implements Tuple {
+   public DoublePair(Double left, Object right) {
+      this.left = left;
+      this.right = right;
+   }
 
-    /**
-     * <p>A fancy instantiation.</p>
-     * @param left the {@code double} value that will be taken as {@link #left} value.
-     * @param right the {@param <T>} value that will be taken as {@link #right} value.
-     * @return a newly created instance with the given parameters.
-     */
-    public static <T> DoublePair<T> of(double left, T right) {
-        return new DoublePair<>(left, right);
-    }
+   public static DoublePair of(double left, Object right) {
+      return new DoublePair(left, right);
+   }
+
+   public Double left() {
+      return this.left;
+   }
+
+   public Object right() {
+      return this.right;
+   }
 }

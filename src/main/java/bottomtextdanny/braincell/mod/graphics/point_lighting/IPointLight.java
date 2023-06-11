@@ -6,14 +6,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public interface IPointLight {
+   Vec3 color();
 
-    Vec3 color();
+   Vec3 position();
 
-    Vec3 position();
+   float radius();
 
-    float radius();
+   float brightness();
 
-    float brightness();
-
-    float lightupFactor();
+   float lightupFactor();
 }

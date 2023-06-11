@@ -1,9 +1,12 @@
 package bottomtextdanny.braincell.mod._base.registry;
 
+import bottomtextdanny.braincell.base.BCSuppliers;
 import bottomtextdanny.braincell.base.pair.Pair;
 import bottomtextdanny.braincell.mod._base.registry.managing.Wrap;
 import com.google.common.collect.Lists;
-import bottomtextdanny.braincell.base.BCSuppliers;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import net.minecraft.core.Holder;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -11,10 +14,6 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-
-import java.util.List;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public final class BCFeatureRegistry<T extends Feature<?>> extends Wrap<T> {
     private BCFeatureData<T> data;
